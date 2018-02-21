@@ -1,4 +1,4 @@
-package org.alignprivate.asd.dal;
+package org.alignprivate.asd.dal.maintable;
 
 import org.alignprivate.asd.model.Companies;
 import org.hibernate.HibernateException;
