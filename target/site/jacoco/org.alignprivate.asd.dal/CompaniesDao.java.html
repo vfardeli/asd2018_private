@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CompaniesDao.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">database</a> &gt; <a href="index.source.html" class="el_package">org.alignprivate.asd.dal</a> &gt; <span class="el_source">CompaniesDao.java</span></div><h1>CompaniesDao.java</h1><pre class="source lang-java linenums">package org.alignprivate.asd.dal;
+
+import org.alignprivate.asd.model.Companies;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+import java.util.List;
+
+public class CompaniesDao {
+  private static SessionFactory factory;
+  private static Session session;
+
+  /**
+   * Default constructor.
+   * it will check the Hibernate.cfg.xml file and load it
+   * next it goes to all table files in the hibernate file and loads them.
+   */
+<span class="fc" id="L21">  public CompaniesDao() {</span>
+    try {
+<span class="fc" id="L23">      factory = new Configuration().configure().buildSessionFactory();</span>
+<span class="nc" id="L24">    } catch (Throwable ex) {</span>
+<span class="nc" id="L25">      System.err.println(&quot;Failed to create sessionFactory object.&quot; + ex);</span>
+<span class="nc" id="L26">      throw new ExceptionInInitializerError(ex);</span>
+<span class="fc" id="L27">    }</span>
+<span class="fc" id="L28">  }</span>
+
+  /**
+   * Get list of all companies from the private database.
+   *
+   * @return list of All companies from private database.
+   */
+  public List&lt;Companies&gt; getAllCompanies() {
+<span class="fc" id="L36">    session = factory.openSession();</span>
+<span class="fc" id="L37">    org.hibernate.query.Query query = session.createQuery(&quot;FROM Companies&quot;);</span>
+<span class="fc" id="L38">    List&lt;Companies&gt; listOfCompanies = query.list();</span>
+<span class="fc" id="L39">    session.close();</span>
+<span class="fc" id="L40">    return listOfCompanies;</span>
+  }
+
+  /**
+   * Get a company from the private database from their
+   * company Id.
+   *
+   * @param companyId company Id that wants to be found.
+   * @return company if found, null if not found.
+   */
+  public Companies getCompanyById(int companyId) {
+<span class="fc" id="L51">    session = factory.openSession();</span>
+<span class="fc" id="L52">    org.hibernate.query.Query query = session.createQuery(&quot;FROM Companies WHERE companyId = :companyId&quot;);</span>
+<span class="fc" id="L53">    query.setParameter(&quot;companyId&quot;, companyId);</span>
+<span class="fc" id="L54">    List listOfCompanies = query.list();</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">    if (listOfCompanies.isEmpty()) {</span>
+<span class="fc" id="L56">      return null;</span>
+    }
+<span class="fc" id="L58">    session.close();</span>
+<span class="fc" id="L59">    return (Companies) listOfCompanies.get(0);</span>
+  }
+
+  /**
+   * Get a company from the private database from their name.
+   *
+   * @param companyName company Name that wants to be found.
+   * @return company if found, null if not found.
+   */
+  public Companies getCompanyByName(String companyName) {
+<span class="fc" id="L69">    session = factory.openSession();</span>
+<span class="fc" id="L70">    org.hibernate.query.Query query = session.createQuery(&quot;FROM Companies WHERE companyName = :companyName&quot;);</span>
+<span class="fc" id="L71">    query.setParameter(&quot;companyName&quot;, companyName);</span>
+<span class="fc" id="L72">    List listOfCompanies = query.list();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">    if (listOfCompanies.isEmpty()) {</span>
+<span class="fc" id="L74">      return null;</span>
+    }
+<span class="fc" id="L76">    session.close();</span>
+<span class="fc" id="L77">    return (Companies) listOfCompanies.get(0);</span>
+  }
+
+  /**
+   * Create a new company in the private database.
+   *
+   * @param company the company (model) that wants to be
+   *                inserted into the private database.
+   */
+  public void createCompany(Companies company) {
+<span class="fc" id="L87">    session = factory.openSession();</span>
+<span class="fc" id="L88">    Transaction tx = null;</span>
+<span class="fc" id="L89">    System.out.println(&quot;saving &quot; + company.getCompanyName() + &quot; in Companies table&quot;);</span>
+    try {
+<span class="fc" id="L91">      tx = session.beginTransaction();</span>
+<span class="fc" id="L92">      session.save(company);</span>
+<span class="fc" id="L93">      tx.commit();</span>
+<span class="nc" id="L94">    } catch (HibernateException e) {</span>
+<span class="nc" id="L95">      System.out.println(&quot;HibernateException: &quot; + e);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">      if (tx != null) tx.rollback();</span>
+    } finally {
+<span class="pc" id="L98">      session.close();</span>
+<span class="pc" id="L99">    }</span>
+<span class="fc" id="L100">  }</span>
+
+  /**
+   * Delete a company from the private database based
+   * on the company Id.
+   *
+   * @param companyId company Id that wants to be deleted.
+   * @return true if company is deleted,
+   * false if company is not found
+   */
+  public boolean deleteCompanyById(int companyId) {
+<span class="fc" id="L111">    Companies company = getCompanyById(companyId);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">    if (company != null) {</span>
+<span class="fc" id="L113">      session = factory.openSession();</span>
+<span class="fc" id="L114">      Transaction tx = null;</span>
+      try {
+<span class="fc" id="L116">        tx = session.beginTransaction();</span>
+<span class="fc" id="L117">        System.out.println(&quot;Deleting company with name = &quot; + company.getCompanyName());</span>
+<span class="fc" id="L118">        session.delete(company);</span>
+<span class="fc" id="L119">        tx.commit();</span>
+<span class="nc" id="L120">      } catch (HibernateException e) {</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (tx != null) tx.rollback();</span>
+<span class="nc" id="L122">        e.printStackTrace();</span>
+<span class="nc" id="L123">        return false;</span>
+      } finally {
+<span class="pc" id="L125">        session.close();</span>
+<span class="fc" id="L126">      }</span>
+<span class="fc" id="L127">      return true;</span>
+    }
+<span class="fc" id="L129">    return false;</span>
+  }
+
+  /**
+   * Update a company based on the provided company model.
+   *
+   * @param company full company model (including the companyId).
+   * @return true if company is successfully updated, false if
+   * the specific company is not found.
+   */
+  public boolean updateCompany(Companies company) {
+<span class="fc bfc" id="L140" title="All 2 branches covered.">    if (getCompanyById(company.getCompanyId()) != null) {</span>
+<span class="fc" id="L141">      session = factory.openSession();</span>
+<span class="fc" id="L142">      Transaction tx = null;</span>
+<span class="fc" id="L143">      System.out.println(&quot;updating company in Companies table...&quot;);</span>
+      try {
+<span class="fc" id="L145">        tx = session.beginTransaction();</span>
+<span class="fc" id="L146">        session.saveOrUpdate(company);</span>
+<span class="fc" id="L147">        tx.commit();</span>
+<span class="nc" id="L148">      } catch (HibernateException e) {</span>
+<span class="nc" id="L149">        System.out.println(&quot;HibernateException: &quot; + e);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (tx != null) tx.rollback();</span>
+<span class="nc" id="L151">        return false;</span>
+      } finally {
+<span class="pc" id="L153">        session.close();</span>
+<span class="fc" id="L154">      }</span>
+<span class="fc" id="L155">      return true;</span>
+    }
+<span class="fc" id="L157">    return false;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -1,0 +1,5 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+database,org.alignprivate.asd.enumeration,Gender,38,0,0,0,3,0,4,0,4,0
+database,org.alignprivate.asd.dal,CompaniesDao,83,175,6,8,14,57,3,11,0,7
+database,org.alignprivate.asd,Constants,3,0,0,0,1,0,1,0,1,0
+database,org.alignprivate.asd.model,Companies,0,17,0,0,0,7,0,5,0,5
