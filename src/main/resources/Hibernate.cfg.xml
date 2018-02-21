@@ -24,7 +24,10 @@
         </property>
 
         <!-- List of XML mapping files -->
+        <mapping resource = "Students.hbm.xml" />
         <mapping resource = "Companies.hbm.xml" />
+        <mapping resource = "Institutions.hbm.xml" />
+        <mapping resource = "Majors.hbm.xml" />
 
     </session-factory>
 </hibernate-configuration>
