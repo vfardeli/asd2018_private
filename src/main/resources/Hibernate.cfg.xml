@@ -28,6 +28,7 @@
         <mapping resource = "Companies.hbm.xml" />
         <mapping resource = "Institutions.hbm.xml" />
         <mapping resource = "Majors.hbm.xml" />
+        <mapping resource = "WorkExperiences.hbm.xml" />
 
     </session-factory>
 </hibernate-configuration>
