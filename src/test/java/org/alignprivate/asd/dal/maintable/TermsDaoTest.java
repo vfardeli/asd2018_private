@@ -48,7 +48,7 @@ public class TermsDaoTest {
 	}
 	
 	@Test
-    public void deleteTermRecord() {
+    public void deleteTermRecordTest() {
 		List<Terms> terms = termsDao.getAllTerms();
 		int oldTermSize = terms.size();		
 		Terms newTerm = new Terms(Term.SUMMER, 2029, TermType.QUARTER);

@@ -27,5 +27,7 @@
 		<mapping resource="Companies.hbm.xml" />
 		<mapping resource="Students.hbm.xml" />
 		<mapping resource="Terms.hbm.xml" />
+		<mapping resource="Administrators.hbm.xml" />
+
 	</session-factory>
 </hibernate-configuration>
