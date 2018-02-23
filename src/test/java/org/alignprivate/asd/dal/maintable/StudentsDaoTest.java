@@ -1,31 +1,34 @@
 package org.alignprivate.asd.dal.maintable;
 
+import java.util.List;
+
 import org.alignprivate.asd.enumeration.Campus;
-import org.alignprivate.asd.enumeration.Degree;
+import org.alignprivate.asd.enumeration.DegreeCandidacy;
 import org.alignprivate.asd.enumeration.EnrollmentStatus;
 import org.alignprivate.asd.enumeration.Gender;
 import org.alignprivate.asd.model.Students;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.SQLException;
-import java.util.List;
-
 public class StudentsDaoTest {
+  public static final int COUNT_OF_MALE = 5;
+  private static final int COUNT_OF_FEMALE = 5;
+
   private StudentsDao studentdao;
 
   @Before
-  public void init() throws SQLException {
+  public void init() {
     studentdao = new StudentsDao();
   }
 
   @Test
-  public void addStudentTest() throws Exception {
+  public void addStudentTest() {
     Students newStudent = new Students("0000000","tomcat@gmail.com", "Tom", "",
-            "Cat", Gender.M, true, true, 22, "1111111111",
-            "401 Terry Ave", "WA", "98109", EnrollmentStatus.FULL_TIME, Campus.SEATTLE,
-            Degree.MASTERS, null);
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle","98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
 
     Students student = studentdao.addStudent(newStudent);
     Assert.assertTrue(student.toString().equals(newStudent.toString()));
@@ -42,9 +45,9 @@ public class StudentsDaoTest {
     List<Students> students = studentdao.getAllStudents();
 
     Students newStudent = new Students("0000000","tomcat@gmail.com", "Tom", "",
-            "Cat", Gender.M, true, true, 22, "1111111111",
-            "401 Terry Ave", "WA", "98109", EnrollmentStatus.FULL_TIME, Campus.SEATTLE,
-            Degree.MASTERS, null);
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
     studentdao.addStudent(newStudent);
     List<Students> newStudents = studentdao.getAllStudents();
     Assert.assertTrue(newStudents.size() == students.size() + 1);
@@ -55,9 +58,9 @@ public class StudentsDaoTest {
   @Test
   public void getStudentRecord() {
     Students newStudent = new Students("0000000","tomcat@gmail.com", "Tom", "",
-            "Cat", Gender.M, true, true, 22, "1111111111",
-            "401 Terry Ave", "WA", "98109", EnrollmentStatus.FULL_TIME, Campus.SEATTLE,
-            Degree.MASTERS, null);
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
 
     studentdao.addStudent(newStudent);
     Students student = studentdao.getStudentRecord("0000000");
@@ -77,35 +80,33 @@ public class StudentsDaoTest {
   @Test
   public void searchSimilarStudents() {
     Students student = new Students("0000000","tomcat@gmail.com", "Tom", "",
-            "Cat", Gender.M, true, true, 22, "1111111111",
-            "401 Terry Ave", "WA", "98109", EnrollmentStatus.FULL_TIME, Campus.SEATTLE,
-            Degree.MASTERS, null);
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
     studentdao.addStudent(student);
 
-    List<Students> students = studentdao.searchSimilarStudents(Degree.MASTERS);
+    List<Students> students = studentdao.searchSimilarStudents(DegreeCandidacy.MASTERS);
 
     for (Students s : students) {
-      Assert.assertTrue(s.getDegreeCandidacy().name().equals("MASTERS"));
+      Assert.assertTrue(s.getDegree().name().equals("MASTERS"));
     }
-
-    studentdao.deleteStudent("0000000");
   }
 
   @Test
   public void updateStudentRecord() {
     Students student = new Students("0000000","tomcat@gmail.com", "Tom", "",
-            "Cat", Gender.M, true, true, 22, "1111111111",
-            "401 Terry Ave", "WA", "98109", EnrollmentStatus.FULL_TIME, Campus.SEATTLE,
-            Degree.MASTERS, null);
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
 
     studentdao.addStudent(student);
     student = studentdao.getStudentRecord("0000000");
     Assert.assertTrue(student.getAddress().equals("401 Terry Ave"));
 
     Students newStudent = new Students("0000000","tomcat@gmail.com", "Tom", "",
-            "Cat", Gender.M, true, true, 22, "1111111111",
-            "225 Terry Ave", "WA", "98109", EnrollmentStatus.FULL_TIME, Campus.SEATTLE,
-            Degree.MASTERS, null);
+            "Cat", Gender.M, "F1", "1111111111",
+            "225 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
 
     student = studentdao.updateStudentRecord(newStudent);
     Assert.assertTrue(student.getAddress().equals("225 Terry Ave"));

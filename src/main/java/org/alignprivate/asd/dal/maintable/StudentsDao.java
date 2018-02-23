@@ -1,13 +1,12 @@
 package org.alignprivate.asd.dal.maintable;
 
-import org.alignprivate.asd.enumeration.Degree;
+import org.alignprivate.asd.enumeration.DegreeCandidacy;
 import org.alignprivate.asd.model.Students;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class StudentsDao {
       // it will check the hibernate.cfg.xml file and load it
       // next it goes to all table files in the hibernate file and loads them
       factory = new Configuration().configure().buildSessionFactory();
-//      session = factory.openSession();
+      session = factory.openSession();
     } catch (Throwable ex) {
       System.err.println("Failed to create sessionFactory object." + ex);
       throw new ExceptionInInitializerError(ex);
@@ -45,7 +44,6 @@ public class StudentsDao {
     }else{
       System.out.println("saving student in addStudentRecord");
       try {
-        session = factory.openSession();
         tx = session.beginTransaction();
         session.save(student);
         tx.commit();
@@ -53,7 +51,7 @@ public class StudentsDao {
         System.out.println("HibernateException: " + e);
         if (tx!=null) tx.rollback();
       } finally {
-        session.close();
+//                    session.close();
       }
     }
     return student;
@@ -66,16 +64,13 @@ public class StudentsDao {
    * @return a student object
    */
   public Students getStudentRecord(String neuId) {
-    session = factory.openSession();
-    org.hibernate.query.Query query = session.createQuery("FROM Students WHERE neuId = :studentNuid ");
+    org.hibernate.query.Query query = session.createQuery("FROM Students WHERE NeuId = :studentNuid ");
     query.setParameter("studentNuid", neuId);
     List list = query.list();
     if(list.size()==1){
-      session.close();
       return (Students) list.get(0);
     }else{
       System.out.println("The list should contain only one student with a given nuid");
-      session.close();
       return null;
     }
   }
@@ -95,13 +90,13 @@ public class StudentsDao {
         tx = session.beginTransaction();
         String address = student.getAddress();
         String email = student.getEmail();
-        String phone = student.getPhone();
+        String phone = student.getPhoneNum();
 
-        String hql = "UPDATE Students set address = :address, "  +
-                "email = :email, " +
-                "phone = :phone " +
-                "WHERE neuId = :neuId";
-        Query query = session.createQuery(hql);
+        String hql = "UPDATE Students set Address = :address, "  +
+                "Email = :email, " +
+                "Phone = :phone " +
+                "WHERE NeuId = :neuId";
+        org.hibernate.query.Query query = session.createQuery(hql);
         query.setParameter("address", address);
         query.setParameter("email", email);
         query.setParameter("phone", phone);
@@ -110,12 +105,9 @@ public class StudentsDao {
         System.out.println("Rows affected: " + result);
         tx.commit();
         return student;
-      } catch (HibernateException e) {
+      }catch (HibernateException e) {
         if (tx!=null) tx.rollback();
         e.printStackTrace();
-        return null;
-      } finally {
-        session.close();
       }
     }else{
       System.out.println("student id doesn't exists..");
@@ -133,9 +125,8 @@ public class StudentsDao {
   public boolean deleteStudent(String neuId){
     Transaction tx = null;
     try {
-      session = factory.openSession();
       tx = session.beginTransaction();
-      org.hibernate.query.Query query = session.createQuery("DELETE FROM Students WHERE neuId = :studentNuid ");
+      org.hibernate.query.Query query = session.createQuery("DELETE FROM Students WHERE NeuId = :studentNuid ");
       query.setParameter("studentNuid", neuId);
       System.out.println("Deleting student for nuid = " + neuId);
       query.executeUpdate();
@@ -149,10 +140,11 @@ public class StudentsDao {
       System.out.println("exceptionnnnnn");
       if (tx!=null) tx.rollback();
       e.printStackTrace();
-      return false;
     } finally {
-      session.close();
+//            session.close();
     }
+
+    return true;
   }
 
   /**
@@ -162,11 +154,9 @@ public class StudentsDao {
    * @return A list of students
    */
   public List<Students> searchStudentRecord(String firstName) {
-    session = factory.openSession();
-    org.hibernate.query.Query query = session.createQuery("FROM Students WHERE firstName = :studentfirstName ");
+    org.hibernate.query.Query query = session.createQuery("FROM Students WHERE FirstName = :studentfirstName ");
     query.setParameter("studentfirstName", firstName);
     List<Students> list = query.list();
-    session.close();
     return list;
   }
 
@@ -176,10 +166,8 @@ public class StudentsDao {
    * @return A list of students
    */
   public List<Students> getAllStudents(){
-    session = factory.openSession();
     org.hibernate.query.Query query = session.createQuery("FROM Students");
     List<Students> list = query.list();
-    session.close();
     return list;
   }
 
@@ -191,9 +179,8 @@ public class StudentsDao {
    */
   public boolean ifNuidExists(String neuId){
     try{
-      session = factory.openSession();
       System.out.println("Checking if an entered neuId exists or not.......");
-      org.hibernate.query.Query query = session.createQuery("FROM Students WHERE neuId = :studentNeuId");
+      org.hibernate.query.Query query = session.createQuery("FROM Students WHERE NeuId = :studentNeuId");
       query.setParameter("studentNeuId", neuId);
       List list = query.list();
       if(list.size() == 1){
@@ -201,8 +188,6 @@ public class StudentsDao {
       }
     }catch (HibernateException e) {
       e.printStackTrace();
-    } finally {
-      session.close();
     }
 
     return false;
@@ -214,10 +199,8 @@ public class StudentsDao {
    * @return the number of male students.
    */
   public int countMaleStudents() {
-    session = factory.openSession();
-    org.hibernate.query.Query query = session.createQuery("FROM Students WHERE gender = 'M'");
+    org.hibernate.query.Query query = session.createQuery("FROM Students WHERE Gender = 'M'");
     List<Students> list = query.list();
-    session.close();
     return list.size();
   }
 
@@ -227,10 +210,8 @@ public class StudentsDao {
    * @return the number of female students.
    */
   public int countFemaleStudents() {
-    session = factory.openSession();
-    org.hibernate.query.Query query = session.createQuery("FROM Students WHERE gender = 'F'");
+    org.hibernate.query.Query query = session.createQuery("FROM Students WHERE Gender = 'F'");
     List<Students> list = query.list();
-    session.close();
     return list.size();
   }
 
@@ -240,12 +221,10 @@ public class StudentsDao {
    * @param degree
    * @return a list of students with the same degree.
    */
-  public List<Students> searchSimilarStudents(Degree degree) {
-    session = factory.openSession();
+  public List<Students> searchSimilarStudents(DegreeCandidacy degree) {
     org.hibernate.query.Query query = session.createQuery("FROM Students WHERE degreeCandidacy = :degree");
-    query.setParameter("degree", degree);
+    query.setParameter("degree", degree.name());
     List<Students> list = query.list();
-    session.close();
     return list;
   }
 }

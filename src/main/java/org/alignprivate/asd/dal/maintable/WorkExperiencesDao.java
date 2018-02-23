@@ -76,16 +76,15 @@ public class WorkExperiencesDao {
    * This function requires the Students object and the Companies
    * object inside the work experience object to be not null.
    *
-   * @param workExperience the work experience object to be created.
+   * @param workExperience the work experience object to be created; not null.
    */
   public void createWorkExperience(WorkExperiences workExperience) {
     session = factory.openSession();
     Transaction tx = null;
     try {
       tx = session.beginTransaction();
-      System.out.println("saving " +
-              workExperience.getWorkExperienceId() +
-              " in Work Experiences table");
+      System.out.println("saving work experience"
+              + " in Work Experiences table");
       session.save(workExperience);
       tx.commit();
     } catch (HibernateException e) {

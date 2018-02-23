@@ -1,7 +1,7 @@
 package org.alignprivate.asd.model;
 
 import org.alignprivate.asd.enumeration.Campus;
-import org.alignprivate.asd.enumeration.Degree;
+import org.alignprivate.asd.enumeration.DegreeCandidacy;
 import org.alignprivate.asd.enumeration.EnrollmentStatus;
 import org.alignprivate.asd.enumeration.Gender;
 
@@ -15,36 +15,36 @@ public class Students {
   private String lastName;
   private Gender gender;
   private boolean scholarship;
-  private boolean f1Visa;
-  private int age;
-  private String phone;
+  private String visa;
+  private String phoneNum;
   private String address;
   private String state;
+  private String city;
   private String zip;
   private EnrollmentStatus enrollmentStatus;
   private Campus campus;
-  private Degree degreeCandidacy;
+  private DegreeCandidacy degree;
   private Blob photo;
 
   public Students(String neuId, String email, String firstName, String middleName, String lastName, Gender gender,
-                  boolean scholarship, boolean f1Visa, int age, String phone, String address, String state,
-                  String zip, EnrollmentStatus enrollmentStatus, Campus campus, Degree degreeCandidacy, Blob photo) {
+                  String visa, String phoneNum, String address, String state, String city, String zip,
+                  EnrollmentStatus status, Campus campus, DegreeCandidacy degree, Blob photo) {
     this.neuId = neuId;
     this.email = email;
     this.firstName = firstName;
     this.middleName = middleName;
     this.lastName = lastName;
     this.gender = gender;
-    this.scholarship = scholarship;
-    this.f1Visa = f1Visa;
-    this.age = age;
-    this.phone = phone;
+    this.scholarship = false;
+    this.visa = visa;
+    this.phoneNum = phoneNum;
     this.address = address;
     this.state = state;
+    this.city = city;
     this.zip = zip;
-    this.enrollmentStatus = enrollmentStatus;
+    this.enrollmentStatus = status;
     this.campus = campus;
-    this.degreeCandidacy = degreeCandidacy;
+    this.degree = degree;
     this.photo = photo;
   }
 
@@ -108,28 +108,20 @@ public class Students {
     this.scholarship = scholarship;
   }
 
-  public boolean isF1Visa() {
-    return f1Visa;
+  public String getVisa() {
+    return visa;
   }
 
-  public void setF1Visa(boolean f1Visa) {
-    this.f1Visa = f1Visa;
+  public void setVisa(String visa) {
+    this.visa = visa;
   }
 
-  public int getAge() {
-    return age;
+  public String getPhoneNum() {
+    return phoneNum;
   }
 
-  public void setAge(int age) {
-    this.age = age;
-  }
-
-  public String getPhone() {
-    return phone;
-  }
-
-  public void setPhone(String phone) {
-    this.phone = phone;
+  public void setPhoneNum(String phoneNum) {
+    this.phoneNum = phoneNum;
   }
 
   public String getAddress() {
@@ -146,6 +138,14 @@ public class Students {
 
   public void setState(String state) {
     this.state = state;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
   }
 
   public String getZip() {
@@ -172,12 +172,12 @@ public class Students {
     this.campus = campus;
   }
 
-  public Degree getDegreeCandidacy() {
-    return degreeCandidacy;
+  public DegreeCandidacy getDegree() {
+    return degree;
   }
 
-  public void setDegreeCandidacy(Degree degree) {
-    this.degreeCandidacy = degree;
+  public void setDegree(DegreeCandidacy degree) {
+    this.degree = degree;
   }
 
   public Blob getPhoto() {
@@ -198,15 +198,15 @@ public class Students {
             ", lastName='" + lastName + '\'' +
             ", gender=" + gender +
             ", scholarship=" + scholarship +
-            ", f1Visa=" + f1Visa +
-            ", age=" + age +
-            ", phone='" + phone + '\'' +
+            ", visa=" + visa +
+            ", phoneNum='" + phoneNum + '\'' +
             ", address='" + address + '\'' +
             ", state='" + state + '\'' +
+            ", city='" + city + '\'' +
             ", zip='" + zip + '\'' +
             ", enrollmentStatus=" + enrollmentStatus +
             ", campus=" + campus +
-            ", degree=" + degreeCandidacy +
+            ", degree=" + degree +
             ", photo=" + photo +
             '}';
   }

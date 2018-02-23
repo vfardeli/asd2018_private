@@ -26,11 +26,11 @@
             </type>
         </property>
         <property name = "scholarship" column = "Scholarship" type = "boolean"/>
-        <property name = "f1Visa" column = "F1Visa" type = "boolean"/>
-        <property name = "age" column = "Age" type = "int"/>
-        <property name = "phone" column = "Phone" type = "string"/>
+        <property name = "visa" column = "visa" type = "string"/>
+        <property name = "phoneNum" column = "Phone" type = "string"/>
         <property name = "address" column = "Address" type = "string"/>
         <property name = "state" column = "State" type = "string"/>
+        <property name = "city" column = "City" type = "string" />
         <property name = "zip" column = "Zip" type = "string"/>
         <property name = "enrollmentStatus" column = "EnrollmentStatus">
             <type name= "org.hibernate.type.EnumType">
@@ -46,9 +46,9 @@
                 <param name="useNamed">true</param>
             </type>
         </property>
-        <property name = "degreeCandidacy" column = "DegreeCandidacy">
+        <property name = "degree" column = "DegreeCandidacy">
             <type name= "org.hibernate.type.EnumType">
-                <param name="enumClass">org.alignprivate.asd.enumeration.Degree</param>
+                <param name="enumClass">org.alignprivate.asd.enumeration.DegreeCandidacy</param>
                 <param name="type">12</param>
                 <param name="useNamed">true</param>
             </type>
