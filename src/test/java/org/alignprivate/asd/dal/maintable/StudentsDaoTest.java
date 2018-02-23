@@ -37,7 +37,15 @@ public class StudentsDaoTest {
 
     @Test
     public void deleteStudentRecord() {
+        Students newStudent = new Students("0000000","tomcat@gmail.com", "Tom", "",
+                "Cat", Gender.M, "F1", "1111111111",
+                "401 Terry Ave", "WA", "Seattle","98109",
+                EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
+
+        Students student = studentdao.addStudent(newStudent);
+        Assert.assertTrue(student.toString().equals(newStudent.toString()));
         studentdao.deleteStudent("0000000");
+        Assert.assertTrue(!studentdao.ifNuidExists("0000000"));
     }
 
     @Test
