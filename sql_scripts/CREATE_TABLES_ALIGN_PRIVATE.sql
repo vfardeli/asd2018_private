@@ -30,11 +30,7 @@ CREATE TABLE Students (
     Scholarship BOOLEAN DEFAULT FALSE,
     Visa VARCHAR(5),
     Phone VARCHAR(25),
-<<<<<<< HEAD
-	Address VARCHAR(255),
-=======
 	  Address VARCHAR(255),
->>>>>>> master
     State VARCHAR(2),
     City VARCHAR(20),
     Zip VARCHAR(5),
@@ -171,7 +167,7 @@ CREATE TABLE Electives (
     CourseId VARCHAR(6),
     TermId INT,
     Retake BOOLEAN DEFAULT FALSE,
-	Gpa FLOAT(6, 4) DEFAULT 0.0000,
+	  Gpa FLOAT(6, 4) DEFAULT 0.0000,
     Plagiarism BOOLEAN DEFAULT FALSE,
     CONSTRAINT pk_Electives_ElectiveId
 		PRIMARY KEY (ElectiveId),
