@@ -10,6 +10,16 @@ public class Terms {
 	private int termYear;
 	private TermType termType;
 
+	public Terms(Term term, int termYear, TermType termType){
+		this.term = term;
+		this.termYear = termYear;
+		this.termType = termType;
+	}
+	
+	public Terms(){
+		super();
+	}
+	
 	public int getTermId() {
 		return termId;
 	}
