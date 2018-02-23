@@ -263,9 +263,8 @@ CREATE TABLE AdministratorNotes (
 );
 
 CREATE TABLE Privacies (
-	PrivacyId INT AUTO_INCREMENT,
+	  PrivacyId INT AUTO_INCREMENT,
     NeuId VARCHAR(16),
-    AgeShown BOOLEAN DEFAULT FALSE,
     NeuIdShown BOOLEAN DEFAULT TRUE,
     PhoneShown BOOLEAN DEFAULT FALSE,
     AddressShown BOOLEAN DEFAULT FALSE,
