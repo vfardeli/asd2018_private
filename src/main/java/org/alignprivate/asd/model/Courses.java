@@ -2,8 +2,18 @@ package org.alignprivate.asd.model;
 
 public class Courses {
 	private String courseId;
-    private String courseName;
+	private String courseName;
 	private String description;
+
+	public Courses (String courseId, String courseName, String description) {
+		this.courseId = courseId;
+		this.courseName = courseName;
+		this.description = description;
+	}
+
+	public Courses () {
+		super();
+	}
 
 	public String getCourseId() {
 		return courseId;
@@ -27,5 +37,14 @@ public class Courses {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return "Courses{" +
+				"courseId='" + courseId + '\'' +
+				", courseName='" + courseName + '\'' +
+				", courseDescription='" + description + '\'' +
+				'}';
 	}
 }

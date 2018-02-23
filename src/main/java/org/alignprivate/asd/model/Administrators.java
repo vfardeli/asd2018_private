@@ -6,7 +6,7 @@ public class Administrators {
 	private String firstName;
 	private String middleName;
 	private String lastName;
-	
+
 	public Administrators(String administratorNeuId,String email, String firstName, String middleName,
 			String lastName){
 		this.administratorNeuId = administratorNeuId;
@@ -59,15 +59,15 @@ public class Administrators {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
-	 @Override
-	    public String toString() {
-	        return "Administrators{" +
-	                "administratorNeuId='" + administratorNeuId + '\'' +
-	                ", email='" + email + '\'' +
-	                ", firstName='" + firstName + '\'' +
-	                ", middleName='" + middleName + '\'' +
-	                ", lastName='" + lastName + '\'' +
-	                '}';
-	    }
+
+	@Override
+	public String toString() {
+		return "Administrators{" +
+				"administratorNeuId='" + administratorNeuId + '\'' +
+				", email='" + email + '\'' +
+				", firstName='" + firstName + '\'' +
+				", middleName='" + middleName + '\'' +
+				", lastName='" + lastName + '\'' +
+				'}';
+	}
 }
