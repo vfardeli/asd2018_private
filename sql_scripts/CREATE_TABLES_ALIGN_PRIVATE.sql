@@ -30,7 +30,11 @@ CREATE TABLE Students (
     Scholarship BOOLEAN DEFAULT FALSE,
     Visa VARCHAR(5),
     Phone VARCHAR(25),
+<<<<<<< HEAD
+	Address VARCHAR(255),
+=======
 	  Address VARCHAR(255),
+>>>>>>> master
     State VARCHAR(2),
     City VARCHAR(20),
     Zip VARCHAR(5),

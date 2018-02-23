@@ -86,9 +86,9 @@ public class CompaniesDao {
   public void createCompany(Companies company) {
     session = factory.openSession();
     Transaction tx = null;
-    System.out.println("saving " + company.getCompanyName() + " in Companies table");
     try {
       tx = session.beginTransaction();
+      System.out.println("saving " + company.getCompanyName() + " in Companies table");
       session.save(company);
       tx.commit();
     } catch (HibernateException e) {
@@ -140,9 +140,9 @@ public class CompaniesDao {
     if (getCompanyById(company.getCompanyId()) != null) {
       session = factory.openSession();
       Transaction tx = null;
-      System.out.println("updating company in Companies table...");
       try {
         tx = session.beginTransaction();
+        System.out.println("updating company in Companies table...");
         session.saveOrUpdate(company);
         tx.commit();
       } catch (HibernateException e) {
