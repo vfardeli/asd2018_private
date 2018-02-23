@@ -84,7 +84,7 @@ public class PriorEducationsDao {
     try {
       tx = session.beginTransaction();
       System.out.println("saving prior education"
-              + " in Work Experiences table");
+              + " in Prior Educations table");
       session.save(priorEducation);
       tx.commit();
     } catch (HibernateException e) {
