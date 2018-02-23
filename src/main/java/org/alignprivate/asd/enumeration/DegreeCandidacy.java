@@ -1,5 +1,5 @@
 package org.alignprivate.asd.enumeration;
 
 public enum DegreeCandidacy {
-  ASSOCIATE, BACHELORS, MASTERS, PHD
+    ASSOCIATE, BACHELORS, MASTERS, PHD
 }

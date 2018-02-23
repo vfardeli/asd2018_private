@@ -1,11 +1,15 @@
 USE AlignPrivate;
 
-# Insert Students Table
+#Insert Students Table
 INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "001234567", "kwan.d@husky.neu.edu", "Daniel", "Kwan", 'M', 'F1', "2061111111",
+=======
+    001234567, "kwan.d@husky.neu.edu", "Daniel", "Kwan", 'M', 'F1', "2061111111",
+>>>>>>> master
     "123 Meridian Ave N Apt 123", "WA", "Seattle", "98125", "FULL_TIME", "SEATTLE", "MASTERS",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );
@@ -14,7 +18,11 @@ INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "001234543", "doe.j@husky.neu.edu", "John", "Doe", 'M', 'F1', "2062222222",
+=======
+    001234543, "doe.j@husky.neu.edu", "John", "Doe", 'M', 'F1', "2062222222",
+>>>>>>> master
     "321 Meridian Ave N Apt 333", "WA", "Seattle", "98125", "FULL_TIME", "SEATTLE", "PHD",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );
@@ -23,7 +31,11 @@ INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "111234544", "marks.j@husky.neu.edu", "James", "Marks", 'M', 'F1', "2062223333",
+=======
+    111234544, "marks.j@husky.neu.edu", "James", "Marks", 'M', 'F1', "2062223333",
+>>>>>>> master
     "321 Flying Ave N Apt 333", "MA", "Boston", "98404", "PART_TIME", "BOSTON", "MASTERS",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );
@@ -32,7 +44,11 @@ INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "111234545", "ashley.fields@husky.neu.edu", "Ashley", "Fields", 'F', 'F1', "2062223334",
+=======
+    111234545, "ashley.fields@husky.neu.edu", "Ashley", "Fields", 'F', 'F1', "2062223334",
+>>>>>>> master
     "333 Coastal Ave N Apt 111", "NC", "Charlotte", "98321", "FULL_TIME", "CHARLOTTE", "PHD",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );
@@ -41,7 +57,11 @@ INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "111234546", "huang.c@husky.neu.edu", "Christie", "Huang", 'F', 'F1', "2062223344",
+=======
+    111234546, "huang.c@husky.neu.edu", "Christie", "Huang", 'F', 'F1', "2062223344",
+>>>>>>> master
     "321 Mango Ave N Apt 333", "CA", "San Jose", "98401", "PART_TIME", "SILICON_VALLEY", "MASTERS",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );
@@ -50,7 +70,11 @@ INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "111234547", "cotton.t@husky.neu.edu", "Tony", "Cotton", 'M', 'H4', "2062223335",
+=======
+    111234547, "cotton.t@husky.neu.edu", "Tony", "Cotton", 'M', 'H4', "2062223335",
+>>>>>>> master
     "322 Flying Ave N Apt 223", "WA","Seattle", "98105", "FULL_TIME", "SEATTLE", "PHD",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );
@@ -59,7 +83,11 @@ INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "211234548", "rachel.j@husky.neu.edu", "Rachel", "Joanne", 'F', 'F1', "2062223336",
+=======
+    211234548, "rachel.j@husky.neu.edu", "Rachel", "Joanne", 'F', 'F1', "2062223336",
+>>>>>>> master
     "321 Mango Ave N Apt 333", "CA", "San Jose", "98401", "PART_TIME", "SILICON_VALLEY", "MASTERS",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );
@@ -68,7 +96,11 @@ INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "211234549", "ferguson.c@husky.neu.edu", "Charles", "Ferguson", 'M', 'F1', "2062223386",
+=======
+    211234549, "ferguson.c@husky.neu.edu", "Charles", "Ferguson", 'M', 'F1', "2062223386",
+>>>>>>> master
     "321 Coastal Ave N", "NC", "Charlotte", "98331", "FULL_TIME", "CHARLOTTE", "PHD",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );
@@ -77,7 +109,11 @@ INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "211232248", "sarahcoast@husky.neu.edu", "Sarah", "Coast", 'F', 'F1', "2062223436",
+=======
+    211232248, "sarahcoast@husky.neu.edu", "Sarah", "Coast", 'F', 'F1', "2062223436",
+>>>>>>> master
     "321 Mango Ave N Apt 323", "CA", "San Jose", "98401", "PART_TIME", "SILICON_VALLEY", "MASTERS",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );
@@ -86,7 +122,11 @@ INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
     VALUES (
+<<<<<<< HEAD
     "211234550", "alvin.straws@husky.neu.edu", "Alvin", "Straws", 'F', 'F1', "2062223356",
+=======
+    211234550, "alvin.straws@husky.neu.edu", "Alvin", "Straws", 'F', 'F1', "2062223356",
+>>>>>>> master
     "321 Sturgus Ave N Apt 333", "WA", "Seattle", "98321", "PART_TIME", "SEATTLE", "MASTERS",
     "https://lh3.googleusercontent.com/dij0oU7JFwwSMQAgR3wpQHerTMG1mECpm6BdUYKSyCalYZM3dbMgNrHgJ-krY_i7hwIJ=w300"
 );

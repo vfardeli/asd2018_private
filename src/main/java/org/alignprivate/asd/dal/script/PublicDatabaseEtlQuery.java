@@ -45,7 +45,7 @@ public class PublicDatabaseEtlQuery {
     publicConnection = publicConnectionManager.getConnection();
     updateStatement = publicConnection.prepareStatement(queryString);
     updateStatement.setInt(1, updatedData);
-    updateStatement.executeQuery();
+    updateStatement.executeUpdate();
     publicConnectionManager.closeConnection();
     updateStatement.close();
   }

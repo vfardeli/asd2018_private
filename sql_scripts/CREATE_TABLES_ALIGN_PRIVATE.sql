@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS Experiences;
 DROP TABLE IF EXISTS Students;
 
 CREATE TABLE Students (
-	NeuId VARCHAR(16) NOT NULL,
+	  NeuId VARCHAR(16) NOT NULL,
     Email VARCHAR(255) NOT NULL,
     FirstName VARCHAR(25) NOT NULL,
     MiddleName VARCHAR(25),
@@ -30,7 +30,11 @@ CREATE TABLE Students (
     Scholarship BOOLEAN DEFAULT FALSE,
     Visa VARCHAR(5),
     Phone VARCHAR(25),
+<<<<<<< HEAD
 	Address VARCHAR(255),
+=======
+	  Address VARCHAR(255),
+>>>>>>> master
     State VARCHAR(2),
     City VARCHAR(20),
     Zip VARCHAR(5),
