@@ -2,6 +2,8 @@ package org.alignprivate.asd.dal.maintable;
 
 import java.util.List;
 
+import org.alignprivate.asd.enumeration.Term;
+import org.alignprivate.asd.enumeration.TermType;
 import org.alignprivate.asd.model.Students;
 import org.alignprivate.asd.model.Terms;
 import org.hibernate.HibernateException;
@@ -37,6 +39,10 @@ public class TermsDao {
      * @return true if insert successfully. Otherwise throws exception.
      */
     public Terms addTerm(Terms term) {
+    	if(term == null){
+    		return null;
+    	}
+    	
         Transaction tx = null;
 
         if(ifTermExists(term)){
@@ -50,10 +56,9 @@ public class TermsDao {
             } catch (HibernateException e) {
                 System.out.println("HibernateException: " + e);
                 if (tx!=null) tx.rollback();
-            } finally {
-//                    session.close();
             }
         }
+        
         return term;
     }
 
@@ -69,7 +74,59 @@ public class TermsDao {
         return list;
     }
     
+    
+
     /**
+     * Delete a term record from database.
+     *
+     * @param termId
+     * @return true if delete successfully. Otherwise, false.
+     */
+    public boolean deleteTerm(int termId){
+    	if(termId <= 0){
+    		return false;
+    	}
+    	
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            org.hibernate.query.Query query = session.createQuery("DELETE FROM Terms WHERE TermId = :termId");
+            query.setParameter("termId", termId);
+            System.out.println("Deleting term with termId " + termId);
+            query.executeUpdate();
+            tx.commit();
+            if(ifTermIdExists(termId)){
+                return false;
+            }else{
+                return true;
+            }
+        } catch (HibernateException e) {
+            System.out.println("exceptionnnnnn");
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } 
+        
+        return true;
+    }
+    
+    /**
+     * Check if a specific term ID existed in the database 
+     *
+     * @param termId
+     * @return true if existed, false if not.
+     */
+    private boolean ifTermIdExists(int termId) {
+        org.hibernate.query.Query query = session.createQuery("FROM Terms where TermId = :termId");
+        query.setParameter("termId", termId);
+        List<Terms> list = query.list();
+        if(list.size()==0){
+        	return false;
+        }
+    	
+		return true;
+	}
+
+	/**
      * Check if a specific term is existed in the database 
      *
      * @param term

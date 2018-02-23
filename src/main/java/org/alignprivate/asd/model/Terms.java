@@ -15,11 +15,11 @@ public class Terms {
 		this.termYear = termYear;
 		this.termType = termType;
 	}
-	
+
 	public Terms(){
 		super();
 	}
-	
+
 	public int getTermId() {
 		return termId;
 	}
@@ -50,5 +50,14 @@ public class Terms {
 
 	public void setTermType(TermType termType) {
 		this.termType = termType;
+	}
+
+	@Override
+	public String toString() {
+		return "Term{" +
+                "term='" + termId + 
+                ", termYear=" + termYear + 
+                 ", termType=" + termType +
+                '}';
 	}
 }
