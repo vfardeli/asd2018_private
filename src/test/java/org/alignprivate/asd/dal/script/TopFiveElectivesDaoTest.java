@@ -28,7 +28,7 @@ public class TopFiveElectivesDaoTest {
     topFiveElectivesFromPlaceholder.add("NULL");
     topFiveElectivesFromPlaceholder.add("NULL");
   }
-
+  
   @Test
   public void getTopFiveEmployersFromPrivateDatabaseTest() throws SQLException {
     List<String> topFiveElectives =

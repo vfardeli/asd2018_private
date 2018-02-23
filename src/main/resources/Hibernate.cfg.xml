@@ -12,7 +12,7 @@
         </property>
 
         <property name = "hibernate.connection.url">
-            jdbc:mysql://localhost:3306/AlignPrivate
+            jdbc:mysql://localhost:3307/AlignPrivate
         </property>
 
         <property name = "hibernate.connection.user">
@@ -20,7 +20,7 @@
         </property>
 
         <property name = "hibernate.connection.password">
-            Turkey#789
+            Turkey#786
         </property>
 
         <!-- List of XML mapping files -->
