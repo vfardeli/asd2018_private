@@ -18,6 +18,6 @@ public class TotalStudentsInSeattleExtractorTest {
 
     @Test
     public void extractFromPrivateAndLoadToPublicTest() throws SQLException {
-        Assert.assertTrue(extractor.extractFromPrivateAndLoadToPublic() == 143);
+        Assert.assertTrue(extractor.extractFromPrivateAndLoadToPublic() == 4);
     }
 }
