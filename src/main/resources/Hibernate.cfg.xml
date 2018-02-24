@@ -31,6 +31,8 @@
         <mapping resource = "WorkExperiences.hbm.xml" />
         <mapping resource = "PriorEducations.hbm.xml" />
         <mapping resource = "CurrentMajors.hbm.xml" />
+        <mapping resource = "Privacies.hbm.xml" />
+        <mapping resource = "AdministratorNotes.hbm.xml" />
 
     </session-factory>
 </hibernate-configuration>
