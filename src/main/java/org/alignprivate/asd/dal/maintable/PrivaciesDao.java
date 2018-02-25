@@ -31,7 +31,7 @@ public class PrivaciesDao {
     /**
      * Insert a new Privacy record to Privacy table.
      *
-     * @param privacy
+     * @param privacy Privacy record to be inserted
      * @return privacy which is newly added to database. Return null if failed.
      */
     public Privacies addPrivacyRecord(Privacies privacy) {
@@ -58,7 +58,7 @@ public class PrivaciesDao {
     /**
      * Search for a privacy record by neu id.
      *
-     * @param neuId
+     * @param neuId Student Neu Id
      * @return a privacy if it exists, otherwise return null.
      */
     public Privacies getPrivacyRecordByNeuId(String neuId) {
@@ -85,7 +85,7 @@ public class PrivaciesDao {
     /**
      * Search for a privacy record by privacy id.
      *
-     * @param privacyId
+     * @param privacyId Privacy Id
      * @return a privacy if it exists, otherwise return null.
      */
     public Privacies getPrivacyRecordByPrivacyId(int privacyId) {
@@ -112,7 +112,8 @@ public class PrivaciesDao {
     /**
      * Update a privacy record.
      *
-     * @param privacy
+     * @param privacy Privacy that contains new information. Its privacyId indicates the record
+     *                to be updated in database.
      * @return the updated privacy. If privacy doesn't exist, return null;
      */
     public Privacies updatePrivacyRecord(Privacies privacy) {
@@ -187,7 +188,7 @@ public class PrivaciesDao {
     /**
      * Delete a privacy record from database.
      *
-     * @param privacy
+     * @param privacy Privacy record to be deleted. Its privacyId indicates the record to be deleted in database.
      * @return true if delete successfully. Return false if failed.
      */
     public boolean deletePrivacyRecord(Privacies privacy) {
@@ -218,7 +219,7 @@ public class PrivaciesDao {
 
     /**
      * Check if a privacy exists for a specific neu id.
-     * @param neuId
+     * @param neuId Student Neu Id
      * @return true if exists. Return false if not.
      */
     public boolean ifNuidExists(String neuId) {
