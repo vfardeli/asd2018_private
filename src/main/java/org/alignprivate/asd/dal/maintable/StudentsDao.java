@@ -33,7 +33,7 @@ public class StudentsDao {
     /**
      * This is the function to add a student into database.
      *
-     * @param student
+     * @param student Student record to be inserted
      * @return true if insert successfully. Otherwise throws exception.
      */
     public Students addStudent(Students student) {
@@ -61,7 +61,7 @@ public class StudentsDao {
     /**
      * Search a single student record using neu id.
      *
-     * @param neuId
+     * @param neuId Student Neu Id
      * @return a student object
      */
     public Students getStudentRecord(String neuId) {
@@ -81,7 +81,7 @@ public class StudentsDao {
     /**
      * Update a student record.
      *
-     * @param student which contains the latest information.
+     * @param student which contains the new information.
      * @return Updated student object if successful. Otherwise, null.
      */
     public Students updateStudentRecord(Students student) {
@@ -124,7 +124,7 @@ public class StudentsDao {
     /**
      * Delete a student record from database.
      *
-     * @param neuId
+     * @param neuId Student Neu Id
      * @return true if delete succesfully. Otherwise, false.
      */
     public boolean deleteStudent(String neuId){
@@ -156,7 +156,7 @@ public class StudentsDao {
     /**
      *  Get a list of students who have the same first name.
      *
-     * @param firstName
+     * @param firstName Student first name
      * @return A list of students
      */
     public List<Students> searchStudentRecord(String firstName) {
@@ -184,7 +184,7 @@ public class StudentsDao {
     /**
      * Check if a specific student existed in database based on neu id.
      *
-     * @param neuId
+     * @param neuId Student Neu Id
      * @return true if existed, false if not.
      */
     public boolean ifNuidExists(String neuId){
@@ -235,7 +235,7 @@ public class StudentsDao {
     /**
      * Get a list of similar students.
      *
-     * @param degree
+     * @param degree The degree candidacy
      * @return a list of students with the same degree.
      */
     public List<Students> searchSimilarStudents(DegreeCandidacy degree) {
