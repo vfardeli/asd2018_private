@@ -14,8 +14,8 @@
 			<generator class="native" />
 		</id>
 
-		<property name="title" column="title" type="string" />
-		<property name="description" column="description" type="string" />
+		<property name="title" column="Title" type="string" />
+		<property name="description" column="Description" type="string" />
 
 		<many-to-one name="student" class="org.alignprivate.asd.model.Students"
 			column="NeuId" />

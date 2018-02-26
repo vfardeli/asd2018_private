@@ -7,6 +7,16 @@ public class Experiences {
 	private String title;
 	private String description;
 	
+	public Experiences (Students student, String title, String description) {
+		this.student = student;
+		this.title = title;
+		this.description = description;
+	}
+
+	public Experiences () {
+		super();
+	}
+	
 	public int getExperienceId() {
 		return experienceId;
 	}

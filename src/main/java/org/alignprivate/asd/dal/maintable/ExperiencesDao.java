@@ -34,33 +34,40 @@ public class ExperiencesDao {
 		return list;
 	}
 
-	public List<Experiences> getExperience(String nuid) {
-		org.hibernate.query.Query query = session.createQuery("from Experience where nuid = :studentNuid");
-		System.out.println("nuid here: " + nuid);
-		query.setParameter("studentNuid", nuid);
-		List<Experiences> list = query.list();  
-		return list;
+	public Experiences getExperience(int id) {
+		org.hibernate.query.Query query = session.createQuery("from Experiences where experienceId = :id");
+		query.setParameter("id", id);
+		List<Experiences> list = query.list();
+		
+		return list.get(0);
+		
 	}
 
-//	public void addExperience(String nuid, Experiences experience) {
-//		Transaction tx = null;
-//		StudentDao studentDaoHibernate = new StudentDao();
-//
-//		if(studentDaoHibernate.ifNuidExists(nuid)){
-//			try {
-//				tx = session.beginTransaction();
-//				session.save(experience);
-//				tx.commit();
-//			} catch (HibernateException e) {
-//				if (tx!=null) tx.rollback();
-//				e.printStackTrace(); 
-//			} finally {
-//				session.close(); 
-//			}
-//		}else{
-//			System.out.println("The student with a given nuid doesn't exists");
-//		}
-//	}
+	public Experiences addExperience(Experiences experience) {
+		if(experience == null) {
+			return null;
+		}
+		
+		Transaction tx = null;
+		StudentsDao studentDaoHibernate = new StudentsDao();
+
+		if(studentDaoHibernate.ifNuidExists(experience.getStudent().getNeuId())){
+			try {
+				tx = session.beginTransaction();
+				session.save(experience);
+				tx.commit();
+			} catch (HibernateException e) {
+				if (tx!=null) tx.rollback();
+				e.printStackTrace(); 
+			} finally {
+				//session.close(); 
+			}
+		}else{
+			System.out.println("The student with a given nuid doesn't exists");
+		}
+		
+		return experience;
+	}
 
 //	public void updateStudentRecordDao(int id, Experiences experience) {
 //		Transaction tx = null;
@@ -92,7 +99,7 @@ public class ExperiencesDao {
 			if (tx!=null) tx.rollback();
 			e.printStackTrace(); 
 		} finally {
-			session.close(); 
+			//session.close(); 
 		}
 
 		return true;
