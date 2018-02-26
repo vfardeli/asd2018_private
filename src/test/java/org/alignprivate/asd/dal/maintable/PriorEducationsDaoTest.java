@@ -3,6 +3,7 @@ package org.alignprivate.asd.dal.maintable;
 import org.alignprivate.asd.enumeration.DegreeCandidacy;
 import org.alignprivate.asd.model.*;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -12,11 +13,17 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class PriorEducationsDaoTest {
-  private PriorEducationsDao priorEducationsDao;
+  private static PriorEducationsDao priorEducationsDao;
+  private static StudentsDao studentsDao;
+  private static MajorsDao majorsDao;
+  private static InstitutionsDao institutionsDao;
 
-  @Before
-  public void init() {
+  @BeforeClass
+  public static void init() {
     priorEducationsDao = new PriorEducationsDao();
+    studentsDao = new StudentsDao();
+    majorsDao = new MajorsDao();
+    institutionsDao = new InstitutionsDao();
   }
 
   @Test
@@ -40,9 +47,6 @@ public class PriorEducationsDaoTest {
   @Test
   public void createUpdateDeletePriorEducation() throws ParseException {
     PriorEducations newPriorEducation = new PriorEducations();
-    StudentsDao studentsDao = new StudentsDao();
-    InstitutionsDao institutionsDao = new InstitutionsDao();
-    MajorsDao majorsDao = new MajorsDao();
 
     Students student = studentsDao.getStudentRecord("001234567");
     Majors major = majorsDao.getMajorByName("Computer Science");

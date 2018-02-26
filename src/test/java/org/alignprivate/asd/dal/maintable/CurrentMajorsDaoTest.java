@@ -1,21 +1,23 @@
 package org.alignprivate.asd.dal.maintable;
 
-import org.alignprivate.asd.enumeration.DegreeCandidacy;
 import org.alignprivate.asd.model.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class CurrentMajorsDaoTest {
   private static CurrentMajorsDao currentMajorsDao;
+  private static StudentsDao studentsDao;
+  private static MajorsDao majorsDao;
 
   @BeforeClass
   public static void init() {
     currentMajorsDao = new CurrentMajorsDao();
+    studentsDao = new StudentsDao();
+    majorsDao = new MajorsDao();
   }
 
   @Test
@@ -40,8 +42,6 @@ public class CurrentMajorsDaoTest {
   @Test
   public void createUpdateDeleteCurrentMajor() {
     CurrentMajors newCurrentMajor = new CurrentMajors();
-    StudentsDao studentsDao = new StudentsDao();
-    MajorsDao majorsDao = new MajorsDao();
 
     Students student = studentsDao.getStudentRecord("001234567");
     Majors major = majorsDao.getMajorByName("English");

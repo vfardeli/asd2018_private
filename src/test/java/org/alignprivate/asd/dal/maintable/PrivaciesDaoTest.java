@@ -3,15 +3,16 @@ package org.alignprivate.asd.dal.maintable;
 import org.alignprivate.asd.model.Privacies;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class PrivaciesDaoTest {
-    PrivaciesDao privaciesDao;
+    private static PrivaciesDao privaciesDao;
 
-    @Before
-    public void init() {
+    @BeforeClass
+    public static void init() {
         privaciesDao = new PrivaciesDao();
     }
 

@@ -10,16 +10,17 @@ import org.alignprivate.asd.model.Students;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class StudentsDaoTest {
     public static final int COUNT_OF_MALE = 5;
     private static final int COUNT_OF_FEMALE = 5;
 
-    private StudentsDao studentdao;
+    private static StudentsDao studentdao;
 
-    @Before
-    public void init() {
+    @BeforeClass
+    public static void init() {
         studentdao = new StudentsDao();
     }
 

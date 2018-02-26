@@ -2,6 +2,7 @@ package org.alignprivate.asd.dal.maintable;
 
 import org.alignprivate.asd.model.Institutions;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -9,10 +10,10 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class InstitutionsDaoTest {
-  private InstitutionsDao institutionsDao;
+  private static InstitutionsDao institutionsDao;
 
-  @Before
-  public void init() {
+  @BeforeClass
+  public static void init() {
     institutionsDao = new InstitutionsDao();
   }
 

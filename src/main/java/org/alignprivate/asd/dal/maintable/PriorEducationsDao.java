@@ -13,12 +13,19 @@ public class PriorEducationsDao {
   private static SessionFactory factory;
   private static Session session;
 
+  private StudentsDao studentsDao;
+  private MajorsDao majorsDao;
+  private InstitutionsDao institutionsDao;
+
   /**
    * Default constructor.
    * it will check the Hibernate.cfg.xml file and load it
    * next it goes to all table files in the hibernate file and loads them.
    */
   public PriorEducationsDao() {
+    studentsDao = new StudentsDao();
+    majorsDao = new MajorsDao();
+    institutionsDao = new InstitutionsDao();
     try {
       factory = new Configuration().configure().buildSessionFactory();
     } catch (Throwable ex) {
@@ -151,9 +158,6 @@ public class PriorEducationsDao {
   }
 
   private void populateForeignKey(PriorEducations priorEducations) {
-    StudentsDao studentsDao = new StudentsDao();
-    InstitutionsDao institutionsDao = new InstitutionsDao();
-    MajorsDao majorsDao = new MajorsDao();
     priorEducations.setStudent(studentsDao.getStudentRecord(priorEducations.getStudent().getNeuId()));
     priorEducations.setInstitution(institutionsDao.getInstitutionById(priorEducations.getInstitution().getInstitutionId()));
     priorEducations.setMajor(majorsDao.getMajorById(priorEducations.getMajor().getMajorId()));

@@ -13,12 +13,17 @@ public class WorkExperiencesDao {
   private static SessionFactory factory;
   private static Session session;
 
+  private StudentsDao studentsDao;
+  private CompaniesDao companiesDao;
+
   /**
    * Default constructor.
    * it will check the Hibernate.cfg.xml file and load it
    * next it goes to all table files in the hibernate file and loads them.
    */
   public WorkExperiencesDao() {
+    studentsDao = new StudentsDao();
+    companiesDao = new CompaniesDao();
     try {
       factory = new Configuration().configure().buildSessionFactory();
     } catch (Throwable ex) {
@@ -151,8 +156,6 @@ public class WorkExperiencesDao {
   }
 
   private void populateForeignKey(WorkExperiences workExperiences) {
-    StudentsDao studentsDao = new StudentsDao();
-    CompaniesDao companiesDao = new CompaniesDao();
     workExperiences.setStudent(studentsDao.getStudentRecord(workExperiences.getStudent().getNeuId()));
     workExperiences.setCompany(companiesDao.getCompanyById(workExperiences.getCompany().getCompanyId()));
   }

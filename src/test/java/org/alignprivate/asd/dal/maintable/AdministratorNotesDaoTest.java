@@ -3,6 +3,7 @@ package org.alignprivate.asd.dal.maintable;
 import org.alignprivate.asd.model.AdministratorNotes;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -10,10 +11,10 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class AdministratorNotesDaoTest {
-    AdministratorNotesDao administratorNotesDao;
+    private static AdministratorNotesDao administratorNotesDao;
 
-    @Before
-    public void init() {
+    @BeforeClass
+    public static void init() {
         administratorNotesDao = new AdministratorNotesDao();
     }
 

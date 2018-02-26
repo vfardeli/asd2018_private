@@ -4,6 +4,7 @@ import org.alignprivate.asd.model.Companies;
 import org.alignprivate.asd.model.Students;
 import org.alignprivate.asd.model.WorkExperiences;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -13,11 +14,15 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class WorkExperiencesDaoTest {
-  private WorkExperiencesDao workExperiencesDao;
+  private static WorkExperiencesDao workExperiencesDao;
+  private static StudentsDao studentsDao;
+  private static CompaniesDao companiesDao;
 
-  @Before
-  public void init() {
+  @BeforeClass
+  public static void init() {
     workExperiencesDao = new WorkExperiencesDao();
+    studentsDao = new StudentsDao();
+    companiesDao = new CompaniesDao();
   }
 
   @Test
@@ -42,8 +47,6 @@ public class WorkExperiencesDaoTest {
   @Test
   public void createUpdateDeleteWorkExperience() throws ParseException {
     WorkExperiences newWorkExperience = new WorkExperiences();
-    StudentsDao studentsDao = new StudentsDao();
-    CompaniesDao companiesDao = new CompaniesDao();
 
     Students student = studentsDao.getStudentRecord("211234548");
     Companies company = companiesDao.getCompanyByName("Facebook");
