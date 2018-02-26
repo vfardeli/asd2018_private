@@ -8,37 +8,36 @@ import org.alignprivate.asd.enumeration.EnrollmentStatus;
 import org.alignprivate.asd.enumeration.Gender;
 import org.alignprivate.asd.enumeration.Term;
 import org.alignprivate.asd.enumeration.TermType;
-import org.alignprivate.asd.model.EntryTerms;
+import org.alignprivate.asd.model.ExpectedLastTerms;
 import org.alignprivate.asd.model.Students;
 import org.alignprivate.asd.model.Terms;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class EntryTermsDaoTest {
-
-	private EntryTermsDao entryTermsDao;
+public class ExpectedLastTermsDaoTest {
+	
+	private ExpectedLastTermsDao expectedLastTermsDao;
 
 	@Before
 	public void init() {
-		entryTermsDao = new EntryTermsDao();
+		expectedLastTermsDao = new ExpectedLastTermsDao();
 	}
 
 	@Test
-	public void getAllEntryTerms() {
-		List<EntryTerms> entryTerms = entryTermsDao.getAllEntryTerms();
-
-		System.out.println(entryTerms.size());
+	public void getAllExpectedLastTermTest() {
+		List<ExpectedLastTerms> expectedLastTerms = expectedLastTermsDao.getAllExpectedLastTerms();
+		System.out.println(expectedLastTerms.size());
+	}
+	
+	@Test
+	public void addNullExpectedLastTermsTest() {
+		ExpectedLastTerms expectedLastTerm = expectedLastTermsDao.addExpectedLastTermRecord(null);
+		Assert.assertNull(expectedLastTerm);
 	}
 
 	@Test
-	public void addNullEntryTermsTest() {
-		EntryTerms EntryTerms = entryTermsDao.addEntryTerm(null);
-		Assert.assertNull(EntryTerms);
-	}
-
-	@Test
-	public void addEntryTermsTest() {
+	public void addExpectedLastTermsTest() {
 		int tempId = 1221;
 		String email= "abc@def.com";
 
@@ -54,22 +53,22 @@ public class EntryTermsDaoTest {
 		TermsDao termsDao = new TermsDao();
 		Terms term = termsDao.addTerm(newTerm);
 
-		EntryTerms entryTerms = new EntryTerms();
-		entryTerms.setStudent(newStudent);
-		entryTerms.setTerms(newTerm);
+		ExpectedLastTerms expectedLastTerm = new ExpectedLastTerms();
+		expectedLastTerm.setStudent(newStudent);
+		expectedLastTerm.setTerm(newTerm);
 
-		EntryTerms newEntryTerms = entryTermsDao.addEntryTerm(entryTerms);
-		Assert.assertTrue(newEntryTerms.getStudent().getEmail().equals(email));
+		ExpectedLastTerms newExpectedLastTerm = expectedLastTermsDao.addExpectedLastTermRecord(expectedLastTerm);
+		Assert.assertTrue(newExpectedLastTerm.getStudent().getEmail().equals(email));
 
-		entryTermsDao.deleteEntryTerms(newEntryTerms.getEntryTermId());
+		expectedLastTermsDao.deleteExpectedLastTermRecord(newExpectedLastTerm.getExpectedLastTermId());
 
 		termsDao.deleteTerm(term.getTermId());
 		studentsDao.deleteStudent(tempId + "");
 	}
 	
 	@Test
-	public void deleteEntryTermsTest() {
-		List<EntryTerms> list = entryTermsDao.getAllEntryTerms();
+	public void deleteExpectedLastTermsTes() {
+		List<ExpectedLastTerms> list = expectedLastTermsDao.getAllExpectedLastTerms();
 		
 		int tempId = 1221;
 		String email= "abc@def.com";
@@ -86,20 +85,21 @@ public class EntryTermsDaoTest {
 		TermsDao termsDao = new TermsDao();
 		Terms term = termsDao.addTerm(newTerm);
 
-		EntryTerms entryTerms = new EntryTerms();
-		entryTerms.setStudent(newStudent);
-		entryTerms.setTerms(newTerm);
+		ExpectedLastTerms expectedLastTerm = new ExpectedLastTerms();
+		expectedLastTerm.setStudent(newStudent);
+		expectedLastTerm.setTerm(newTerm);
 
-		EntryTerms newEntryTerms = entryTermsDao.addEntryTerm(entryTerms);
-		Assert.assertTrue(newEntryTerms.getStudent().getEmail().equals(email));
 
-		entryTermsDao.deleteEntryTerms(newEntryTerms.getEntryTermId());
-		List<EntryTerms> listnew = entryTermsDao.getAllEntryTerms();
+		ExpectedLastTerms newExpectedLastTerm = expectedLastTermsDao.addExpectedLastTermRecord(expectedLastTerm);
+		Assert.assertTrue(newExpectedLastTerm.getStudent().getEmail().equals(email));
+
+		expectedLastTermsDao.deleteExpectedLastTermRecord(newExpectedLastTerm.getExpectedLastTermId());
+		List<ExpectedLastTerms> listnew = expectedLastTermsDao.getAllExpectedLastTerms();
 		Assert.assertEquals(list.size(), listnew.size()); 
 
 		
 		termsDao.deleteTerm(term.getTermId());
 		studentsDao.deleteStudent(tempId + "");
 	}
-
+	
 }

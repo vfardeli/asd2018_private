@@ -1,22 +1,21 @@
 package org.alignprivate.asd.dal.maintable;
 
-
 import java.util.List;
 
 import org.alignprivate.asd.model.EntryTerms;
+import org.alignprivate.asd.model.ExpectedLastTerms;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class EntryTermsDao {
-
+public class ExpectedLastTermsDao {
+	
 	private static SessionFactory factory; 
 	private static Session session;
 
-	public EntryTermsDao(){
+	public ExpectedLastTermsDao(){
 		try {
 			// it will check the hibernate.cfg.xml file and load it
 			// next it goes to all table files in the hibernate file and loads them
@@ -28,32 +27,58 @@ public class EntryTermsDao {
 		}
 	}
 
-	public List<EntryTerms> getAllEntryTerms() {
+	public List<ExpectedLastTerms> getAllExpectedLastTerms() {
 		org.hibernate.query.Query query = session.createQuery("from EntryTerms");
-		List<EntryTerms> list = query.list();  
+		List<ExpectedLastTerms> list = query.list();  
 		return list;
 	}
-
-	public EntryTerms getExperience(int id) {
-		org.hibernate.query.Query query = session.createQuery("from EntryTerms where experienceId = :id");
+	
+	public ExpectedLastTerms getExperience(int id) {
+		org.hibernate.query.Query query = session.createQuery("from EntryTerms where ExpectedLastTermId = :id");
 		query.setParameter("id", id);
-		List<EntryTerms> list = query.list();
+		List<ExpectedLastTerms> list = query.list();
 		
-		return list.get(0);
+		return list.get(0);	
+	}
+
+	public ExpectedLastTerms updateExpectedLastTermRecord(ExpectedLastTerms expectedLastTerm) {
+		if(expectedLastTerm == null) {
+			return null;
+		}
+		
+		Transaction tx = null;
+		StudentsDao studentDaoHibernate = new StudentsDao();
+
+		if(studentDaoHibernate.ifNuidExists(expectedLastTerm.getStudent().getNeuId())){
+			try {
+				tx = session.beginTransaction();
+				session.saveOrUpdate(expectedLastTerm);
+				tx.commit();
+			} catch (HibernateException e) {
+				if (tx!=null) tx.rollback();
+				e.printStackTrace(); 
+			} finally {
+				//session.close(); 
+			}
+		}else{
+			System.out.println("The student with a given nuid doesn't exists");
+		}
+		
+		return expectedLastTerm;
 	}
 	
-	public EntryTerms updateExperience(EntryTerms experience) {
-		if(experience == null) {
+	public ExpectedLastTerms addExpectedLastTermRecord(ExpectedLastTerms expectedLastTerm) {
+		if(expectedLastTerm == null) {
 			return null;
 		}
 		
 		Transaction tx = null;
 		StudentsDao studentDaoHibernate = new StudentsDao();
 
-		if(studentDaoHibernate.ifNuidExists(experience.getStudent().getNeuId())){
+		if(studentDaoHibernate.ifNuidExists(expectedLastTerm.getStudent().getNeuId())){
 			try {
 				tx = session.beginTransaction();
-				session.saveOrUpdate(experience);
+				session.save(expectedLastTerm);
 				tx.commit();
 			} catch (HibernateException e) {
 				if (tx!=null) tx.rollback();
@@ -65,43 +90,17 @@ public class EntryTermsDao {
 			System.out.println("The student with a given nuid doesn't exists");
 		}
 		
-		return experience;
+		return expectedLastTerm;
 	}
 
-	public EntryTerms addEntryTerm(EntryTerms entryTerm) {
-		if(entryTerm == null) {
-			return null;
-		}
-		
-		Transaction tx = null;
-		StudentsDao studentDaoHibernate = new StudentsDao();
-
-		if(studentDaoHibernate.ifNuidExists(entryTerm.getStudent().getNeuId())){
-			try {
-				tx = session.beginTransaction();
-				session.save(entryTerm);
-				tx.commit();
-			} catch (HibernateException e) {
-				if (tx!=null) tx.rollback();
-				e.printStackTrace(); 
-			} finally {
-				//session.close(); 
-			}
-		}else{
-			System.out.println("The student with a given nuid doesn't exists");
-		}
-		
-		return entryTerm;
-	}
-
-	public boolean deleteEntryTerms(int id){		
+	public boolean deleteExpectedLastTermRecord(int id){		
 		Transaction tx = null;
 
 		try {
 			tx = session.beginTransaction();
-			EntryTerms experience = session.get(EntryTerms.class, id); 
+			ExpectedLastTerms expectedLastTerm = session.get(ExpectedLastTerms.class, id); 
 			System.out.println("Deleting student for id = " + id);
-			session.delete(experience); 
+			session.delete(expectedLastTerm); 
 			tx.commit();
 		} catch (HibernateException e) {
 			System.out.println("exceptionnnnnn");
