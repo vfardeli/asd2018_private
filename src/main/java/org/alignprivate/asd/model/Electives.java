@@ -1,6 +1,6 @@
 package org.alignprivate.asd.model;
 
-public class Elective {
+public class Electives {
 	private int electiveId;
 
 	private Students student;
@@ -9,6 +9,19 @@ public class Elective {
 	private boolean retake = false;
 	private float gpa = 0;
 	private boolean plagiarism = false;
+	
+	public Electives(Students student, Courses course, Terms terms, boolean retake, float gpa, boolean plagiarism) {
+		this.student = student;
+		this.course = course;
+		this.terms = terms;
+		this.retake = retake;
+		this.gpa = gpa;
+		this.plagiarism = plagiarism;
+	}
+
+	public Electives() {
+		super();
+	}
 
 	public int getElectiveId() {
 		return electiveId;

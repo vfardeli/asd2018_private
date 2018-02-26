@@ -4,7 +4,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="org.mehaexample.asdDemo.model.Elective" table="Elective">
+	<class name="org.alignprivate.asd.model.Electives" table="Electives">
 
 		<meta attribute="class-description">
 			This class contains the Course details.

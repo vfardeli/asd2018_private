@@ -139,8 +139,8 @@ public class ExperiencesDaoTest {
 		
 		// now update it
 		newExperience.setDescription("new desc908");
-		Experiences addedExperience = experiencesDao.getExperience(newExperience.getExperienceId());
-		Assert.assertEquals(newExperience.getDescription(), "new desc908");
+		Experiences addedExperience = experiencesDao.updateExperience(newExperience);
+		Assert.assertEquals(addedExperience.getDescription(), "new desc908");
 		
 		experiencesDao.deleteExperienceRecord(newExperience.getExperienceId());
 		studentdao.deleteStudent("00000094");

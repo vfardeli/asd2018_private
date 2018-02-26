@@ -109,6 +109,42 @@ public class TermsDao {
         return true;
     }
     
+    public boolean deleteTerm(Terms term){
+    	if(term == null){
+    		return false;
+    	}
+    	
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            org.hibernate.query.Query query = session.createQuery("FROM Terms where Term = :term and"
+            		+ " termYear = :termYear and termType = :termType");
+            query.setParameter("term", term.getTerm());
+            query.setParameter("termYear", term.getTermYear());
+            query.setParameter("termType", term.getTermType());
+
+            List<Terms> list = query.list();
+            if(list.size()==0){
+            	return false;
+            }
+            
+            deleteTerm(list.get(0).getTermId());
+            
+            tx.commit();
+            if(ifTermIdExists(list.get(0).getTermId())){
+                return false;
+            }else{
+                return true;
+            }
+        } catch (HibernateException e) {
+            System.out.println("exceptionnnnnn");
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } 
+        
+        return true;
+    }
+    
     /**
      * Check if a specific term ID existed in the database 
      *

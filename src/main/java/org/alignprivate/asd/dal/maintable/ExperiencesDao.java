@@ -42,6 +42,32 @@ public class ExperiencesDao {
 		return list.get(0);
 		
 	}
+	
+	public Experiences updateExperience(Experiences experience) {
+		if(experience == null) {
+			return null;
+		}
+		
+		Transaction tx = null;
+		StudentsDao studentDaoHibernate = new StudentsDao();
+
+		if(studentDaoHibernate.ifNuidExists(experience.getStudent().getNeuId())){
+			try {
+				tx = session.beginTransaction();
+				session.saveOrUpdate(experience);
+				tx.commit();
+			} catch (HibernateException e) {
+				if (tx!=null) tx.rollback();
+				e.printStackTrace(); 
+			} finally {
+				//session.close(); 
+			}
+		}else{
+			System.out.println("The student with a given nuid doesn't exists");
+		}
+		
+		return experience;
+	}
 
 	public Experiences addExperience(Experiences experience) {
 		if(experience == null) {
@@ -69,22 +95,6 @@ public class ExperiencesDao {
 		return experience;
 	}
 
-//	public void updateStudentRecordDao(int id, Experiences experience) {
-//		Transaction tx = null;
-//
-//		try {
-//			tx = session.beginTransaction();
-//			experience.setId(id);
-//			session.update(experience);
-//			tx.commit();
-//		} catch (HibernateException e) {
-//			if (tx!=null) tx.rollback();
-//			e.printStackTrace(); 
-//		} finally {
-//			session.close(); 
-//		}
-//	}
-
 	public boolean deleteExperienceRecord(int id){		
 		Transaction tx = null;
 
@@ -104,5 +114,4 @@ public class ExperiencesDao {
 
 		return true;
 	}
-
 }
