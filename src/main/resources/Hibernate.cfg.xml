@@ -2,37 +2,44 @@
 <!DOCTYPE hibernate-configuration SYSTEM
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name = "hibernate.dialect">
-            org.hibernate.dialect.MySQLDialect
-        </property>
+	<session-factory>
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.MySQLDialect
+		</property>
 
-        <property name = "hibernate.connection.driver_class">
-            com.mysql.jdbc.Driver
-        </property>
+		<property name="hibernate.connection.driver_class">
+			com.mysql.jdbc.Driver
+		</property>
 
-        <property name = "hibernate.connection.url">
-            jdbc:mysql://localhost:3306/AlignPrivate
-        </property>
+		<property name="hibernate.connection.url">
+			jdbc:mysql://localhost:3307/AlignPrivate
+		</property>
 
-        <property name = "hibernate.connection.user">
-            root
-        </property>
+		<property name="hibernate.connection.user">
+			root
+		</property>
 
-        <property name = "hibernate.connection.password">
-            Turkey#789
-        </property>
+		<property name="hibernate.connection.password">
+			Turkey#786
+		</property>
 
-        <!-- List of XML mapping files -->
-        <mapping resource = "Students.hbm.xml" />
-        <mapping resource = "Companies.hbm.xml" />
-        <mapping resource = "Institutions.hbm.xml" />
-        <mapping resource = "Majors.hbm.xml" />
-        <mapping resource = "WorkExperiences.hbm.xml" />
-        <mapping resource = "PriorEducations.hbm.xml" />
-        <mapping resource = "CurrentMajors.hbm.xml" />
-        <mapping resource = "Privacies.hbm.xml" />
-        <mapping resource = "AdministratorNotes.hbm.xml" />
+    <!-- List of XML mapping files -->
+    <mapping resource = "Students.hbm.xml" />
+    <mapping resource = "Companies.hbm.xml" />
+    <mapping resource = "Terms.hbm.xml" />
+    <mapping resource = "Administrators.hbm.xml" />
+    <mapping resource = "Courses.hbm.xml" />
+    <mapping resource = "Experiences.hbm.xml" />
+    <mapping resource = "Electives.hbm.xml" />
+    <mapping resource = "EntryTerms.hbm.xml" />
+    <mapping resource = "ExpectedLastTerms.hbm.xml" />
+    <mapping resource = "Institutions.hbm.xml" />
+    <mapping resource = "Majors.hbm.xml" />
+    <mapping resource = "WorkExperiences.hbm.xml" />
+    <mapping resource = "PriorEducations.hbm.xml" />
+    <mapping resource = "CurrentMajors.hbm.xml" />
+    <mapping resource = "Privacies.hbm.xml" />
+    <mapping resource = "AdministratorNotes.hbm.xml" />
 
     </session-factory>
 </hibernate-configuration>
