@@ -10,10 +10,10 @@ import org.junit.Test;
 
 public class CoursesDaoTest {
 
-	private CoursesDao coursesDao;
+	private static CoursesDao coursesDao;
 
 	@BeforeClass
-	public void init() {
+	public static void init() {
 		coursesDao = new CoursesDao();
 	}
 
