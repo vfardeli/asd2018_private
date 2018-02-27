@@ -18,7 +18,7 @@ public class TopTenBachelorsDegreeDao {
   /**
    * Singleton Pattern.
    *
-   * @return Top Ten Bachelors Degree Dao instance.
+   * @return Top Ten Bachelors DegreeCandidacy Dao instance.
    * @throws SQLException when connection to the DB has something wrong.
    */
   public static TopTenBachelorsDegreeDao getInstance() throws SQLException {
@@ -54,7 +54,7 @@ public class TopTenBachelorsDegreeDao {
    * This is a script that update the information for top ten
    * bachelors degree in the public database.
    *
-   * @param topTenBachelorsDegree List of Top Ten Bachelors Degree (extracted from the
+   * @param topTenBachelorsDegree List of Top Ten Bachelors DegreeCandidacy (extracted from the
    *                      private database); not null, size less than or equal to 10.
    * @throws SQLException when connection to the DB has something wrong.
    */

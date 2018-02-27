@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopTenBachelorsDegreeDaoTest {
+public class TopTenBachelorsDegreeCandidacyDaoTest {
   private List<String> topTenBachelorsDegreeTest;
   private List<String> topTenBachelorsDegreeFromPlaceholder;
   private TopTenBachelorsDegreeDao topTenBachelorsDegreeDao;

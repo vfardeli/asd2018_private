@@ -30,9 +30,9 @@ public class TotalExperiencedStudentsDao {
      * from private database.
      *
      * @return Total number of experienced students
-     * @throws Exception
+     * @throws SQLException when connection to the DB has something wrong.
      */
-    public int getTotalStudentsFromPrivateDB() throws Exception {
+    public int getTotalStudentsFromPrivateDB() throws SQLException {
         String query = "SELECT COUNT(*) AS TOTAL_EXPERIENCED_STUDENT FROM ( " +
                 "SELECT S.NeuId, COUNT(*) " +
                 "FROM AlignPrivate.Students AS S " +
@@ -48,10 +48,10 @@ public class TotalExperiencedStudentsDao {
     /**
      * Update the number of experienced students in public database.
      *
-     * @param totalExperiencedStudents
-     * @throws Exception
+     * @param totalExperiencedStudents Total number of students who have work experience.
+     * @throws SQLException when connection to the DB has something wrong.
      */
-    public void updateTotalExperiencedStudents(int totalExperiencedStudents) throws Exception {
+    public void updateTotalExperiencedStudents(int totalExperiencedStudents) throws SQLException {
         String updateTotalExperiencedStudents =
                 "UPDATE SingleValueAggregatedData SET DataValue = ? WHERE " +
                         "DataKey = \"TotalStudentsWithWorkExperience\"";
@@ -63,9 +63,9 @@ public class TotalExperiencedStudentsDao {
      * Get the number of experienced students from public database.
      *
      * @return the number of experienced students.
-     * @throws Exception
+     * @throws SQLException when connection to the DB has something wrong.
      */
-    public int getTotalExperiencedStudents() throws Exception {
+    public int getTotalExperiencedStudents() throws SQLException {
         String updateTotalExperiencedStudents =
                 "SELECT DataValue FROM SingleValueAggregatedData " +
                         "WHERE DataKey = \"TotalStudentsWithWorkExperience\";";

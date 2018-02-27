@@ -50,7 +50,7 @@ public class TotalStudentsInMicrosoftDao {
     /**
      * Update the number of students who worked in Microsoft in public database.
      *
-     * @param totalStudentsInMicrosoft
+     * @param totalStudentsInMicrosoft total students worked in Mircrosoft
      * @throws SQLException when connection to the DB has something wrong
      */
     public void updateTotalStudentsInMicrosoft(int totalStudentsInMicrosoft) throws SQLException {

@@ -167,7 +167,7 @@ CREATE TABLE Electives (
     CourseId VARCHAR(6),
     TermId INT,
     Retake BOOLEAN DEFAULT FALSE,
-	Gpa FLOAT(6, 4) DEFAULT 0.0000,
+	  Gpa FLOAT(6, 4) DEFAULT 0.0000,
     Plagiarism BOOLEAN DEFAULT FALSE,
     CONSTRAINT pk_Electives_ElectiveId
 		PRIMARY KEY (ElectiveId),

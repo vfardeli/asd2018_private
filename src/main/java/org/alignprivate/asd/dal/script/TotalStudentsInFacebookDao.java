@@ -50,7 +50,7 @@ public class TotalStudentsInFacebookDao {
     /**
      * Update the number of students who worked in Facebook in public database.
      *
-     * @param totalStudentsInFacebook
+     * @param totalStudentsInFacebook total students worked in Facebook
      * @throws SQLException when connection to the DB has something wrong
      */
     public void updateTotalStudentsInFacebook(int totalStudentsInFacebook) throws SQLException {
