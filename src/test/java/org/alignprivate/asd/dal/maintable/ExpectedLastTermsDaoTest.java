@@ -17,90 +17,90 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ExpectedLastTermsDaoTest {
-	
-	private static ExpectedLastTermsDao expectedLastTermsDao;
-	private static StudentsDao studentsDao;
 
-	@BeforeClass
-	public static void init() {
-		expectedLastTermsDao = new ExpectedLastTermsDao();
-		studentsDao =  new StudentsDao();
-	}
+  private static ExpectedLastTermsDao expectedLastTermsDao;
+  private static StudentsDao studentsDao;
+  private static TermsDao termsDao;
 
-	@Test
-	public void getAllExpectedLastTermTest() {
-		List<ExpectedLastTerms> expectedLastTerms = expectedLastTermsDao.getAllExpectedLastTerms();
-		System.out.println(expectedLastTerms.size());
-	}
-	
-	@Test
-	public void addNullExpectedLastTermsTest() {
-		ExpectedLastTerms expectedLastTerm = expectedLastTermsDao.addExpectedLastTermRecord(null);
-		Assert.assertNull(expectedLastTerm);
-	}
+  @BeforeClass
+  public static void init() {
+    expectedLastTermsDao = new ExpectedLastTermsDao();
+    studentsDao = new StudentsDao();
+    termsDao = new TermsDao();
+  }
 
-	@Test
-	public void addExpectedLastTermsTest() {
-		int tempId = 1221;
-		String email= "abc@def.com";
+  @Test
+  public void getAllExpectedLastTermTest() {
+    List<ExpectedLastTerms> expectedLastTerms = expectedLastTermsDao.getAllExpectedLastTerms();
+    System.out.println(expectedLastTerms.size());
+  }
 
-		Students newStudent = new Students(tempId + "",email, "Tom3", "",
-				"Cat", Gender.M, "F1", "1111111111",
-				"401 Terry Ave", "WA", "Seattle","98109",
-				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
+  @Test
+  public void addNullExpectedLastTermsTest() {
+    ExpectedLastTerms expectedLastTerm = expectedLastTermsDao.addExpectedLastTermRecord(null);
+    Assert.assertNull(expectedLastTerm);
+  }
 
-		studentsDao.addStudent(newStudent);
+  @Test
+  public void addExpectedLastTermsTest() {
+    int tempId = 1221;
+    String email = "abc@def.com";
 
-		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-		TermsDao termsDao = new TermsDao();
-		Terms term = termsDao.addTerm(newTerm);
+    Students newStudent = new Students(tempId + "", email, "Tom3", "",
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
 
-		ExpectedLastTerms expectedLastTerm = new ExpectedLastTerms();
-		expectedLastTerm.setStudent(newStudent);
-		expectedLastTerm.setTerm(newTerm);
+    studentsDao.addStudent(newStudent);
 
-		ExpectedLastTerms newExpectedLastTerm = expectedLastTermsDao.addExpectedLastTermRecord(expectedLastTerm);
-		Assert.assertTrue(newExpectedLastTerm.getStudent().getEmail().equals(email));
+    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+    Terms term = termsDao.addTerm(newTerm);
 
-		expectedLastTermsDao.deleteExpectedLastTermRecord(newExpectedLastTerm.getExpectedLastTermId());
+    ExpectedLastTerms expectedLastTerm = new ExpectedLastTerms();
+    expectedLastTerm.setStudent(newStudent);
+    expectedLastTerm.setTerm(newTerm);
 
-		termsDao.deleteTerm(term.getTermId());
-		studentsDao.deleteStudent(tempId + "");
-	}
-	
-	@Test
-	public void deleteExpectedLastTermsTes() {
-		List<ExpectedLastTerms> list = expectedLastTermsDao.getAllExpectedLastTerms();
-		
-		int tempId = 1221;
-		String email= "abc@def.com";
+    ExpectedLastTerms newExpectedLastTerm = expectedLastTermsDao.addExpectedLastTermRecord(expectedLastTerm);
+    Assert.assertTrue(newExpectedLastTerm.getStudent().getEmail().equals(email));
 
-		Students newStudent = new Students(tempId + "",email, "Tom3", "",
-				"Cat", Gender.M, "F1", "1111111111",
-				"401 Terry Ave", "WA", "Seattle","98109",
-				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
+    expectedLastTermsDao.deleteExpectedLastTermRecord(newExpectedLastTerm.getExpectedLastTermId());
 
-		studentsDao.addStudent(newStudent);
+    termsDao.deleteTerm(term.getTermId());
+    studentsDao.deleteStudent(tempId + "");
+  }
 
-		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-		TermsDao termsDao = new TermsDao();
-		Terms term = termsDao.addTerm(newTerm);
+  @Test
+  public void deleteExpectedLastTermsTes() {
+    List<ExpectedLastTerms> list = expectedLastTermsDao.getAllExpectedLastTerms();
 
-		ExpectedLastTerms expectedLastTerm = new ExpectedLastTerms();
-		expectedLastTerm.setStudent(newStudent);
-		expectedLastTerm.setTerm(newTerm);
+    int tempId = 1221;
+    String email = "abc@def.com";
+
+    Students newStudent = new Students(tempId + "", email, "Tom3", "",
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
+
+    studentsDao.addStudent(newStudent);
+
+    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+    Terms term = termsDao.addTerm(newTerm);
+
+    ExpectedLastTerms expectedLastTerm = new ExpectedLastTerms();
+    expectedLastTerm.setStudent(newStudent);
+    expectedLastTerm.setTerm(newTerm);
 
 
-		ExpectedLastTerms newExpectedLastTerm = expectedLastTermsDao.addExpectedLastTermRecord(expectedLastTerm);
-		Assert.assertTrue(newExpectedLastTerm.getStudent().getEmail().equals(email));
+    ExpectedLastTerms newExpectedLastTerm = expectedLastTermsDao.addExpectedLastTermRecord(expectedLastTerm);
+    Assert.assertTrue(newExpectedLastTerm.getStudent().getEmail().equals(email));
 
-		expectedLastTermsDao.deleteExpectedLastTermRecord(newExpectedLastTerm.getExpectedLastTermId());
-		List<ExpectedLastTerms> listnew = expectedLastTermsDao.getAllExpectedLastTerms();
-		Assert.assertEquals(list.size(), listnew.size()); 
+    expectedLastTermsDao.deleteExpectedLastTermRecord(newExpectedLastTerm.getExpectedLastTermId());
+    List<ExpectedLastTerms> listnew = expectedLastTermsDao.getAllExpectedLastTerms();
+    Assert.assertEquals(list.size(), listnew.size());
 
-		
-		termsDao.deleteTerm(term.getTermId());
-		studentsDao.deleteStudent(tempId + "");
-	}
-	
+
+    termsDao.deleteTerm(term.getTermId());
+    studentsDao.deleteStudent(tempId + "");
+  }
+
 }

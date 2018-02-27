@@ -18,89 +18,89 @@ import org.junit.Test;
 
 public class EntryTermsDaoTest {
 
-	private static EntryTermsDao entryTermsDao;
-	private static StudentsDao studentsDao;
+  private static EntryTermsDao entryTermsDao;
+  private static StudentsDao studentsDao;
+  private static TermsDao termsDao;
 
-	@BeforeClass
-	public static void init() {
-		entryTermsDao = new EntryTermsDao();
-		studentsDao =  new StudentsDao();
-	}
+  @BeforeClass
+  public static void init() {
+    entryTermsDao = new EntryTermsDao();
+    studentsDao = new StudentsDao();
+    termsDao = new TermsDao();
+  }
 
-	@Test
-	public void getAllEntryTerms() {
-		List<EntryTerms> entryTerms = entryTermsDao.getAllEntryTerms();
+  @Test
+  public void getAllEntryTerms() {
+    List<EntryTerms> entryTerms = entryTermsDao.getAllEntryTerms();
 
-		System.out.println(entryTerms.size());
-	}
+    System.out.println(entryTerms.size());
+  }
 
-	@Test
-	public void addNullEntryTermsTest() {
-		EntryTerms EntryTerms = entryTermsDao.addEntryTerm(null);
-		Assert.assertNull(EntryTerms);
-	}
+  @Test
+  public void addNullEntryTermsTest() {
+    EntryTerms EntryTerms = entryTermsDao.addEntryTerm(null);
+    Assert.assertNull(EntryTerms);
+  }
 
-	@Test
-	public void addEntryTermsTest() {
-		int tempId = 1221;
-		String email= "abc@def.com";
+  @Test
+  public void addEntryTermsTest() {
+    int tempId = 1221;
+    String email = "abc@def.com";
 
-		Students newStudent = new Students(tempId + "",email, "Tom3", "",
-				"Cat", Gender.M, "F1", "1111111111",
-				"401 Terry Ave", "WA", "Seattle","98109",
-				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
+    Students newStudent = new Students(tempId + "", email, "Tom3", "",
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
 
-		studentsDao.addStudent(newStudent);
+    studentsDao.addStudent(newStudent);
 
-		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-		TermsDao termsDao = new TermsDao();
-		Terms term = termsDao.addTerm(newTerm);
+    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+    Terms term = termsDao.addTerm(newTerm);
 
-		EntryTerms entryTerms = new EntryTerms();
-		entryTerms.setStudent(newStudent);
-		entryTerms.setTerms(newTerm);
+    EntryTerms entryTerms = new EntryTerms();
+    entryTerms.setStudent(newStudent);
+    entryTerms.setTerms(newTerm);
 
-		EntryTerms newEntryTerms = entryTermsDao.addEntryTerm(entryTerms);
-		Assert.assertTrue(newEntryTerms.getStudent().getEmail().equals(email));
+    EntryTerms newEntryTerms = entryTermsDao.addEntryTerm(entryTerms);
+    Assert.assertTrue(newEntryTerms.getStudent().getEmail().equals(email));
 
-		entryTermsDao.deleteEntryTerms(newEntryTerms.getEntryTermId());
+    entryTermsDao.deleteEntryTerms(newEntryTerms.getEntryTermId());
 
-		termsDao.deleteTerm(term.getTermId());
-		studentsDao.deleteStudent(tempId + "");
-	}
-	
-	@Test
-	public void deleteEntryTermsTest() {
-		List<EntryTerms> list = entryTermsDao.getAllEntryTerms();
-		
-		int tempId = 1221;
-		String email= "abc@def.com";
+    termsDao.deleteTerm(term.getTermId());
+    studentsDao.deleteStudent(tempId + "");
+  }
 
-		Students newStudent = new Students(tempId + "",email, "Tom3", "",
-				"Cat", Gender.M, "F1", "1111111111",
-				"401 Terry Ave", "WA", "Seattle","98109",
-				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
+  @Test
+  public void deleteEntryTermsTest() {
+    List<EntryTerms> list = entryTermsDao.getAllEntryTerms();
 
-		studentsDao.addStudent(newStudent);
+    int tempId = 1221;
+    String email = "abc@def.com";
 
-		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-		TermsDao termsDao = new TermsDao();
-		Terms term = termsDao.addTerm(newTerm);
+    Students newStudent = new Students(tempId + "", email, "Tom3", "",
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
 
-		EntryTerms entryTerms = new EntryTerms();
-		entryTerms.setStudent(newStudent);
-		entryTerms.setTerms(newTerm);
+    studentsDao.addStudent(newStudent);
 
-		EntryTerms newEntryTerms = entryTermsDao.addEntryTerm(entryTerms);
-		Assert.assertTrue(newEntryTerms.getStudent().getEmail().equals(email));
+    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+    Terms term = termsDao.addTerm(newTerm);
 
-		entryTermsDao.deleteEntryTerms(newEntryTerms.getEntryTermId());
-		List<EntryTerms> listnew = entryTermsDao.getAllEntryTerms();
-		Assert.assertEquals(list.size(), listnew.size()); 
+    EntryTerms entryTerms = new EntryTerms();
+    entryTerms.setStudent(newStudent);
+    entryTerms.setTerms(newTerm);
 
-		
-		termsDao.deleteTerm(term.getTermId());
-		studentsDao.deleteStudent(tempId + "");
-	}
+    EntryTerms newEntryTerms = entryTermsDao.addEntryTerm(entryTerms);
+    Assert.assertTrue(newEntryTerms.getStudent().getEmail().equals(email));
+
+    entryTermsDao.deleteEntryTerms(newEntryTerms.getEntryTermId());
+    List<EntryTerms> listnew = entryTermsDao.getAllEntryTerms();
+    Assert.assertEquals(list.size(), listnew.size());
+
+
+    termsDao.deleteTerm(term.getTermId());
+    studentsDao.deleteStudent(tempId + "");
+  }
 
 }

@@ -16,9 +16,7 @@ public class Terms {
 		this.termType = termType;
 	}
 
-	public Terms(){
-		super();
-	}
+	public Terms() { }
 
 	public int getTermId() {
 		return termId;

@@ -33,7 +33,7 @@ public class AdministratorsDao {
     /**
      * This is the function to add an Administrator into database.
      *
-     * @param administrators
+     * @param administrators administrator object.
      * @return true if insert successfully. Otherwise throws exception.
      */
     public Administrators addAdministrator(Administrators administrators) {
@@ -79,7 +79,7 @@ public class AdministratorsDao {
     /**
      * Search a single Administrator record using adminNeuId.
      *
-     * @param adminNeuId
+     * @param adminNeuId administrator Neu Id
      * @return an Administrators object
      */
     public Administrators getAdministratorRecord(String adminNeuId) {
@@ -151,7 +151,7 @@ public class AdministratorsDao {
     /**
      * Delete an Administrator record from database.
      *
-     * @param admineuId
+     * @param administratorNeuId administrator Neu Id.
      * @return true if delete successfully. Otherwise, false.
      */
     public boolean deleteAdministrator(String administratorNeuId){
@@ -188,7 +188,7 @@ public class AdministratorsDao {
     /**
      * Check if a specific Administrator existed in database based on adminNeuId.
      *
-     * @param adminNeuId
+     * @param adminNeuId administrator Neu Id.
      * @return true if existed, false if not.
      */
     public boolean ifAdminNuidExists(String adminNeuId){

@@ -17,146 +17,142 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ElectiveDaoTest {
-	private static ElectivesDao electivesDao;
+  private static ElectivesDao electivesDao;
+  private static StudentsDao studentsDao;
+  private static CoursesDao coursesDao;
+  private static TermsDao termsDao;
 
-	@BeforeClass
-	public static void init() {
-		electivesDao = new ElectivesDao();
-	}
+  @BeforeClass
+  public static void init() {
+    electivesDao = new ElectivesDao();
+    studentsDao = new StudentsDao();
+    coursesDao = new CoursesDao();
+    termsDao = new TermsDao();
+  }
 
-	@Test
-	public void addNullElectivesTest() {
-		Electives Electives = electivesDao.addElective(null);
-		Assert.assertNull(Electives);
-	}
+  @Test
+  public void addNullElectivesTest() {
+    Electives Electives = electivesDao.addElective(null);
+    Assert.assertNull(Electives);
+  }
 
-	@Test
-	public void getAllElectives() {
-		List<Electives> electivesList = electivesDao.getAllElectives();
+  @Test
+  public void getAllElectives() {
+    List<Electives> electivesList = electivesDao.getAllElectives();
 
-		System.out.println(electivesList.size());
-	}
+    System.out.println(electivesList.size());
+  }
 
-	@Test
-	public void addElectivesTest() {
-		int tempId = 1221;
+  @Test
+  public void addElectivesTest() {
+    int tempId = 1221;
 
-		Students newStudent = new Students(tempId + "","tomcat78@gmail.com", "Tom3", "",
-				"Cat", Gender.M, "F1", "1111111111",
-				"401 Terry Ave", "WA", "Seattle","98109",
-				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
+    Students newStudent = new Students(tempId + "", "tomcat78@gmail.com", "Tom3", "",
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
 
-		StudentsDao studentsDao =  new StudentsDao();
-		studentsDao.addStudent(newStudent);
+    studentsDao.addStudent(newStudent);
 
-		Courses newCourse = new Courses(tempId + "", "course2", "course description 2");
-		CoursesDao coursesDao = new CoursesDao();
-		Courses courses = coursesDao.createCourse(newCourse);
+    Courses newCourse = new Courses(tempId + "", "course2", "course description 2");
+    Courses courses = coursesDao.createCourse(newCourse);
 
-		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-		TermsDao termsDao = new TermsDao();
-		Terms term = termsDao.addTerm(newTerm);
+    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+    Terms term = termsDao.addTerm(newTerm);
 
-		Electives elective = new Electives();
-		elective.setStudent(newStudent);
-		elective.setCourse(newCourse);
-		elective.setTerms(newTerm);
-		elective.setRetake(false);
-		elective.setGpa((float) 3.2);
-		elective.setPlagiarism(false);
+    Electives elective = new Electives();
+    elective.setStudent(newStudent);
+    elective.setCourse(newCourse);
+    elective.setTerms(newTerm);
+    elective.setRetake(false);
+    elective.setGpa((float) 3.2);
+    elective.setPlagiarism(false);
 
-		Electives electivesNew = electivesDao.addElective(elective);
-		
-		electivesDao.deleteElectiveRecord(electivesNew.getElectiveId());
-		coursesDao.deleteCourseById( tempId + "");
-		termsDao.deleteTerm(term.getTermId());
-		studentsDao.deleteStudent(tempId + "");
-	}
-	
-	@Test
-	public void deleteElectivesTest() {
-		int tempId = 289;
+    Electives electivesNew = electivesDao.addElective(elective);
 
-		List<Electives> experiencesOld = electivesDao.getAllElectives();
-		int oldSize = experiencesOld.size();
+    electivesDao.deleteElectiveRecord(electivesNew.getElectiveId());
+    coursesDao.deleteCourseById(tempId + "");
+    termsDao.deleteTerm(term.getTermId());
+    studentsDao.deleteStudent(tempId + "");
+  }
 
-		Students newStudent = new Students(tempId + "","tomcat2e1kk3@gmail.com", "Tom3", "",
-				"Cat", Gender.M, "F1", "1111111111",
-				"401 Terry Ave", "WA", "Seattle","98109",
-				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
+  @Test
+  public void deleteElectivesTest() {
+    int tempId = 289;
 
-		StudentsDao studentsDao =  new StudentsDao();
-		studentsDao.addStudent(newStudent);
+    List<Electives> experiencesOld = electivesDao.getAllElectives();
+    int oldSize = experiencesOld.size();
 
-		Courses newCourse = new Courses(tempId + "", "course2", "course description 2");
-		CoursesDao coursesDao = new CoursesDao();
-		Courses courses = coursesDao.createCourse(newCourse);
+    Students newStudent = new Students(tempId + "", "tomcat2e1kk3@gmail.com", "Tom3", "",
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
 
-		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-		TermsDao termsDao = new TermsDao();
-		Terms term = termsDao.addTerm(newTerm);
+    studentsDao.addStudent(newStudent);
 
-		Electives elective = new Electives();
-		elective.setStudent(newStudent);
-		elective.setCourse(newCourse);
-		elective.setTerms(newTerm);
-		elective.setRetake(false);
-		elective.setGpa((float) 3.2);
-		elective.setPlagiarism(false);
+    Courses newCourse = new Courses(tempId + "", "course2", "course description 2");
+    Courses courses = coursesDao.createCourse(newCourse);
 
-		Electives electivesNew = electivesDao.addElective(elective);
-		electivesDao.deleteElectiveRecord(electivesNew.getElectiveId());
-		
-		List<Electives> electivessNew = electivesDao.getAllElectives();
-		int newSize = electivessNew.size();	
-		Assert.assertEquals(oldSize, newSize); 
-		
-		coursesDao.deleteCourseById( tempId + "");
-		termsDao.deleteTerm(term.getTermId());
-		studentsDao.deleteStudent(tempId + "");
-	}
-//	
-	@Test
-	public void updateElectivesTest() {
-		int tempId = 9187;
+    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+    Terms term = termsDao.addTerm(newTerm);
 
-		Students newStudent = new Students(tempId + "","tommcautty@gmail.com", "Tom3", "",
-				"Cat", Gender.M, "F1", "1111111111",
-				"401 Terry Ave", "WA", "Seattle","98109",
-				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
+    Electives elective = new Electives();
+    elective.setStudent(newStudent);
+    elective.setCourse(newCourse);
+    elective.setTerms(newTerm);
+    elective.setRetake(false);
+    elective.setGpa((float) 3.2);
+    elective.setPlagiarism(false);
 
-		StudentsDao studentsDao =  new StudentsDao();
-		studentsDao.addStudent(newStudent);
+    Electives electivesNew = electivesDao.addElective(elective);
+    electivesDao.deleteElectiveRecord(electivesNew.getElectiveId());
 
-		Courses newCourse = new Courses(tempId + "", "course2", "course description 2");
-		CoursesDao coursesDao = new CoursesDao();
-		Courses courses = coursesDao.createCourse(newCourse);
+    List<Electives> electivessNew = electivesDao.getAllElectives();
+    int newSize = electivessNew.size();
+    Assert.assertEquals(oldSize, newSize);
 
-		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-		TermsDao termsDao = new TermsDao();
-		Terms term = termsDao.addTerm(newTerm);
+    coursesDao.deleteCourseById(tempId + "");
+    termsDao.deleteTerm(term.getTermId());
+    studentsDao.deleteStudent(tempId + "");
+  }
 
-		Electives elective = new Electives();
-		elective.setStudent(newStudent);
-		elective.setCourse(newCourse);
-		elective.setTerms(newTerm);
-		elective.setRetake(false);
-		elective.setGpa((float) 3.2);
-		elective.setPlagiarism(false);
+  //
+  @Test
+  public void updateElectivesTest() {
+    int tempId = 9187;
 
-		Electives electivesNew = electivesDao.addElective(elective);
+    Students newStudent = new Students(tempId + "", "tommcautty@gmail.com", "Tom3", "",
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
 
-		electivesNew.setGpa((float)4.2332);
-		electivesDao.updateElectives(electivesNew);
-		Assert.assertEquals(electivesNew.getGpa(), ((float)4.2332), 0.1);
+    studentsDao.addStudent(newStudent);
 
-		electivesDao.deleteElectiveRecord(electivesNew.getElectiveId());
-		coursesDao.deleteCourseById( tempId + "");
-		termsDao.deleteTerm(term.getTermId());
-		studentsDao.deleteStudent(tempId + "");
-	}
+    Courses newCourse = new Courses(tempId + "", "course2", "course description 2");
+    Courses courses = coursesDao.createCourse(newCourse);
 
-	
+    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+    Terms term = termsDao.addTerm(newTerm);
+
+    Electives elective = new Electives();
+    elective.setStudent(newStudent);
+    elective.setCourse(newCourse);
+    elective.setTerms(newTerm);
+    elective.setRetake(false);
+    elective.setGpa((float) 3.2);
+    elective.setPlagiarism(false);
+
+    Electives electivesNew = electivesDao.addElective(elective);
+
+    electivesNew.setGpa((float) 4.2332);
+    electivesDao.updateElectives(electivesNew);
+    Assert.assertEquals(electivesNew.getGpa(), ((float) 4.2332), 0.1);
+
+    electivesDao.deleteElectiveRecord(electivesNew.getElectiveId());
+    coursesDao.deleteCourseById(tempId + "");
+    termsDao.deleteTerm(term.getTermId());
+    studentsDao.deleteStudent(tempId + "");
+  }
 
 
 }
