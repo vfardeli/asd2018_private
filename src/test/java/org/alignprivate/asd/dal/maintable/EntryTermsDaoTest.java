@@ -18,11 +18,13 @@ import org.junit.Test;
 
 public class EntryTermsDaoTest {
 
-	private EntryTermsDao entryTermsDao;
+	private static EntryTermsDao entryTermsDao;
+	private static StudentsDao studentsDao;
 
 	@BeforeClass
-	public void init() {
+	public static void init() {
 		entryTermsDao = new EntryTermsDao();
+		studentsDao =  new StudentsDao();
 	}
 
 	@Test
@@ -48,7 +50,6 @@ public class EntryTermsDaoTest {
 				"401 Terry Ave", "WA", "Seattle","98109",
 				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
 
-		StudentsDao studentsDao =  new StudentsDao();
 		studentsDao.addStudent(newStudent);
 
 		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
@@ -80,7 +81,6 @@ public class EntryTermsDaoTest {
 				"401 Terry Ave", "WA", "Seattle","98109",
 				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
 
-		StudentsDao studentsDao =  new StudentsDao();
 		studentsDao.addStudent(newStudent);
 
 		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);

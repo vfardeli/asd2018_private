@@ -21,7 +21,6 @@ public class EntryTermsDao {
 			// it will check the hibernate.cfg.xml file and load it
 			// next it goes to all table files in the hibernate file and loads them
 			factory = new Configuration().configure().buildSessionFactory();
-			session = factory.openSession();
 		} catch (Throwable ex) { 
 			System.err.println("Failed to create sessionFactory object." + ex);
 			throw new ExceptionInInitializerError(ex); 
@@ -29,15 +28,22 @@ public class EntryTermsDao {
 	}
 
 	public List<EntryTerms> getAllEntryTerms() {
+		session = factory.openSession();
+
 		org.hibernate.query.Query query = session.createQuery("from EntryTerms");
-		List<EntryTerms> list = query.list();  
+		List<EntryTerms> list = query.list(); 
+		session.close();
+		
 		return list;
 	}
 
 	public EntryTerms getExperience(int id) {
+		session = factory.openSession();
+
 		org.hibernate.query.Query query = session.createQuery("from EntryTerms where experienceId = :id");
 		query.setParameter("id", id);
 		List<EntryTerms> list = query.list();
+		session.close();
 		
 		return list.get(0);
 	}
@@ -49,6 +55,7 @@ public class EntryTermsDao {
 		
 		Transaction tx = null;
 		StudentsDao studentDaoHibernate = new StudentsDao();
+		session = factory.openSession();
 
 		if(studentDaoHibernate.ifNuidExists(experience.getStudent().getNeuId())){
 			try {
@@ -59,7 +66,7 @@ public class EntryTermsDao {
 				if (tx!=null) tx.rollback();
 				e.printStackTrace(); 
 			} finally {
-				//session.close(); 
+				session.close(); 
 			}
 		}else{
 			System.out.println("The student with a given nuid doesn't exists");
@@ -74,7 +81,8 @@ public class EntryTermsDao {
 		}
 		
 		Transaction tx = null;
-		StudentsDao studentDaoHibernate = new StudentsDao();
+		StudentsDao studentDaoHibernate = new StudentsDao();	
+		session = factory.openSession();
 
 		if(studentDaoHibernate.ifNuidExists(entryTerm.getStudent().getNeuId())){
 			try {
@@ -85,7 +93,7 @@ public class EntryTermsDao {
 				if (tx!=null) tx.rollback();
 				e.printStackTrace(); 
 			} finally {
-				//session.close(); 
+				session.close(); 
 			}
 		}else{
 			System.out.println("The student with a given nuid doesn't exists");
@@ -98,6 +106,8 @@ public class EntryTermsDao {
 		Transaction tx = null;
 
 		try {
+			session = factory.openSession();
+
 			tx = session.beginTransaction();
 			EntryTerms experience = session.get(EntryTerms.class, id); 
 			System.out.println("Deleting student for id = " + id);
@@ -108,7 +118,7 @@ public class EntryTermsDao {
 			if (tx!=null) tx.rollback();
 			e.printStackTrace(); 
 		} finally {
-			//session.close(); 
+			session.close(); 
 		}
 
 		return true;
