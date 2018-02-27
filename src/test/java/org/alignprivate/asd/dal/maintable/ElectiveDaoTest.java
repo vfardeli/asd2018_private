@@ -17,12 +17,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ElectiveDaoTest {
 	private ElectivesDao electivesDao;
 
-	@Before
+	@BeforeClass
 	public void init() {
 		electivesDao = new ElectivesDao();
 	}

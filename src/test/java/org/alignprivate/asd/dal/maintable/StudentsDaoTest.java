@@ -10,6 +10,7 @@ import org.alignprivate.asd.model.Students;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class StudentsDaoTest {
@@ -18,7 +19,7 @@ public class StudentsDaoTest {
 
     private StudentsDao studentdao;
 
-    @Before
+    @BeforeClass
     public void init() {
         studentdao = new StudentsDao();
     }

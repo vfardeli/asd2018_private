@@ -3,6 +3,7 @@ package org.alignprivate.asd.dal.maintable;
 import org.alignprivate.asd.dal.maintable.CompaniesDao;
 import org.alignprivate.asd.model.Companies;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import static org.junit.Assert.*;
 public class CompaniesDaoTest {
   private CompaniesDao companiesDao;
 
-  @Before
+  @BeforeClass
   public void init() {
     companiesDao = new CompaniesDao();
   }

@@ -12,13 +12,14 @@ import org.alignprivate.asd.model.Students;
 import org.alignprivate.asd.model.Terms;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TermsDaoTest {
 
 	private TermsDao termsDao;
 
-	@Before
+	@BeforeClass
 	public void init() {
 		termsDao = new TermsDao();
 	}

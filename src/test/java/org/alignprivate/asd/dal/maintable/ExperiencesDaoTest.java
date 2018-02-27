@@ -10,14 +10,17 @@ import org.alignprivate.asd.model.Experiences;
 import org.alignprivate.asd.model.Students;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ExperiencesDaoTest {
-	private ExperiencesDao experiencesDao;
+	private static ExperiencesDao experiencesDao;
+	private static StudentsDao studentsDao;
 
-	@Before
-	public void init() {
+	@BeforeClass
+	 public static void init() {
 		experiencesDao = new ExperiencesDao();
+		studentsDao =  new StudentsDao();
 	}
 
 	@Test
@@ -32,8 +35,6 @@ public class ExperiencesDaoTest {
 				"Cat", Gender.M, "F1", "1111111111",
 				"401 Terry Ave", "WA", "Seattle","98109",
 				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
-
-		StudentsDao studentsDao =  new StudentsDao();
 		studentsDao.addStudent(newStudent);
 
 		Experiences experiences = new Experiences();
@@ -59,8 +60,7 @@ public class ExperiencesDaoTest {
 				"Cat", Gender.M, "F1", "1111111111",
 				"401 Terry Ave", "WA", "Seattle", "98109",
 				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
-		StudentsDao studentdao = new StudentsDao();
-		studentdao.addStudent(newStudent);
+		studentsDao.addStudent(newStudent);
 
 		// add experience to table
 		Experiences newExperience = new Experiences(newStudent, "Angular 3 Conference", "my desc");
@@ -74,18 +74,17 @@ public class ExperiencesDaoTest {
 
 		experiencesDao.deleteExperienceRecord(newExperience.getExperienceId());
 		experiencesDao.deleteExperienceRecord(newExperience2.getExperienceId());
-		studentdao.deleteStudent("00000094");
+		studentsDao.deleteStudent("00000094");
 	}
 
 	@Test
 	public void getExperienceById() {
-		// add a stuent
+		// add a student
 		Students newStudent = new Students("00000094","tomcat44@gmail.com", "Tom21", "",
 				"Cat", Gender.M, "F1", "1111111111",
 				"401 Terry Ave", "WA", "Seattle", "98109",
 				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
-		StudentsDao studentdao = new StudentsDao();
-		studentdao.addStudent(newStudent);
+		studentsDao.addStudent(newStudent);
 
 		// add experience to table
 		Experiences experience = new Experiences(newStudent, "Angular 3 Conference", "my desc");
@@ -94,7 +93,7 @@ public class ExperiencesDaoTest {
 		Experiences addedExperience = experiencesDao.getExperience(newExperience.getExperienceId());
 		Assert.assertEquals(newExperience.getDescription(), addedExperience.getDescription());
 		experiencesDao.deleteExperienceRecord(addedExperience.getExperienceId());
-		studentdao.deleteStudent("00000094");
+		studentsDao.deleteStudent("00000094");
 	}
 
 	@Test
@@ -106,8 +105,7 @@ public class ExperiencesDaoTest {
 				"Cat", Gender.M, "F1", "1111111111",
 				"401 Terry Ave", "WA", "Seattle", "98109",
 				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
-		StudentsDao studentdao = new StudentsDao();
-		studentdao.addStudent(newStudent);
+		studentsDao.addStudent(newStudent);
 
 		// add experience to table
 		Experiences experience = new Experiences(newStudent, "Angular 3 Conference", "my desc");
@@ -120,18 +118,17 @@ public class ExperiencesDaoTest {
 		int newSize = experiencesNew.size();	
 		Assert.assertEquals(oldSize, newSize); 
 		
-		studentdao.deleteStudent("00000094");
+		studentsDao.deleteStudent("00000094");
 	}
 
 	@Test
 	public void updateExperiencesTest() {
-		// add a stuent
+		// add a student
 		Students newStudent = new Students("00000094","tomcat44@gmail.com", "Tom21", "",
 				"Cat", Gender.M, "F1", "1111111111",
 				"401 Terry Ave", "WA", "Seattle", "98109",
 				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
-		StudentsDao studentdao = new StudentsDao();
-		studentdao.addStudent(newStudent);
+		studentsDao.addStudent(newStudent);
 
 		// add experience to table
 		Experiences newExperience = new Experiences(newStudent, "Angular 3 Conference", "my desc");
@@ -143,6 +140,6 @@ public class ExperiencesDaoTest {
 		Assert.assertEquals(addedExperience.getDescription(), "new desc908");
 		
 		experiencesDao.deleteExperienceRecord(newExperience.getExperienceId());
-		studentdao.deleteStudent("00000094");
+		studentsDao.deleteStudent("00000094");
 	}
 }

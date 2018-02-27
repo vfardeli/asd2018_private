@@ -21,7 +21,6 @@ public class ExperiencesDao {
 			// it will check the hibernate.cfg.xml file and load it
 			// next it goes to all table files in the hibernate file and loads them
 			factory = new Configuration().configure().buildSessionFactory();
-			session = factory.openSession();
 		} catch (Throwable ex) { 
 			System.err.println("Failed to create sessionFactory object." + ex);
 			throw new ExceptionInInitializerError(ex); 
@@ -29,15 +28,20 @@ public class ExperiencesDao {
 	}
 
 	public List<Experiences> getAllExperiences() {
+		session = factory.openSession();
 		org.hibernate.query.Query query = session.createQuery("from Experiences");
 		List<Experiences> list = query.list();  
+		session.close();
+		
 		return list;
 	}
 
 	public Experiences getExperience(int id) {
+		session = factory.openSession();
 		org.hibernate.query.Query query = session.createQuery("from Experiences where experienceId = :id");
 		query.setParameter("id", id);
 		List<Experiences> list = query.list();
+		session.close();
 		
 		return list.get(0);
 		
@@ -50,6 +54,7 @@ public class ExperiencesDao {
 		
 		Transaction tx = null;
 		StudentsDao studentDaoHibernate = new StudentsDao();
+		session = factory.openSession();
 
 		if(studentDaoHibernate.ifNuidExists(experience.getStudent().getNeuId())){
 			try {
@@ -65,6 +70,7 @@ public class ExperiencesDao {
 		}else{
 			System.out.println("The student with a given nuid doesn't exists");
 		}
+		session = factory.openSession();
 		
 		return experience;
 	}
@@ -74,6 +80,7 @@ public class ExperiencesDao {
 			return null;
 		}
 		
+		session = factory.openSession();
 		Transaction tx = null;
 		StudentsDao studentDaoHibernate = new StudentsDao();
 
@@ -92,15 +99,24 @@ public class ExperiencesDao {
 			System.out.println("The student with a given nuid doesn't exists");
 		}
 		
+		session.close();
+		
 		return experience;
 	}
 
-	public boolean deleteExperienceRecord(int id){		
+	public boolean deleteExperienceRecord(int id){	
+		session = factory.openSession();
+
 		Transaction tx = null;
 
 		try {
 			tx = session.beginTransaction();
 			Experiences experience = session.get(Experiences.class, id); 
+			
+			if(experience == null) {
+				return false;
+			}
+			
 			System.out.println("Deleting student for id = " + id);
 			session.delete(experience); 
 			tx.commit();
@@ -109,7 +125,7 @@ public class ExperiencesDao {
 			if (tx!=null) tx.rollback();
 			e.printStackTrace(); 
 		} finally {
-			//session.close(); 
+			session.close(); 
 		}
 
 		return true;

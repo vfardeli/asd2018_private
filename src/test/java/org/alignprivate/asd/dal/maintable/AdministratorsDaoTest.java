@@ -6,13 +6,14 @@ import org.alignprivate.asd.model.Administrators;
 import org.alignprivate.asd.model.Terms;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AdministratorsDaoTest {
 
 	private AdministratorsDao administratorsDao;
 
-	@Before
+	@BeforeClass
 	public void init() {
 		administratorsDao = new AdministratorsDao();
 	}
