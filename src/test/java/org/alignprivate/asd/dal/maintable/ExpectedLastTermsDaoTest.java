@@ -18,10 +18,10 @@ import org.junit.Test;
 
 public class ExpectedLastTermsDaoTest {
 	
-	private ExpectedLastTermsDao expectedLastTermsDao;
+	private static ExpectedLastTermsDao expectedLastTermsDao;
 
 	@BeforeClass
-	public void init() {
+	public static void init() {
 		expectedLastTermsDao = new ExpectedLastTermsDao();
 	}
 

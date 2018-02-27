@@ -20,7 +20,6 @@ public class ExpectedLastTermsDao {
 			// it will check the hibernate.cfg.xml file and load it
 			// next it goes to all table files in the hibernate file and loads them
 			factory = new Configuration().configure().buildSessionFactory();
-			session = factory.openSession();
 		} catch (Throwable ex) { 
 			System.err.println("Failed to create sessionFactory object." + ex);
 			throw new ExceptionInInitializerError(ex); 
@@ -28,15 +27,20 @@ public class ExpectedLastTermsDao {
 	}
 
 	public List<ExpectedLastTerms> getAllExpectedLastTerms() {
+		session = factory.openSession();
 		org.hibernate.query.Query query = session.createQuery("from EntryTerms");
 		List<ExpectedLastTerms> list = query.list();  
+		session.close();
+		
 		return list;
 	}
 	
 	public ExpectedLastTerms getExperience(int id) {
+		session = factory.openSession();
 		org.hibernate.query.Query query = session.createQuery("from EntryTerms where ExpectedLastTermId = :id");
 		query.setParameter("id", id);
 		List<ExpectedLastTerms> list = query.list();
+		session.close();
 		
 		return list.get(0);	
 	}
@@ -48,6 +52,7 @@ public class ExpectedLastTermsDao {
 		
 		Transaction tx = null;
 		StudentsDao studentDaoHibernate = new StudentsDao();
+		session = factory.openSession();
 
 		if(studentDaoHibernate.ifNuidExists(expectedLastTerm.getStudent().getNeuId())){
 			try {
@@ -58,7 +63,7 @@ public class ExpectedLastTermsDao {
 				if (tx!=null) tx.rollback();
 				e.printStackTrace(); 
 			} finally {
-				//session.close(); 
+				session.close(); 
 			}
 		}else{
 			System.out.println("The student with a given nuid doesn't exists");
@@ -72,6 +77,8 @@ public class ExpectedLastTermsDao {
 			return null;
 		}
 		
+		session = factory.openSession();
+		
 		Transaction tx = null;
 		StudentsDao studentDaoHibernate = new StudentsDao();
 
@@ -84,7 +91,7 @@ public class ExpectedLastTermsDao {
 				if (tx!=null) tx.rollback();
 				e.printStackTrace(); 
 			} finally {
-				//session.close(); 
+				session.close(); 
 			}
 		}else{
 			System.out.println("The student with a given nuid doesn't exists");
@@ -95,6 +102,7 @@ public class ExpectedLastTermsDao {
 
 	public boolean deleteExpectedLastTermRecord(int id){		
 		Transaction tx = null;
+		session = factory.openSession();
 
 		try {
 			tx = session.beginTransaction();
@@ -107,7 +115,7 @@ public class ExpectedLastTermsDao {
 			if (tx!=null) tx.rollback();
 			e.printStackTrace(); 
 		} finally {
-			//session.close(); 
+			session.close(); 
 		}
 
 		return true;
