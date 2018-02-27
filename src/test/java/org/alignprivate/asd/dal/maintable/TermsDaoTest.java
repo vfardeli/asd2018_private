@@ -17,10 +17,10 @@ import org.junit.Test;
 
 public class TermsDaoTest {
 
-	private TermsDao termsDao;
+	private static TermsDao termsDao;
 
 	@BeforeClass
-	public void init() {
+	public static void init() {
 		termsDao = new TermsDao();
 	}
 	

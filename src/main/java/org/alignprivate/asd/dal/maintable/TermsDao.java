@@ -24,7 +24,6 @@ public class TermsDao {
             // it will check the hibernate.cfg.xml file and load it
             // next it goes to all table files in the hibernate file and loads them
             factory = new Configuration().configure().buildSessionFactory();
-            session = factory.openSession();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);
@@ -50,6 +49,7 @@ public class TermsDao {
         }else{
             System.out.println("Adding a new term");
             try {
+            	session = factory.openSession();
                 tx = session.beginTransaction();
                 session.save(term);
                 tx.commit();
@@ -58,6 +58,7 @@ public class TermsDao {
                 if (tx!=null) tx.rollback();
             }
         }
+        session.close();
         
         return term;
     }
@@ -69,8 +70,11 @@ public class TermsDao {
      * @return A list of Terms
      */
     public List<Terms> getAllTerms(){
+    	session = factory.openSession();
         org.hibernate.query.Query query = session.createQuery("FROM Terms");
         List<Terms> list = query.list();
+        session.close();
+        
         return list;
     }
     
@@ -89,6 +93,7 @@ public class TermsDao {
     	
         Transaction tx = null;
         try {
+        	session = factory.openSession();
             tx = session.beginTransaction();
             org.hibernate.query.Query query = session.createQuery("DELETE FROM Terms WHERE TermId = :termId");
             query.setParameter("termId", termId);
@@ -106,6 +111,8 @@ public class TermsDao {
             e.printStackTrace();
         } 
         
+        session.close();
+        
         return true;
     }
     
@@ -116,6 +123,7 @@ public class TermsDao {
     	
         Transaction tx = null;
         try {
+        	session = factory.openSession();
             tx = session.beginTransaction();
             org.hibernate.query.Query query = session.createQuery("FROM Terms where Term = :term and"
             		+ " termYear = :termYear and termType = :termType");
@@ -131,6 +139,7 @@ public class TermsDao {
             deleteTerm(list.get(0).getTermId());
             
             tx.commit();
+            session.close();
             if(ifTermIdExists(list.get(0).getTermId())){
                 return false;
             }else{
@@ -152,9 +161,13 @@ public class TermsDao {
      * @return true if existed, false if not.
      */
     private boolean ifTermIdExists(int termId) {
+    	session = factory.openSession();
         org.hibernate.query.Query query = session.createQuery("FROM Terms where TermId = :termId");
         query.setParameter("termId", termId);
         List<Terms> list = query.list();
+        
+        session.close();
+        
         if(list.size()==0){
         	return false;
         }
@@ -170,6 +183,7 @@ public class TermsDao {
      */
     public boolean ifTermExists(Terms term){
         try{
+        	session = factory.openSession();
             System.out.println("Checking if an entered term exists or not.......");
             org.hibernate.query.Query query = session.createQuery("FROM Terms WHERE Term = :term and "
             		+ "TermYear = :termYear and TermType = :termType");
@@ -177,6 +191,8 @@ public class TermsDao {
             query.setParameter("termYear", term.getTermYear());
             query.setParameter("termType", term.getTermType()); 
             List list = query.list();
+            
+            session.close();
             if(list.size() == 1){
                 return true;
             }
