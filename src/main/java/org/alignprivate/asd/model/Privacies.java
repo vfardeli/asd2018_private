@@ -2,7 +2,7 @@ package org.alignprivate.asd.model;
 
 public class Privacies {
     private int privacyId;
-    private String neuId;
+    private Students student;
     private boolean neuIdShown;
     private boolean phoneShown;
     private boolean addressShown;
@@ -17,11 +17,11 @@ public class Privacies {
     private boolean expectedLastTermShown;
     private boolean scholarshipShown;
 
-    public Privacies(String neuId, boolean neuIdShown, boolean phoneShown, boolean addressShown,
+    public Privacies(Students student, boolean neuIdShown, boolean phoneShown, boolean addressShown,
                      boolean stateShown, boolean zipShown, boolean emailShown, boolean enrollmentStatusShown,
                      boolean priorEducationShown, boolean experienceShown, boolean workExperienceShown,
                      boolean entryTermShown, boolean expectedLastTermShown, boolean scholarshipShown) {
-        this.neuId = neuId;
+        this.student = student;
         this.neuIdShown = neuIdShown;
         this.phoneShown = phoneShown;
         this.addressShown = addressShown;
@@ -49,12 +49,12 @@ public class Privacies {
         this.privacyId = privacyId;
     }
 
-    public String getNeuId() {
-        return neuId;
+    public Students getStudent() {
+        return student;
     }
 
-    public void setNeuId(String neuId) {
-        this.neuId = neuId;
+    public void setStudent(Students student) {
+        this.student = student;
     }
 
     public boolean isNeuIdShown() {

@@ -14,7 +14,6 @@
             <generator class="native"/>
         </id>
 
-        <property name = "neuId" column = "NeuId" type = "string"/>
         <property name = "neuIdShown" column = "NeuIdShown" type = "boolean"/>
         <property name = "phoneShown" column = "PhoneShown" type = "boolean"/>
         <property name = "addressShown" column = "AddressShown" type = "boolean"/>
@@ -28,5 +27,8 @@
         <property name = "entryTermShown" column = "EntryTermShown" type = "boolean"/>
         <property name = "expectedLastTermShown" column = "ExpectedLastTermShown" type = "boolean"/>
         <property name = "scholarshipShown" column = "ScholarshipShown" type = "boolean"/>
+
+        <many-to-one name="student" class="org.alignprivate.asd.model.Students"
+                     column="NeuId" />
     </class>
 </hibernate-mapping>

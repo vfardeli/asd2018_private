@@ -13,10 +13,13 @@ public class PrivaciesDao {
     private static SessionFactory factory;
     private static Session session;
 
+    private StudentsDao studentsDao;
+
     /**
      * Default Constructor
      */
     public PrivaciesDao() {
+        studentsDao = new StudentsDao();
         try {
             // it will check the hibernate.cfg.xml file and load it
             // next it goes to all table files in the hibernate file and loads them
@@ -36,23 +39,20 @@ public class PrivaciesDao {
      */
     public Privacies addPrivacyRecord(Privacies privacy) {
         Transaction tx = null;
-
-        if(ifNuidExists(privacy.getNeuId())){
-            System.out.println("privacy already exists!");
-        }else{
-            try {
-                session = factory.openSession();
-                tx = session.beginTransaction();
-                session.save(privacy);
-                tx.commit();
-            } catch (HibernateException e) {
-                e.printStackTrace();
-                if (tx!=null) tx.rollback();
-            } finally {
-                    session.close();
-            }
+        try {
+            session = factory.openSession();
+            tx = session.beginTransaction();
+            session.save(privacy);
+            tx.commit();
+            return privacy;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            if (tx!=null) tx.rollback();
+        } finally {
+                session.close();
         }
-        return privacy;
+
+        return null;
     }
 
     /**
@@ -64,11 +64,13 @@ public class PrivaciesDao {
     public Privacies getPrivacyRecordByNeuId(String neuId) {
         try {
             session = factory.openSession();
-            org.hibernate.query.Query query = session.createQuery("FROM Privacies WHERE NeuId = :neuId ");
+            org.hibernate.query.Query query = session.createQuery("FROM Privacies WHERE student.neuId = :neuId ");
             query.setParameter("neuId", neuId);
             List list = query.list();
             if(list.size()==1){
-                return (Privacies) list.get(0);
+                Privacies privacy = (Privacies) list.get(0);
+                populateForeignKey(privacy);
+                return privacy;
             }else{
                 System.out.println("The list should contain only one Privacy with a given neu id");
                 return null;
@@ -95,7 +97,9 @@ public class PrivaciesDao {
             query.setParameter("privacyId", privacyId);
             List list = query.list();
             if(list.size()==1){
-                return (Privacies) list.get(0);
+                Privacies privacy = (Privacies) list.get(0);
+                populateForeignKey(privacy);
+                return privacy;
             }else{
                 System.out.println("The list should contain only one Privacy with a given privacyId");
                 return null;
@@ -118,7 +122,7 @@ public class PrivaciesDao {
      */
     public Privacies updatePrivacyRecord(Privacies privacy) {
         Transaction tx = null;
-        String neuId = privacy.getNeuId();
+        String neuId = privacy.getStudent().getNeuId();
         if(ifNuidExists(neuId)){
             try{
                 Session session = factory.openSession();
@@ -150,7 +154,7 @@ public class PrivaciesDao {
                         "EntryTermShown = :entryTermShown, " +
                         "ExpectedLastTermShown = :expectedLastTermShown, " +
                         "ScholarshipShown = :scholarshipShown " +
-                        "WHERE NeuId = :neuId";
+                        "WHERE student.neuId = :neuId";
 
                 org.hibernate.query.Query query = session.createQuery(hql);
                 query.setParameter("neuIdShown", neuIdShown);
@@ -193,11 +197,11 @@ public class PrivaciesDao {
      */
     public boolean deletePrivacyRecord(Privacies privacy) {
         Transaction tx = null;
-        String neuId = privacy.getNeuId();
+        String neuId = privacy.getStudent().getNeuId();
         try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            org.hibernate.query.Query query = session.createQuery("DELETE FROM Privacies WHERE NeuId = :neuId ");
+            org.hibernate.query.Query query = session.createQuery("DELETE FROM Privacies WHERE student.neuId = :neuId ");
             query.setParameter("neuId", neuId);
             System.out.println("Deleting privacy for nuid = " + neuId);
             query.executeUpdate();
@@ -226,7 +230,7 @@ public class PrivaciesDao {
         try{
             System.out.println("Checking if a privacy exists or not.......");
             session = factory.openSession();
-            org.hibernate.query.Query query = session.createQuery("FROM Privacies WHERE NeuId = :neuId");
+            org.hibernate.query.Query query = session.createQuery("FROM Privacies WHERE student.neuId = :neuId");
             query.setParameter("neuId", neuId);
             List list = query.list();
             if(list.size() == 1){
@@ -239,5 +243,9 @@ public class PrivaciesDao {
         }
 
         return false;
+    }
+
+    private void populateForeignKey(Privacies privacies) {
+        privacies.setStudent(studentsDao.getStudentRecord(privacies.getStudent().getNeuId()));
     }
 }

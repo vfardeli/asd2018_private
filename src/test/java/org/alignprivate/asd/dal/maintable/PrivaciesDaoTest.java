@@ -1,6 +1,7 @@
 package org.alignprivate.asd.dal.maintable;
 
 import org.alignprivate.asd.model.Privacies;
+import org.alignprivate.asd.model.Students;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -10,15 +11,18 @@ import static org.junit.Assert.*;
 
 public class PrivaciesDaoTest {
     private static PrivaciesDao privaciesDao;
+    private static StudentsDao studentsDao;
 
     @BeforeClass
     public static void init() {
         privaciesDao = new PrivaciesDao();
+        studentsDao = new StudentsDao();
     }
 
     @Test
     public void addPrivacyRecordTest() {
-        Privacies privacy = new Privacies("001234567", true, true, true,
+        Students student = studentsDao.getStudentRecord("001234567");
+        Privacies privacy = new Privacies(student, true, true, true,
                 true, true, true, true, true,
                 true, true, true, true, true);
 
@@ -29,7 +33,8 @@ public class PrivaciesDaoTest {
 
     @Test
     public void getPrivacyRecordByNeuIdTest() {
-        Privacies privacy = new Privacies("001234567", true, true, true,
+        Students student = studentsDao.getStudentRecord("001234567");
+        Privacies privacy = new Privacies(student, true, true, true,
                 true, true, true, true, true,
                 true, true, true, true, true);
 
@@ -40,7 +45,8 @@ public class PrivaciesDaoTest {
 
     @Test
     public void updatePrivacyRecordTest() {
-        Privacies privacy = new Privacies("001234567", true, true, true,
+        Students student = studentsDao.getStudentRecord("001234567");
+        Privacies privacy = new Privacies(student, true, true, true,
                 true, true, true, true, true,
                 true, true, true, true, true);
 
@@ -55,7 +61,8 @@ public class PrivaciesDaoTest {
 
     @Test
     public void deletePrivacyRecord() {
-        Privacies privacy = new Privacies("001234567", true, true, true,
+        Students student = studentsDao.getStudentRecord("001234567");
+        Privacies privacy = new Privacies(student, true, true, true,
                 true, true, true, true, true,
                 true, true, true, true, true);
 
@@ -67,7 +74,8 @@ public class PrivaciesDaoTest {
 
     @Test
     public void ifNuidExists() {
-        Privacies privacy = new Privacies("001234567", true, true, true,
+        Students student = studentsDao.getStudentRecord("001234567");
+        Privacies privacy = new Privacies(student, true, true, true,
                 true, true, true, true, true,
                 true, true, true, true, true);
 
