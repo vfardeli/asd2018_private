@@ -23,7 +23,6 @@ public class ElectivesDao {
 			// it will check the hibernate.cfg.xml file and load it
 			// next it goes to all table files in the hibernate file and loads them
 			factory = new Configuration().configure().buildSessionFactory();
-			session = factory.openSession();
 		} catch (Throwable ex) {
 			System.err.println("Failed to create sessionFactory object." + ex);
 			throw new ExceptionInInitializerError(ex);
@@ -32,8 +31,12 @@ public class ElectivesDao {
 	}
 	
 	public List<Electives> getAllElectives() {
+		session = factory.openSession();
+
 		org.hibernate.query.Query query = session.createQuery("from Electives");
 		List<Electives> list = query.list();  
+		session.close();
+		
 		return list;
 	}
 	
@@ -50,6 +53,7 @@ public class ElectivesDao {
 		
 		Transaction tx = null;
 		StudentsDao studentDao = new StudentsDao();
+		session = factory.openSession();
 
 		if(studentDao.ifNuidExists(elective.getStudent().getNeuId())){
 			try {
@@ -60,7 +64,7 @@ public class ElectivesDao {
 				if (tx!=null) tx.rollback();
 				e.printStackTrace(); 
 			} finally {
-				//session.close(); 
+				session.close(); 
 			}
 		}else{
 			System.out.println("The student with a given nuid doesn't exists");
@@ -82,7 +86,7 @@ public class ElectivesDao {
 			if (tx != null) tx.rollback();
 			return false;
 		} finally {
-			//session.close();
+			session.close();
 		}
 		
 		return true;
@@ -92,6 +96,7 @@ public class ElectivesDao {
 		Transaction tx = null;
 
 		try {
+			session = factory.openSession();
 			tx = session.beginTransaction();
 			Electives electives = session.get(Electives.class, id); 
 			System.out.println("Deleting elective for id = " + id);
@@ -102,7 +107,7 @@ public class ElectivesDao {
 			if (tx!=null) tx.rollback();
 			e.printStackTrace(); 
 		} finally {
-			//session.close(); 
+			session.close(); 
 		}
 
 		return true;

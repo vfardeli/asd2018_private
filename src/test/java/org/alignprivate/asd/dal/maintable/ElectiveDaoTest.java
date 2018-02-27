@@ -10,21 +10,17 @@ import org.alignprivate.asd.enumeration.Term;
 import org.alignprivate.asd.enumeration.TermType;
 import org.alignprivate.asd.model.Courses;
 import org.alignprivate.asd.model.Electives;
-import org.alignprivate.asd.model.Experiences;
 import org.alignprivate.asd.model.Students;
 import org.alignprivate.asd.model.Terms;
-import org.hibernate.HibernateException;
-import org.hibernate.Transaction;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ElectiveDaoTest {
-	private ElectivesDao electivesDao;
+	private static ElectivesDao electivesDao;
 
 	@BeforeClass
-	public void init() {
+	public static void init() {
 		electivesDao = new ElectivesDao();
 	}
 

@@ -19,10 +19,12 @@ import org.junit.Test;
 public class ExpectedLastTermsDaoTest {
 	
 	private static ExpectedLastTermsDao expectedLastTermsDao;
+	private static StudentsDao studentsDao;
 
 	@BeforeClass
 	public static void init() {
 		expectedLastTermsDao = new ExpectedLastTermsDao();
+		studentsDao =  new StudentsDao();
 	}
 
 	@Test
@@ -47,7 +49,6 @@ public class ExpectedLastTermsDaoTest {
 				"401 Terry Ave", "WA", "Seattle","98109",
 				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
 
-		StudentsDao studentsDao =  new StudentsDao();
 		studentsDao.addStudent(newStudent);
 
 		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
@@ -79,7 +80,6 @@ public class ExpectedLastTermsDaoTest {
 				"401 Terry Ave", "WA", "Seattle","98109",
 				EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
 
-		StudentsDao studentsDao =  new StudentsDao();
 		studentsDao.addStudent(newStudent);
 
 		Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
