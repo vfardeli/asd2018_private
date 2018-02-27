@@ -11,10 +11,10 @@ import org.junit.Test;
 
 public class AdministratorsDaoTest {
 
-	private AdministratorsDao administratorsDao;
+	private static AdministratorsDao administratorsDao;
 
 	@BeforeClass
-	public void init() {
+	public static void init() {
 		administratorsDao = new AdministratorsDao();
 	}
 

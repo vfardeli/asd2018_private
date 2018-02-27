@@ -23,7 +23,6 @@ public class AdministratorsDao {
             // it will check the hibernate.cfg.xml file and load it
             // next it goes to all table files in the hibernate file and loads them
             factory = new Configuration().configure().buildSessionFactory();
-            session = factory.openSession();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);
@@ -43,12 +42,13 @@ public class AdministratorsDao {
     	}
     	
         Transaction tx = null;
-
+        
         if(ifAdminNuidExists(administrators.getAdministratorNeuId())){
             System.out.println("Admin already exists!");
         }else{
             System.out.println("saving Administrator in database!");
             try {
+            	session = factory.openSession();
                 tx = session.beginTransaction();
                 session.save(administrators);
                 tx.commit();
@@ -56,6 +56,7 @@ public class AdministratorsDao {
                 System.out.println("HibernateException: " + e);
                 if (tx!=null) tx.rollback();
             } finally {
+            	session.close();
             }
         }
         return administrators;
@@ -67,8 +68,11 @@ public class AdministratorsDao {
      * @return A list of Administrators
      */
     public List<Administrators> getAllAdminstrators(){
+        session = factory.openSession();
         org.hibernate.query.Query query = session.createQuery("FROM Administrators");
         List<Administrators> list = query.list();
+        session.close();
+        
         return list;
     }
 
@@ -79,10 +83,14 @@ public class AdministratorsDao {
      * @return an Administrators object
      */
     public Administrators getAdministratorRecord(String adminNeuId) {
+        session = factory.openSession();
+
         org.hibernate.query.Query query = session.createQuery("FROM Administrators"
         		+ " WHERE AdministratorNeuId = :administratorNeuId ");
         query.setParameter("administratorNeuId", adminNeuId);
         List list = query.list();
+        session.close();
+        
         if(list.size()==1){
             return (Administrators) list.get(0);
         }else{
@@ -99,6 +107,7 @@ public class AdministratorsDao {
      */
     public Administrators updateAdministratorRecord(Administrators administrator) {
         Transaction tx = null;
+        
         String administratorNeuId = administrator.getAdministratorNeuId();
         
         if(ifAdminNuidExists(administratorNeuId)){
@@ -128,7 +137,9 @@ public class AdministratorsDao {
             }catch (HibernateException e) {
                 if (tx!=null) tx.rollback();
                 e.printStackTrace();
-            }
+            }finally {
+				session.close();
+			}
         }else{
             System.out.println("student id doesn't exists..");
         }
@@ -150,6 +161,8 @@ public class AdministratorsDao {
     	
         Transaction tx = null;
         try {
+            session = factory.openSession();
+
             tx = session.beginTransaction();
             org.hibernate.query.Query query = session.createQuery("DELETE FROM Administrators"
             		+ " WHERE AdministratorNeuId = :administratorNeuId ");
@@ -165,7 +178,9 @@ public class AdministratorsDao {
             System.out.println("exception");
             if (tx!=null) tx.rollback();
             e.printStackTrace();
-        }
+        }finally {
+			session.close();
+		}
 
         return true;
     }
@@ -178,11 +193,15 @@ public class AdministratorsDao {
      */
     public boolean ifAdminNuidExists(String adminNeuId){
         try{
+            session = factory.openSession();
+
             System.out.println("Checking if an entered adminNeuId exists or not.......");
             org.hibernate.query.Query query = session.createQuery("FROM Administrators "
             		+ "WHERE AdministratorNeuId = :administratorNeuId");
             query.setParameter("administratorNeuId", adminNeuId);
             List list = query.list();
+            
+            session.close();
             if(list.size() == 1){
                 return true;
             }
