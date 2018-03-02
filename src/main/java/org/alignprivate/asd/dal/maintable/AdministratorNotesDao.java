@@ -1,6 +1,7 @@
 package org.alignprivate.asd.dal.maintable;
 
 import org.alignprivate.asd.model.AdministratorNotes;
+import org.alignprivate.asd.model.Students;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,10 +14,16 @@ public class AdministratorNotesDao {
     private static SessionFactory factory;
     private static Session session;
 
+    private StudentsDao studentsDao;
+    private AdministratorsDao adminDao;
+
     /**
      * Default Constructor
      */
     public AdministratorNotesDao() {
+        studentsDao = new StudentsDao();
+        adminDao = new AdministratorsDao();
+
         try {
             // it will check the hibernate.cfg.xml file and load it
             // next it goes to all table files in the hibernate file and loads them
@@ -36,7 +43,7 @@ public class AdministratorNotesDao {
     public List<AdministratorNotes> getAdministratorNoteRecordByNeuId(String neuId) {
         try {
             session = factory.openSession();
-            org.hibernate.query.Query query = session.createQuery("FROM AdministratorNotes WHERE NeuId = :neuId ");
+            org.hibernate.query.Query query = session.createQuery("FROM AdministratorNotes WHERE student.neuId = :neuId ");
             query.setParameter("neuId", neuId);
             List<AdministratorNotes> list = query.list();
             return list;
@@ -59,7 +66,7 @@ public class AdministratorNotesDao {
         try {
             session = factory.openSession();
             org.hibernate.query.Query query = session.createQuery("FROM AdministratorNotes " +
-                    "WHERE AdministratorNeuId = :administratorNeuId ");
+                    "WHERE admin.administratorNeuId = :administratorNeuId ");
             query.setParameter("administratorNeuId", administratorNeuId);
             List<AdministratorNotes> list = query.list();
             return list;
@@ -104,12 +111,12 @@ public class AdministratorNotesDao {
      */
     public boolean deleteAdministratorNoteRecord(AdministratorNotes note) {
         Transaction tx = null;
-        String neuId = note.getNeuId();
+        String neuId = note.getStudent().getNeuId();
         try {
             session = factory.openSession();
             tx = session.beginTransaction();
             org.hibernate.query.Query query = session.createQuery("DELETE FROM AdministratorNotes " +
-                    "WHERE NeuId = :neuId ");
+                    "WHERE student.neuId = :neuId ");
             query.setParameter("neuId", neuId);
             query.executeUpdate();
             tx.commit();
@@ -132,7 +139,7 @@ public class AdministratorNotesDao {
     public boolean ifNuidExists(String neuId) {
         try{
             session = factory.openSession();
-            org.hibernate.query.Query query = session.createQuery("FROM AdministratorNotes WHERE NeuId = :neuId");
+            org.hibernate.query.Query query = session.createQuery("FROM AdministratorNotes WHERE student.neuId = :neuId");
             query.setParameter("neuId", neuId);
             List list = query.list();
             if(list.size() != 0){

@@ -2,14 +2,14 @@ package org.alignprivate.asd.model;
 
 public class AdministratorNotes {
     private int administratorNoteId;
-    private String neuId;
-    private String administratorNeuId;
+    private Students student;
+    private Administrators admin;
     private String title;
     private String desc;
 
-    public AdministratorNotes(String neuId, String administratorNeuId, String title, String desc) {
-        this.neuId = neuId;
-        this.administratorNeuId = administratorNeuId;
+    public AdministratorNotes(Students student, Administrators admin, String title, String desc) {
+        this.student = student;
+        this.admin = admin;
         this.title = title;
         this.desc = desc;
     }
@@ -26,20 +26,20 @@ public class AdministratorNotes {
         this.administratorNoteId = administratorNoteId;
     }
 
-    public String getNeuId() {
-        return neuId;
+    public Students getStudent() {
+        return student;
     }
 
-    public void setNeuId(String neuId) {
-        this.neuId = neuId;
+    public void setStudent(Students student) {
+        this.student = student;
     }
 
-    public String getAdministratorNeuId() {
-        return administratorNeuId;
+    public Administrators getAdmin() {
+        return admin;
     }
 
-    public void setAdministratorNeuId(String administratorNeuId) {
-        this.administratorNeuId = administratorNeuId;
+    public void setAdmin(Administrators admin) {
+        this.admin = admin;
     }
 
     public String getTitle() {

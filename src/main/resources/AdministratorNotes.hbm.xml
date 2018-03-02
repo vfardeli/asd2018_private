@@ -13,10 +13,14 @@
             <generator class="native"/>
         </id>
 
-        <property name = "neuId" column = "NeuId" type = "string" />
-        <property name = "administratorNeuId" column = "AdministratorNeuId" type = "string" />
         <property name = "title" column = "Title" type = "string" />
         <property name = "desc" column = "Description" type = "string" />
+
+        <many-to-one name="student" class="org.alignprivate.asd.model.Students"
+                     column="NeuId" />
+
+        <many-to-one name="admin" class="org.alignprivate.asd.model.Administrators"
+                     column="AdministratorNeuId" />
 
     </class>
 </hibernate-mapping>
