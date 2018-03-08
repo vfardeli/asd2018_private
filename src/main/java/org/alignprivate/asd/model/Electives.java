@@ -1,82 +1,94 @@
 package org.alignprivate.asd.model;
 
+import org.alignprivate.asd.enumeration.Term;
+
 public class Electives {
-	private int electiveId;
+  private int electiveId;
 
-	private Students student;
-	private Courses course;
-	private Terms terms;
-	private boolean retake = false;
-	private float gpa = 0;
-	private boolean plagiarism = false;
-	
-	public Electives(Students student, Courses course, Terms terms, boolean retake, float gpa, boolean plagiarism) {
-		this.student = student;
-		this.course = course;
-		this.terms = terms;
-		this.retake = retake;
-		this.gpa = gpa;
-		this.plagiarism = plagiarism;
-	}
+  private String neuId;
+  private String courseId;
+  private Term courseTerm;
+  private int courseYear;
+  private boolean retake = false;
+  private float gpa = 0;
+  private boolean plagiarism = false;
 
-	public Electives() {
-		super();
-	}
+  public Electives(String neuId, String courseId, Term courseTerm, int courseYear, boolean retake, float gpa, boolean plagiarism) {
+    this.neuId = neuId;
+    this.courseId = courseId;
+    this.courseTerm = courseTerm;
+    this.courseYear = courseYear;
+    this.retake = retake;
+    this.gpa = gpa;
+    this.plagiarism = plagiarism;
+  }
 
-	public int getElectiveId() {
-		return electiveId;
-	}
+  public Electives() {
+    super();
+  }
 
-	public void setElectiveId(int electiveId) {
-		this.electiveId = electiveId;
-	}
+  public int getElectiveId() {
+    return electiveId;
+  }
 
-	public Students getStudent() {
-		return student;
-	}
+  public void setElectiveId(int electiveId) {
+    this.electiveId = electiveId;
+  }
 
-	public void setStudent(Students student) {
-		this.student = student;
-	}
+  public String getNeuId() {
+    return neuId;
+  }
 
-	public Courses getCourse() {
-		return course;
-	}
+  public void setNeuId(String neuId) {
+    this.neuId = neuId;
+  }
 
-	public void setCourse(Courses course) {
-		this.course = course;
-	}
+  public String getCourseId() {
+    return courseId;
+  }
 
-	public Terms getTerms() {
-		return terms;
-	}
+  public void setCourseId(String courseId) {
+    this.courseId = courseId;
+  }
 
-	public void setTerms(Terms terms) {
-		this.terms = terms;
-	}
+  public Term getCourseTerm() {
+    return courseTerm;
+  }
 
-	public boolean isRetake() {
-		return retake;
-	}
+  public void setCourseTerm(Term courseTerm) {
+    this.courseTerm = courseTerm;
+  }
 
-	public void setRetake(boolean retake) {
-		this.retake = retake;
-	}
+  public int getCourseYear() {
+    return courseYear;
+  }
 
-	public float getGpa() {
-		return gpa;
-	}
+  public void setCourseYear(int courseYear) {
+    this.courseYear = courseYear;
+  }
 
-	public void setGpa(float gpa) {
-		this.gpa = gpa;
-	}
+  public boolean isRetake() {
+    return retake;
+  }
 
-	public boolean isPlagiarism() {
-		return plagiarism;
-	}
+  public void setRetake(boolean retake) {
+    this.retake = retake;
+  }
 
-	public void setPlagiarism(boolean plagiarism) {
-		this.plagiarism = plagiarism;
-	}
+  public float getGpa() {
+    return gpa;
+  }
+
+  public void setGpa(float gpa) {
+    this.gpa = gpa;
+  }
+
+  public boolean isPlagiarism() {
+    return plagiarism;
+  }
+
+  public void setPlagiarism(boolean plagiarism) {
+    this.plagiarism = plagiarism;
+  }
 
 }

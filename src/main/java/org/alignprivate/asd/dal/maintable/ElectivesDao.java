@@ -5,7 +5,6 @@ import java.util.List;
 import org.alignprivate.asd.model.Electives;
 import org.alignprivate.asd.model.Experiences;
 import org.alignprivate.asd.model.Students;
-import org.alignprivate.asd.model.Terms;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,17 +15,15 @@ public class ElectivesDao {
   private static SessionFactory factory;
   private static Session session;
 
-  private CoursesDao coursesDao;
-  private StudentsDao studentsDao;
-  private TermsDao termsDao;
+//  private CoursesDao coursesDao;
+  private StudentsDao studentDao;
 
   /**
    * Default Constructor.
    */
   public ElectivesDao() {
-    coursesDao = new CoursesDao();
-    studentsDao = new StudentsDao();
-    termsDao = new TermsDao();
+//    coursesDao = new CoursesDao();
+    studentDao = new StudentsDao();
     try {
       // it will check the hibernate.cfg.xml file and load it
       // next it goes to all table files in the hibernate file and loads them
@@ -38,13 +35,14 @@ public class ElectivesDao {
     }
   }
 
-  public List<Electives> getAllElectives() {
+  public List<Electives> getElectivesByNeuId(String neuId) {
     session = factory.openSession();
-    org.hibernate.query.Query query = session.createQuery("from Electives");
+    org.hibernate.query.Query query = session.createQuery("from Electives where neuId = :neuId");
+    query.setParameter("neuId", neuId);
     List<Electives> list = query.list();
-    for (Electives elective : list) {
-      populateForeignKey(elective);
-    }
+//    for (Electives elective : list) {
+//      populateForeignKey(elective);
+//    }
     session.close();
     return list;
   }
@@ -59,7 +57,7 @@ public class ElectivesDao {
       return null;
     }
     Electives elective = list.get(0);
-    populateForeignKey(elective);
+//    populateForeignKey(elective);
     return elective;
   }
 
@@ -75,10 +73,10 @@ public class ElectivesDao {
     }
 
     Transaction tx = null;
-    StudentsDao studentDao = new StudentsDao();
+//    StudentsDao studentDao = new StudentsDao();
     session = factory.openSession();
 
-    if (studentDao.ifNuidExists(elective.getStudent().getNeuId())) {
+    if (studentDao.ifNuidExists(elective.getNeuId())) {
       try {
         tx = session.beginTransaction();
         session.save(elective);
@@ -94,7 +92,7 @@ public class ElectivesDao {
       System.out.println("The student with a given nuid doesn't exists");
       return null;
     }
-    populateForeignKey(elective);
+//    populateForeignKey(elective);
     return elective;
   }
 
@@ -137,9 +135,8 @@ public class ElectivesDao {
     return true;
   }
 
-  private void populateForeignKey(Electives electives) {
-    electives.setStudent(studentsDao.getStudentRecord(electives.getStudent().getNeuId()));
-    electives.setTerms(termsDao.getTermById(electives.getTerms().getTermId()));
-    electives.setCourse(coursesDao.getCourseById(electives.getCourse().getCourseId()));
-  }
+//  private void populateForeignKey(Electives electives) {
+//    electives.setStudent(studentsDao.getStudentRecord(electives.getStudent().getNeuId()));
+//    electives.setCourse(coursesDao.getCourseById(electives.getCourse().getCourseId()));
+//  }
 }

@@ -1,7 +1,8 @@
 package org.alignprivate.asd.dal.maintable;
 
-import org.alignprivate.asd.enumeration.DegreeCandidacy;
+import org.alignprivate.asd.enumeration.*;
 import org.alignprivate.asd.model.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,32 +16,64 @@ import static org.junit.Assert.*;
 public class PriorEducationsDaoTest {
   private static PriorEducationsDao priorEducationsDao;
   private static StudentsDao studentsDao;
-  private static MajorsDao majorsDao;
-  private static InstitutionsDao institutionsDao;
 
   @BeforeClass
   public static void init() {
     priorEducationsDao = new PriorEducationsDao();
     studentsDao = new StudentsDao();
-    majorsDao = new MajorsDao();
-    institutionsDao = new InstitutionsDao();
+  }
+
+  @Before
+  public void addDatabasePlaceholder() throws ParseException {
+    Students student = new Students("001234567","tomcat@gmail.com", "Tom", "",
+            "Cat", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            Term.FALL, 2014, Term.SPRING, 2016,
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null, true);
+    Students student2 = new Students("111234567","jerrymouse@gmail.com", "Jerry", "",
+            "Mouse", Gender.M, "F1", "1111111111",
+            "401 Terry Ave", "WA", "Seattle", "98109",
+            Term.FALL, 2014, Term.SPRING, 2016,
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null, true);
+    studentsDao.addStudent(student);
+    studentsDao.addStudent(student2);
+
+    PriorEducations newPriorEducation = new PriorEducations();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    newPriorEducation.setGraduationDate(dateFormat.parse("2015-01-01"));
+    newPriorEducation.setGpa(3.50f);
+    newPriorEducation.setDegreeCandidacy(DegreeCandidacy.BACHELORS);
+    newPriorEducation.setStudent(student);
+    newPriorEducation.setMajorName("Computer Science");
+    newPriorEducation.setInstitutionName("University of Washington");
+
+    priorEducationsDao.createPriorEducation(newPriorEducation);
+  }
+
+  @After
+  public void deleteDatabasePlaceholder() {
+    priorEducationsDao.deletePriorEducationById(
+            priorEducationsDao.getPriorEducationsByNeuId("001234567").get(0).getPriorEducationId());
+    studentsDao.deleteStudent("001234567");
+    studentsDao.deleteStudent("111234567");
+
   }
 
   @Test
   public void getPriorEducationByIdTest() {
-    PriorEducations tempPriorEducation = priorEducationsDao.getPriorEducationById(1);
+    int tempId = priorEducationsDao.getPriorEducationsByNeuId("001234567").get(0).getPriorEducationId();
+    PriorEducations tempPriorEducation = priorEducationsDao.getPriorEducationById(tempId);
     assertTrue(tempPriorEducation.getStudent().getNeuId().equals("001234567"));
-    assertTrue(tempPriorEducation.getInstitution().getInstitutionName().equals("University of Washington"));
-    assertTrue(tempPriorEducation.getMajor().getMajorId() == 1);
+    assertTrue(tempPriorEducation.getInstitutionName().equals("University of Washington"));
     assertTrue(tempPriorEducation.getGpa() == 3.50f);
     assertTrue(priorEducationsDao.getPriorEducationById(-20) == null);
   }
 
   @Test
   public void getPriorEducationsByNeuIdTest() {
-    List<PriorEducations> listOfPriorEducation = priorEducationsDao.getPriorEducationsByNeuId("111234545");
-    assertTrue(listOfPriorEducation.get(0).getInstitution().getInstitutionName().equals("University of California - Los Angeles"));
-    assertTrue(listOfPriorEducation.get(0).getMajor().getMajor().equals("Computer Science"));
+    List<PriorEducations> listOfPriorEducation = priorEducationsDao.getPriorEducationsByNeuId("001234567");
+    assertTrue(listOfPriorEducation.get(0).getInstitutionName().equals("University of Washington"));
+    assertTrue(listOfPriorEducation.get(0).getMajorName().equals("Computer Science"));
     assertTrue(priorEducationsDao.getPriorEducationsByNeuId("000000000") == null);
   }
 
@@ -48,28 +81,27 @@ public class PriorEducationsDaoTest {
   public void createUpdateDeletePriorEducation() throws ParseException {
     PriorEducations newPriorEducation = new PriorEducations();
 
-    Students student = studentsDao.getStudentRecord("001234567");
-    Majors major = majorsDao.getMajorByName("Computer Science");
-    Institutions institution = institutionsDao.getInstitutionByName("Stanford University");
+    Students student = studentsDao.getStudentRecord("111234567");
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     newPriorEducation.setGraduationDate(dateFormat.parse("2015-01-01"));
     newPriorEducation.setGpa(4.00f);
     newPriorEducation.setDegreeCandidacy(DegreeCandidacy.BACHELORS);
     newPriorEducation.setStudent(student);
-    newPriorEducation.setMajor(major);
-    newPriorEducation.setInstitution(institution);
+    newPriorEducation.setMajorName("Accounting");
+    newPriorEducation.setInstitutionName("Stanford University");
 
     // create new work experience
     priorEducationsDao.createPriorEducation(newPriorEducation);
-    PriorEducations foundPriorEducation = priorEducationsDao.getPriorEducationsByNeuId("001234567").get(1);
+    PriorEducations foundPriorEducation = priorEducationsDao.getPriorEducationsByNeuId("111234567").get(0);
+    System.out.println(foundPriorEducation.getGpa());
     assertTrue(foundPriorEducation.getGpa() == 4.00f);
-    assertTrue(foundPriorEducation.getInstitution().getInstitutionName().equals("Stanford University"));
+    assertTrue(foundPriorEducation.getInstitutionName().equals("Stanford University"));
 
     // update found work experience
     foundPriorEducation.setGpa(3.99f);
     priorEducationsDao.updatePriorEducation(foundPriorEducation);
-    assertTrue(priorEducationsDao.getPriorEducationsByNeuId("001234567").get(1).getGpa() == 3.99f);
+    assertTrue(priorEducationsDao.getPriorEducationsByNeuId("111234567").get(0).getGpa() == 3.99f);
     newPriorEducation.setPriorEducationId(-100);
     assertFalse(priorEducationsDao.updatePriorEducation(newPriorEducation));
 

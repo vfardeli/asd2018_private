@@ -3,7 +3,6 @@ package org.alignprivate.asd.dal.maintable;
 import java.util.List;
 
 import org.alignprivate.asd.model.Administrators;
-import org.alignprivate.asd.model.Terms;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;

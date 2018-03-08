@@ -32,6 +32,22 @@
         <property name = "state" column = "State" type = "string"/>
         <property name = "city" column = "City" type = "string" />
         <property name = "zip" column = "Zip" type = "string"/>
+        <property name = "entryTerm" column = "EntryTerm">
+            <type name= "org.hibernate.type.EnumType">
+                <param name="enumClass">org.alignprivate.asd.enumeration.Term</param>
+                <param name="type">12</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property name = "entryYear" column = "EntryYear" type = "int"/>
+        <property name = "expectedLastTerm" column = "ExpectedLastTerm">
+            <type name= "org.hibernate.type.EnumType">
+                <param name="enumClass">org.alignprivate.asd.enumeration.Term</param>
+                <param name="type">12</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property name = "expectedLastYear" column = "ExpectedLastYear" type = "int"/>
         <property name = "enrollmentStatus" column = "EnrollmentStatus">
             <type name= "org.hibernate.type.EnumType">
                 <param name="enumClass">org.alignprivate.asd.enumeration.EnrollmentStatus</param>
@@ -54,6 +70,7 @@
             </type>
         </property>
         <property name = "photo" column = "Photo" type = "blob"/>
+        <property name="visible" column = "Visible" type = "boolean" />
 
     </class>
 </hibernate-mapping>

@@ -1,6 +1,6 @@
 USE AlignPrivate;
 
-#Insert Students Table
+# Insert Students Table
 INSERT INTO Students (
 	NeuId, Email, FirstName, LastName, Gender, Visa, Phone, Address, State, City, Zip,
     EnrollmentStatus, Campus, DegreeCandidacy, Photo)
@@ -279,4 +279,4 @@ INSERT INTO Privacies (NeuId) VALUES ("111234547");
 INSERT INTO Privacies (NeuId) VALUES ("211234548");
 INSERT INTO Privacies (NeuId) VALUES ("211234549");
 INSERT INTO Privacies (NeuId) VALUES ("211232248");
-INSERT INTO Privacies (NeuId, AgeShown) VALUES ("211234550", TRUE);
+INSERT INTO Privacies (NeuId, ZipShown) VALUES ("211234550", TRUE);

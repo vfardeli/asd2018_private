@@ -14,8 +14,6 @@ public class PriorEducationsDao {
   private static Session session;
 
   private StudentsDao studentsDao;
-  private MajorsDao majorsDao;
-  private InstitutionsDao institutionsDao;
 
   /**
    * Default constructor.
@@ -24,8 +22,6 @@ public class PriorEducationsDao {
    */
   public PriorEducationsDao() {
     studentsDao = new StudentsDao();
-    majorsDao = new MajorsDao();
-    institutionsDao = new InstitutionsDao();
     try {
       factory = new Configuration().configure().buildSessionFactory();
     } catch (Throwable ex) {
@@ -159,7 +155,5 @@ public class PriorEducationsDao {
 
   private void populateForeignKey(PriorEducations priorEducations) {
     priorEducations.setStudent(studentsDao.getStudentRecord(priorEducations.getStudent().getNeuId()));
-    priorEducations.setInstitution(institutionsDao.getInstitutionById(priorEducations.getInstitution().getInstitutionId()));
-    priorEducations.setMajor(majorsDao.getMajorById(priorEducations.getMajor().getMajorId()));
   }
 }

@@ -2,9 +2,7 @@ package org.alignprivate.asd.dal.maintable;
 
 import java.util.List;
 
-import org.alignprivate.asd.model.Companies;
 import org.alignprivate.asd.model.Courses;
-import org.alignprivate.asd.model.Students;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

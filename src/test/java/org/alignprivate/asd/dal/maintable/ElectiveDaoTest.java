@@ -7,11 +7,9 @@ import org.alignprivate.asd.enumeration.DegreeCandidacy;
 import org.alignprivate.asd.enumeration.EnrollmentStatus;
 import org.alignprivate.asd.enumeration.Gender;
 import org.alignprivate.asd.enumeration.Term;
-import org.alignprivate.asd.enumeration.TermType;
 import org.alignprivate.asd.model.Courses;
 import org.alignprivate.asd.model.Electives;
 import org.alignprivate.asd.model.Students;
-import org.alignprivate.asd.model.Terms;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,14 +18,12 @@ public class ElectiveDaoTest {
   private static ElectivesDao electivesDao;
   private static StudentsDao studentsDao;
   private static CoursesDao coursesDao;
-  private static TermsDao termsDao;
 
   @BeforeClass
   public static void init() {
     electivesDao = new ElectivesDao();
     studentsDao = new StudentsDao();
     coursesDao = new CoursesDao();
-    termsDao = new TermsDao();
   }
 
   @Test
@@ -36,34 +32,35 @@ public class ElectiveDaoTest {
     Assert.assertNull(Electives);
   }
 
-  @Test
-  public void getAllElectives() {
-    List<Electives> electivesList = electivesDao.getAllElectives();
-
-    System.out.println(electivesList.size());
-  }
+//  @Test
+//  public void getAllElectives() {
+//    List<Electives> electivesList = electivesDao.getElectivesByNeuId();
+//
+//    System.out.println(electivesList.size());
+//  }
 
   @Test
   public void addElectivesTest() {
-    int tempId = 1221;
+    String tempId = "1221";
 
-    Students newStudent = new Students(tempId + "", "tomcat78@gmail.com", "Tom3", "",
+    Students newStudent = new Students(tempId, "tomcat78@gmail.com", "Tom3", "",
             "Cat", Gender.M, "F1", "1111111111",
             "401 Terry Ave", "WA", "Seattle", "98109",
-            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
+            Term.FALL, 2014, Term.SPRING, 2016,
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null, true);
 
     studentsDao.addStudent(newStudent);
 
     Courses newCourse = new Courses(tempId + "", "course2", "course description 2");
     Courses courses = coursesDao.createCourse(newCourse);
 
-    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-    Terms term = termsDao.addTerm(newTerm);
+//    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+//    Terms term = termsDao.addTerm(newTerm);
 
     Electives elective = new Electives();
-    elective.setStudent(newStudent);
-    elective.setCourse(newCourse);
-    elective.setTerms(newTerm);
+    elective.setNeuId(newStudent.getNeuId());
+    elective.setCourseId(newCourse.getCourseId());
+//    elective.setTerms(newTerm);
     elective.setRetake(false);
     elective.setGpa((float) 3.2);
     elective.setPlagiarism(false);
@@ -72,34 +69,35 @@ public class ElectiveDaoTest {
 
     electivesDao.deleteElectiveRecord(electivesNew.getElectiveId());
     coursesDao.deleteCourseById(tempId + "");
-    termsDao.deleteTerm(term.getTermId());
+//    termsDao.deleteTerm(term.getTermId());
     studentsDao.deleteStudent(tempId + "");
   }
 
   @Test
   public void deleteElectivesTest() {
-    int tempId = 289;
+    String tempId = "289";
 
-    List<Electives> experiencesOld = electivesDao.getAllElectives();
+    List<Electives> experiencesOld = electivesDao.getElectivesByNeuId(tempId);
     int oldSize = experiencesOld.size();
 
-    Students newStudent = new Students(tempId + "", "tomcat2e1kk3@gmail.com", "Tom3", "",
+    Students newStudent = new Students(tempId, "tomcat2e1kk3@gmail.com", "Tom3", "",
             "Cat", Gender.M, "F1", "1111111111",
             "401 Terry Ave", "WA", "Seattle", "98109",
-            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
+            Term.FALL, 2014, Term.SPRING, 2016,
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null, true);
 
     studentsDao.addStudent(newStudent);
 
     Courses newCourse = new Courses(tempId + "", "course2", "course description 2");
     Courses courses = coursesDao.createCourse(newCourse);
 
-    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-    Terms term = termsDao.addTerm(newTerm);
+//    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+//    Terms term = termsDao.addTerm(newTerm);
 
     Electives elective = new Electives();
-    elective.setStudent(newStudent);
-    elective.setCourse(newCourse);
-    elective.setTerms(newTerm);
+    elective.setNeuId(newStudent.getNeuId());
+    elective.setCourseId(newCourse.getCourseId());
+//    elective.setTerms(newTerm);
     elective.setRetake(false);
     elective.setGpa((float) 3.2);
     elective.setPlagiarism(false);
@@ -107,37 +105,38 @@ public class ElectiveDaoTest {
     Electives electivesNew = electivesDao.addElective(elective);
     electivesDao.deleteElectiveRecord(electivesNew.getElectiveId());
 
-    List<Electives> electivessNew = electivesDao.getAllElectives();
+    List<Electives> electivessNew = electivesDao.getElectivesByNeuId(tempId);
     int newSize = electivessNew.size();
     Assert.assertEquals(oldSize, newSize);
 
     coursesDao.deleteCourseById(tempId + "");
-    termsDao.deleteTerm(term.getTermId());
+//    termsDao.deleteTerm(term.getTermId());
     studentsDao.deleteStudent(tempId + "");
   }
 
   //
   @Test
   public void updateElectivesTest() {
-    int tempId = 9187;
+    String tempId = "9187";
 
-    Students newStudent = new Students(tempId + "", "tommcautty@gmail.com", "Tom3", "",
+    Students newStudent = new Students(tempId, "tommcautty@gmail.com", "Tom3", "",
             "Cat", Gender.M, "F1", "1111111111",
             "401 Terry Ave", "WA", "Seattle", "98109",
-            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null);
+            Term.FALL, 2014, Term.SPRING, 2016,
+            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null, true);
 
     studentsDao.addStudent(newStudent);
 
     Courses newCourse = new Courses(tempId + "", "course2", "course description 2");
     Courses courses = coursesDao.createCourse(newCourse);
 
-    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
-    Terms term = termsDao.addTerm(newTerm);
+//    Terms newTerm = new Terms(Term.FALL, tempId, TermType.QUARTER);
+//    Terms term = termsDao.addTerm(newTerm);
 
     Electives elective = new Electives();
-    elective.setStudent(newStudent);
-    elective.setCourse(newCourse);
-    elective.setTerms(newTerm);
+    elective.setNeuId(newStudent.getNeuId());
+    elective.setCourseId(newCourse.getCourseId());
+//    elective.setTerms(newTerm);
     elective.setRetake(false);
     elective.setGpa((float) 3.2);
     elective.setPlagiarism(false);
@@ -150,7 +149,7 @@ public class ElectiveDaoTest {
 
     electivesDao.deleteElectiveRecord(electivesNew.getElectiveId());
     coursesDao.deleteCourseById(tempId + "");
-    termsDao.deleteTerm(term.getTermId());
+//    termsDao.deleteTerm(term.getTermId());
     studentsDao.deleteStudent(tempId + "");
   }
 

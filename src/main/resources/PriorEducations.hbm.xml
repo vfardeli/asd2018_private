@@ -13,6 +13,10 @@
             <generator class="native"/>
         </id>
 
+        <property name = "institutionName" column="InstitutionName" type="string" />
+
+        <property name = "majorName" column="MajorName" type="string" />
+
         <property name = "graduationDate" column="GraduationDate" type="date" />
 
         <property name = "gpa" column="Gpa" type="float" />
@@ -27,11 +31,5 @@
 
         <many-to-one name="student" class="org.alignprivate.asd.model.Students"
                      column="NeuId" />
-
-        <many-to-one name="institution" class="org.alignprivate.asd.model.Institutions"
-                     column="InstitutionId" />
-
-        <many-to-one name="major" class="org.alignprivate.asd.model.Majors"
-                     column="MajorId" />
     </class>
 </hibernate-mapping>

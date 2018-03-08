@@ -13,17 +13,12 @@ public class WorkExperiencesDao {
   private static SessionFactory factory;
   private static Session session;
 
-  private StudentsDao studentsDao;
-  private CompaniesDao companiesDao;
-
   /**
    * Default constructor.
    * it will check the Hibernate.cfg.xml file and load it
    * next it goes to all table files in the hibernate file and loads them.
    */
   public WorkExperiencesDao() {
-    studentsDao = new StudentsDao();
-    companiesDao = new CompaniesDao();
     try {
       factory = new Configuration().configure().buildSessionFactory();
     } catch (Throwable ex) {
@@ -49,7 +44,6 @@ public class WorkExperiencesDao {
       return null;
     }
     WorkExperiences workExperiences = (WorkExperiences) listOfWorkExperience.get(0);
-    populateForeignKey(workExperiences);
     session.close();
     return workExperiences;
   }
@@ -63,14 +57,11 @@ public class WorkExperiencesDao {
   public List<WorkExperiences> getWorkExperiencesByNeuId(String neuId) {
     session = factory.openSession();
     org.hibernate.query.Query query = session.createQuery(
-            "FROM WorkExperiences WHERE student.neuId = :neuId");
+            "FROM WorkExperiences WHERE neuId = :neuId");
     query.setParameter("neuId", neuId);
     List<WorkExperiences> listOfWorkExperience = query.list();
     if (listOfWorkExperience.isEmpty()) {
       return null;
-    }
-    for (WorkExperiences workExperience : listOfWorkExperience) {
-      populateForeignKey(workExperience);
     }
     session.close();
     return listOfWorkExperience;
@@ -155,8 +146,7 @@ public class WorkExperiencesDao {
     return false;
   }
 
-  private void populateForeignKey(WorkExperiences workExperiences) {
-    workExperiences.setStudent(studentsDao.getStudentRecord(workExperiences.getStudent().getNeuId()));
-    workExperiences.setCompany(companiesDao.getCompanyById(workExperiences.getCompany().getCompanyId()));
-  }
+//  private void populateForeignKey(WorkExperiences workExperiences) {
+//    workExperiences.setStudent(studentsDao.getStudentRecord(workExperiences.getStudent().getNeuId()));
+//  }
 }
