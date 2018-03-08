@@ -29,6 +29,10 @@ public class PublicDatabaseEtlQuery {
             "AlignPublic");
   }
 
+  public ConnectionManager getConnectionManager() {
+    return publicConnectionManager;
+  }
+
   /**
    * Update the Public DB that only has a single value
    * using the query string provided from the parameter.

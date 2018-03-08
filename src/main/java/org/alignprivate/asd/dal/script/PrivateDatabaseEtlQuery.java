@@ -26,6 +26,12 @@ public class PrivateDatabaseEtlQuery {
             "AlignPrivate");
   }
 
+  public ConnectionManager getConnectionManager() {
+    return privateConnectionManager;
+  }
+
+
+
   /**
    * Get a data for a single value query from the Private DB
    * using the query string provided from the parameter.
