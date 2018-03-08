@@ -8,17 +8,17 @@ import org.junit.*;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 public class AdministratorNotesDaoTest {
     private static AdministratorNotesDao administratorNotesDao;
-    private static AdministratorsDao administratorsDao;
     private static StudentsDao studentsDao;
+    private static AdministratorsDao adminDao;
 
     @BeforeClass
     public static void init() {
+        studentsDao = new StudentsDao();
+        adminDao = new AdministratorsDao();
         administratorNotesDao = new AdministratorNotesDao();
-        administratorsDao = new AdministratorsDao();
+        adminDao = new AdministratorsDao();
         studentsDao = new StudentsDao();
     }
 
@@ -31,32 +31,37 @@ public class AdministratorNotesDaoTest {
                 EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null, true);
         Administrators newAdministrator = new Administrators("123456789", "john.stewart@gmail.com",
                 "John", "Main", "Stewart");
-        administratorsDao.addAdministrator(newAdministrator);
+        adminDao.addAdministrator(newAdministrator);
         studentsDao.addStudent(student);
     }
 
     @After
     public void deleteDatabasePlaceholder() {
-        administratorsDao.deleteAdministrator("123456789");
+        adminDao.deleteAdministrator("123456789");
         studentsDao.deleteStudent("001234567");
     }
 
     @Test
     public void getAdministratorNoteRecordtTest() {
-        AdministratorNotes note = new AdministratorNotes("001234567", "123456789", "TEST", "TEST");
+        Students student = studentsDao.getStudentRecord("001234567");
+        Administrators admin = adminDao.getAdministratorRecord("123456789");
+        AdministratorNotes note = new AdministratorNotes(student.getNeuId(), admin.getAdministratorNeuId(), "TEST", "TEST");
         administratorNotesDao.addAdministratorNoteRecord(note);
 
         List<AdministratorNotes> notes = administratorNotesDao.getAdministratorNoteRecordByNeuId("001234567");
         for (AdministratorNotes n : notes)
-            Assert.assertTrue(n.getNeuId().equals("001234567"));
+            Assert.assertTrue(n.getTitle().equals("TEST"));
 
         administratorNotesDao.deleteAdministratorNoteRecord(note);
     }
 
     @Test
     public void addAdministratorNoteRecordTest() {
-        AdministratorNotes note = new AdministratorNotes("001234567", "123456789", "TEST", "TEST");
+        Students student = studentsDao.getStudentRecord("001234567");
+        Administrators admin = adminDao.getAdministratorRecord("123456789");
+        AdministratorNotes note = new AdministratorNotes(student.getNeuId(), admin.getAdministratorNeuId(), "TEST", "TEST");
         administratorNotesDao.addAdministratorNoteRecord(note);
+
         Assert.assertTrue(administratorNotesDao.ifNuidExists("001234567"));
         administratorNotesDao.deleteAdministratorNoteRecord(note);
         Assert.assertTrue(!administratorNotesDao.ifNuidExists("001234567"));
@@ -64,14 +69,19 @@ public class AdministratorNotesDaoTest {
 
     @Test
     public void deleteAdministratorNoteRecordTest() {
-        AdministratorNotes note = new AdministratorNotes("001234567", "123456789", "TEST", "TEST");
+        Students student = studentsDao.getStudentRecord("001234567");
+        Administrators admin = adminDao.getAdministratorRecord("123456789");
+        AdministratorNotes note = new AdministratorNotes(student.getNeuId(), admin.getAdministratorNeuId(), "TEST", "TEST");
+        administratorNotesDao.addAdministratorNoteRecord(note);
         administratorNotesDao.deleteAdministratorNoteRecord(note);
         Assert.assertTrue(!administratorNotesDao.ifNuidExists("001234567"));
     }
 
     @Test
     public void ifNuidExistsTest() {
-        AdministratorNotes note = new AdministratorNotes("001234567", "123456789", "TEST", "TEST");
+        Students student = studentsDao.getStudentRecord("001234567");
+        Administrators admin = adminDao.getAdministratorRecord("123456789");
+        AdministratorNotes note = new AdministratorNotes(student.getNeuId(), admin.getAdministratorNeuId(), "TEST", "TEST");
         administratorNotesDao.addAdministratorNoteRecord(note);
         Assert.assertTrue(administratorNotesDao.ifNuidExists("001234567"));
         administratorNotesDao.deleteAdministratorNoteRecord(note);

@@ -38,8 +38,8 @@ public class AdministratorNotes {
         return administratorNeuId;
     }
 
-    public void setAdministratorNeuId(String administratorNeuId) {
-        this.administratorNeuId = administratorNeuId;
+    public void setAdministratorNeuId(String administratorId) {
+        this.administratorNeuId = administratorId;
     }
 
     public String getTitle() {
