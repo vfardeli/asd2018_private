@@ -62,6 +62,93 @@ public class WorkExperiencesDaoTest {
   }
 
   @Test
+  public void getTotalStudentsWorkingInACompanyTest() {
+    int temp = workExperiencesDao.getTotalStudentsWorkingInACompany(
+            Campus.SEATTLE, 2017, "amazon");
+    assertTrue(temp == 1);
+    temp = workExperiencesDao.getTotalStudentsWorkingInACompany(
+            Campus.BOSTON, 2017, "Amazon");
+    assertTrue(temp == 0);
+    temp = workExperiencesDao.getTotalStudentsWorkingInACompany(
+            Campus.SEATTLE, 2015, "Amazon");
+    assertTrue(temp == 0);
+    temp = workExperiencesDao.getTotalStudentsWorkingInACompany(
+            Campus.SEATTLE, 2015, "xyz");
+    assertTrue(temp == 0);
+    temp = workExperiencesDao.getTotalStudentsWorkingInACompany(
+            null, null, "Amazon");
+    assertTrue(temp == 1);
+    temp = workExperiencesDao.getTotalStudentsWorkingInACompany(
+            Campus.SEATTLE, null, "Amazon");
+    assertTrue(temp == 1);
+    temp = workExperiencesDao.getTotalStudentsWorkingInACompany(
+            null, 2017, "Amazon");
+    assertTrue(temp == 1);
+    temp = workExperiencesDao.getTotalStudentsWorkingInACompany(
+            null, 2016, "Amazon");
+    assertTrue(temp == 0);
+  }
+
+  @Test
+  public void getTotalStudentsWithWorkExpTest() {
+    int temp = workExperiencesDao.getTotalStudentsWithWorkExp(null, null);
+    assertTrue(temp == 1);
+    temp = workExperiencesDao.getTotalStudentsWithWorkExp(Campus.SEATTLE, null);
+    assertTrue(temp == 1);
+    temp = workExperiencesDao.getTotalStudentsWithWorkExp(Campus.BOSTON, null);
+    assertTrue(temp == 0);
+    temp = workExperiencesDao.getTotalStudentsWithWorkExp(null, 2017);
+    assertTrue(temp == 1);
+    temp = workExperiencesDao.getTotalStudentsWithWorkExp(Campus.SEATTLE, 2016);
+    assertTrue(temp == 0);
+    temp = workExperiencesDao.getTotalStudentsWithWorkExp(null, 1994);
+    assertTrue(temp == 0);
+  }
+
+  @Test
+  public void getTopTenEmployersTest() throws ParseException {
+    List<String> temp = workExperiencesDao.getTopTenEmployers(null, null);
+    assertTrue(temp.size() == 1);
+
+    WorkExperiences newWorkExperience = new WorkExperiences();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    newWorkExperience.setStartDate(dateFormat.parse("2018-06-01"));
+    newWorkExperience.setEndDate(dateFormat.parse("2018-12-01"));
+    newWorkExperience.setCurrentJob(false);
+    newWorkExperience.setTitle("Title");
+    newWorkExperience.setDescription("Description");
+    newWorkExperience.setNeuId("001234567");
+    newWorkExperience.setCompanyName("Amazon");
+    workExperiencesDao.createWorkExperience(newWorkExperience);
+
+    WorkExperiences newWorkExperience2 = new WorkExperiences();
+    SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+    newWorkExperience2.setStartDate(dateFormat2.parse("2018-06-01"));
+    newWorkExperience2.setEndDate(dateFormat2.parse("2018-12-01"));
+    newWorkExperience2.setCurrentJob(false);
+    newWorkExperience2.setTitle("Title");
+    newWorkExperience2.setDescription("Description");
+    newWorkExperience2.setNeuId("111234567");
+    newWorkExperience2.setCompanyName("Aaa");
+    workExperiencesDao.createWorkExperience(newWorkExperience2);
+
+    temp = workExperiencesDao.getTopTenEmployers(null, null);
+    assertTrue(temp.size() == 2);
+    assertTrue(temp.get(0).equals("Amazon"));
+    assertTrue(temp.get(1).equals("Aaa"));
+
+    temp = workExperiencesDao.getTopTenEmployers(Campus.BOSTON, 1994);
+    assertTrue(temp.size() == 0);
+    temp = workExperiencesDao.getTopTenEmployers(Campus.BOSTON, null);
+    assertTrue(temp.size() == 0);
+
+    workExperiencesDao.deleteWorkExperienceById(
+            workExperiencesDao.getWorkExperiencesByNeuId("001234567").get(1).getWorkExperienceId());
+    workExperiencesDao.deleteWorkExperienceById(
+            workExperiencesDao.getWorkExperiencesByNeuId("111234567").get(0).getWorkExperienceId());
+  }
+
+  @Test
   public void getWorkExperienceIdTest() {
     int tempId = workExperiencesDao.getWorkExperiencesByNeuId("001234567").get(0).getWorkExperienceId();
     WorkExperiences workExperience1 = workExperiencesDao.getWorkExperienceById(tempId);

@@ -1,5 +1,6 @@
 package org.alignprivate.asd.dal.maintable;
 
+import org.alignprivate.asd.enumeration.Campus;
 import org.alignprivate.asd.model.WorkExperiences;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -8,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.util.List;
+import java.util.Set;
 
 public class WorkExperiencesDao {
   private static SessionFactory factory;
@@ -146,7 +148,94 @@ public class WorkExperiencesDao {
     return false;
   }
 
-//  private void populateForeignKey(WorkExperiences workExperiences) {
-//    workExperiences.setStudent(studentsDao.getStudentRecord(workExperiences.getStudent().getNeuId()));
-//  }
+  public List<String> getTopTenEmployers(Campus campus, Integer year) {
+    StringBuilder hql = new StringBuilder("SELECT we.companyName AS CompanyName " +
+            "FROM Students s INNER JOIN WorkExperiences we " +
+            "ON s.neuId = we.neuId ");
+    boolean first = true;
+    if (campus != null) {
+      hql.append("WHERE s.campus = :campus ");
+      first = false;
+    }
+    if (year != null) {
+      if (first) {
+        hql.append("WHERE ");
+      } else {
+        hql.append("AND ");
+      }
+      hql.append("year(we.startDate) = :year ");
+    }
+    hql.append("GROUP BY s.neuId ");
+    hql.append("ORDER BY Count(DISTINCT s.neuId) DESC ");
+    session = factory.openSession();
+    org.hibernate.query.Query query = session.createQuery(
+            hql.toString());
+    query.setMaxResults(10);
+    if (campus != null) {
+      query.setParameter("campus", campus);
+    }
+    if (year != null) {
+      query.setParameter("year", year);
+    }
+    List<String> listOfWorkExperience = query.list();
+    session.close();
+    return listOfWorkExperience;
+  }
+
+  public int getTotalStudentsWithWorkExp(Campus campus, Integer year) {
+    StringBuilder hql = new StringBuilder("SELECT Count(DISTINCT s.neuId) AS Total " +
+            "FROM Students s INNER JOIN WorkExperiences we " +
+            "ON s.neuId = we.neuId ");
+    boolean first = true;
+    if (campus != null) {
+      hql.append("WHERE s.campus = :campus ");
+      first = false;
+    }
+    if (year != null) {
+      if (first) {
+        hql.append("WHERE ");
+      } else {
+        hql.append("AND ");
+      }
+      hql.append("year(we.startDate) = :year ");
+    }
+    session = factory.openSession();
+    org.hibernate.query.Query query = session.createQuery(
+            hql.toString());
+    if (campus != null) {
+      query.setParameter("campus", campus);
+    }
+    if (year != null) {
+      query.setParameter("year", year);
+    }
+    List<Long> listOfWorkExperience = query.list();
+    session.close();
+    return listOfWorkExperience.get(0).intValue();
+  }
+
+  public int getTotalStudentsWorkingInACompany(Campus campus, Integer year, String companyName) {
+    StringBuilder hql = new StringBuilder("SELECT Count(DISTINCT s.neuId) AS Total " +
+            "FROM Students s INNER JOIN WorkExperiences we " +
+            "ON s.neuId = we.neuId " +
+            "WHERE we.companyName = :companyName ");
+    if (campus != null) {
+      hql.append("AND s.campus = :campus ");
+    }
+    if (year != null) {
+      hql.append("AND year(we.startDate) = :year ");
+    }
+    session = factory.openSession();
+    org.hibernate.query.Query query = session.createQuery(
+            hql.toString());
+    query.setParameter("companyName", companyName);
+    if (campus != null) {
+      query.setParameter("campus", campus);
+    }
+    if (year != null) {
+      query.setParameter("year", year);
+    }
+    List<Long> listOfWorkExperience = query.list();
+    session.close();
+    return listOfWorkExperience.get(0).intValue();
+  }
 }

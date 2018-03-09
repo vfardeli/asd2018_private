@@ -56,6 +56,20 @@ public class GenderRatioDaoTest {
     Assert.assertTrue(seattleGenderRatio.get(0).getMale() == 1);
     Assert.assertTrue(seattleGenderRatio.get(1).getFemale() == 1);
     Assert.assertTrue(seattleGenderRatio.get(1).getMale() == 1);
+  }
 
+  @Test
+  public void updateAndGetGenderRatioFromPublicDatabaseTest() throws SQLException {
+    List<GenderRatio> seattleGenderRatio = genderRatioDao.getYearlyGenderRatioFromPrivateDatabase(Campus.SEATTLE);
+    genderRatioDao.insertYearlyGenderRatioToPublicDatabase(Campus.SEATTLE, seattleGenderRatio);
+    List<GenderRatio> seattleGenderRatioFromDB = genderRatioDao.getYearlyGenderRatioFromPublicDatabase(Campus.SEATTLE);
+    Assert.assertTrue(seattleGenderRatioFromDB.get(0).getEntryYear() == 2014);
+    Assert.assertTrue(seattleGenderRatioFromDB.get(1).getEntryYear() == 2015);
+    Assert.assertTrue(seattleGenderRatioFromDB.get(0).getFemale() == 0);
+    Assert.assertTrue(seattleGenderRatioFromDB.get(0).getMale() == 1);
+    Assert.assertTrue(seattleGenderRatioFromDB.get(1).getFemale() == 1);
+    Assert.assertTrue(seattleGenderRatioFromDB.get(1).getMale() == 1);
+    List<GenderRatio> bostonGenderRatioFromDB = genderRatioDao.getYearlyGenderRatioFromPublicDatabase(Campus.BOSTON);
+    Assert.assertTrue(bostonGenderRatioFromDB.isEmpty());
   }
 }

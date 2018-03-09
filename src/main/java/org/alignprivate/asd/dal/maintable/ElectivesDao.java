@@ -2,9 +2,8 @@ package org.alignprivate.asd.dal.maintable;
 
 import java.util.List;
 
+import org.alignprivate.asd.enumeration.Campus;
 import org.alignprivate.asd.model.Electives;
-import org.alignprivate.asd.model.Experiences;
-import org.alignprivate.asd.model.Students;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,7 +14,6 @@ public class ElectivesDao {
   private static SessionFactory factory;
   private static Session session;
 
-//  private CoursesDao coursesDao;
   private StudentsDao studentDao;
 
   /**
@@ -40,9 +38,6 @@ public class ElectivesDao {
     org.hibernate.query.Query query = session.createQuery("from Electives where neuId = :neuId");
     query.setParameter("neuId", neuId);
     List<Electives> list = query.list();
-//    for (Electives elective : list) {
-//      populateForeignKey(elective);
-//    }
     session.close();
     return list;
   }
@@ -57,7 +52,6 @@ public class ElectivesDao {
       return null;
     }
     Electives elective = list.get(0);
-//    populateForeignKey(elective);
     return elective;
   }
 
@@ -73,7 +67,6 @@ public class ElectivesDao {
     }
 
     Transaction tx = null;
-//    StudentsDao studentDao = new StudentsDao();
     session = factory.openSession();
 
     if (studentDao.ifNuidExists(elective.getNeuId())) {
@@ -92,7 +85,6 @@ public class ElectivesDao {
       System.out.println("The student with a given nuid doesn't exists");
       return null;
     }
-//    populateForeignKey(elective);
     return elective;
   }
 
@@ -135,8 +127,37 @@ public class ElectivesDao {
     return true;
   }
 
-//  private void populateForeignKey(Electives electives) {
-//    electives.setStudent(studentsDao.getStudentRecord(electives.getStudent().getNeuId()));
-//    electives.setCourse(coursesDao.getCourseById(electives.getCourse().getCourseId()));
-//  }
+  public List<String> getTopTenElectives(Campus campus, Integer year) {
+    StringBuilder hql = new StringBuilder("SELECT e.courseId AS CourseId " +
+            "FROM Students s INNER JOIN Electives e " +
+            "ON s.neuId = e.neuId ");
+    boolean first = true;
+    if (campus != null) {
+      hql.append("WHERE s.campus = :campus ");
+      first = false;
+    }
+    if (year != null) {
+      if (first) {
+        hql.append("WHERE ");
+      } else {
+        hql.append("AND ");
+      }
+      hql.append("e.courseYear = :year ");
+    }
+    hql.append("GROUP BY CourseId ");
+    hql.append("ORDER BY Count(*) DESC ");
+    session = factory.openSession();
+    org.hibernate.query.Query query = session.createQuery(
+            hql.toString());
+    query.setMaxResults(10);
+    if (campus != null) {
+      query.setParameter("campus", campus);
+    }
+    if (year != null) {
+      query.setParameter("year", year);
+    }
+    List<String> listOfElectives = query.list();
+    session.close();
+    return listOfElectives;
+  }
 }
