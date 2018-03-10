@@ -29,7 +29,7 @@
             </type>
         </property>
 
-        <many-to-one name="student" class="org.alignprivate.asd.model.Students"
-                     column="NeuId" />
+        <property name = "neuId" column="NeuId" type="string" />
+
     </class>
 </hibernate-mapping>

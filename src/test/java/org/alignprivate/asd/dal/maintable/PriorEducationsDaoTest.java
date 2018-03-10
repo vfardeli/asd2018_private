@@ -43,7 +43,7 @@ public class PriorEducationsDaoTest {
     newPriorEducation.setGraduationDate(dateFormat.parse("2015-01-01"));
     newPriorEducation.setGpa(3.50f);
     newPriorEducation.setDegreeCandidacy(DegreeCandidacy.BACHELORS);
-    newPriorEducation.setStudent(student);
+    newPriorEducation.setNeuId(student.getNeuId());
     newPriorEducation.setMajorName("Computer Science");
     newPriorEducation.setInstitutionName("University of Washington");
 
@@ -63,7 +63,7 @@ public class PriorEducationsDaoTest {
   public void getPriorEducationByIdTest() {
     int tempId = priorEducationsDao.getPriorEducationsByNeuId("001234567").get(0).getPriorEducationId();
     PriorEducations tempPriorEducation = priorEducationsDao.getPriorEducationById(tempId);
-    assertTrue(tempPriorEducation.getStudent().getNeuId().equals("001234567"));
+    assertTrue(tempPriorEducation.getNeuId().equals("001234567"));
     assertTrue(tempPriorEducation.getInstitutionName().equals("University of Washington"));
     assertTrue(tempPriorEducation.getGpa() == 3.50f);
     assertTrue(priorEducationsDao.getPriorEducationById(-20) == null);
@@ -87,7 +87,7 @@ public class PriorEducationsDaoTest {
     newPriorEducation.setGraduationDate(dateFormat.parse("2015-01-01"));
     newPriorEducation.setGpa(4.00f);
     newPriorEducation.setDegreeCandidacy(DegreeCandidacy.BACHELORS);
-    newPriorEducation.setStudent(student);
+    newPriorEducation.setNeuId(student.getNeuId());
     newPriorEducation.setMajorName("Accounting");
     newPriorEducation.setInstitutionName("Stanford University");
 

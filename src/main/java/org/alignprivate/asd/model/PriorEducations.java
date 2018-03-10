@@ -11,16 +11,16 @@ public class PriorEducations {
   private Date graduationDate;
   private float gpa;
   private DegreeCandidacy degreeCandidacy;
-  private Students student;
+  private String neuId;
 
   public PriorEducations(String institutionName, String majorName, Date graduationDate,
-                         float gpa, DegreeCandidacy degreeCandidacy, Students student) {
+                         float gpa, DegreeCandidacy degreeCandidacy, String neuId) {
     this.institutionName = institutionName;
     this.majorName = majorName;
     this.graduationDate = graduationDate;
     this.gpa = gpa;
     this.degreeCandidacy = degreeCandidacy;
-    this.student = student;
+    this.neuId = neuId;
   }
 
   public PriorEducations() { }
@@ -73,11 +73,11 @@ public class PriorEducations {
     this.degreeCandidacy = degreeCandidacy;
   }
 
-  public Students getStudent() {
-    return student;
+  public String getNeuId() {
+    return neuId;
   }
 
-  public void setStudent(Students student) {
-    this.student = student;
+  public void setNeuId(String neuId) {
+    this.neuId = neuId;
   }
 }

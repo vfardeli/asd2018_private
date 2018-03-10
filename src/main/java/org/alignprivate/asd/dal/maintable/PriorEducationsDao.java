@@ -47,7 +47,6 @@ public class PriorEducationsDao {
       return null;
     }
     PriorEducations priorEducations = (PriorEducations) listOfPriorEducation.get(0);
-    populateForeignKey(priorEducations);
     session.close();
     return priorEducations;
   }
@@ -61,14 +60,11 @@ public class PriorEducationsDao {
   public List<PriorEducations> getPriorEducationsByNeuId(String neuId) {
     session = factory.openSession();
     org.hibernate.query.Query query = session.createQuery(
-            "FROM PriorEducations WHERE student.neuId = :neuId");
+            "FROM PriorEducations WHERE NeuId = :neuId");
     query.setParameter("neuId", neuId);
     List<PriorEducations> listOfPriorEducation = query.list();
     if (listOfPriorEducation.isEmpty()) {
       return null;
-    }
-    for (PriorEducations priorEducation : listOfPriorEducation) {
-      populateForeignKey(priorEducation);
     }
     session.close();
     return listOfPriorEducation;
@@ -151,9 +147,5 @@ public class PriorEducationsDao {
       return true;
     }
     return false;
-  }
-
-  private void populateForeignKey(PriorEducations priorEducations) {
-    priorEducations.setStudent(studentsDao.getStudentRecord(priorEducations.getStudent().getNeuId()));
   }
 }
