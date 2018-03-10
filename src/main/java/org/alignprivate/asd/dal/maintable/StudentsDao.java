@@ -2,7 +2,9 @@ package org.alignprivate.asd.dal.maintable;
 
 import java.util.*;
 
+import org.alignprivate.asd.enumeration.Campus;
 import org.alignprivate.asd.enumeration.DegreeCandidacy;
+import org.alignprivate.asd.enumeration.Gender;
 import org.alignprivate.asd.model.Students;
 
 import org.hibernate.HibernateException;
@@ -92,7 +94,6 @@ public class StudentsDao {
         firstWhereArgument = false;
       }
     }
-//    System.out.println(hql.toString());
 
     session = factory.openSession();
     org.hibernate.query.Query query = session.createQuery(hql.toString());
@@ -103,6 +104,72 @@ public class StudentsDao {
         query.setParameter(filter + i, filterElements.get(i));
       }
     }
+    List<Students> list = query.list();
+    session.close();
+    return deleteDuplicate(list);
+  }
+
+  public List<Students> getStudentFilteredStudents(Map<String, List<String>> filters) {
+    StringBuilder hql = new StringBuilder("SELECT s FROM Students s ");
+
+    if (filters.containsKey("companyName")) {
+      hql.append("INNER JOIN WorkExperiences we ON s.neuId = we.neuId ");
+    }
+
+    if (filters.containsKey("courseName")) {
+      hql.append("INNER JOIN Electives el ON s.neuId = el.neuId ")
+              .append("INNER JOIN Courses co ON el.courseId = co.courseId ");
+    }
+
+    Set<String> filterKeys = filters.keySet();
+    if (!filters.isEmpty()) {
+      hql.append("WHERE ");
+    }
+
+    boolean firstWhereArgument = true;
+    for (String filter : filterKeys) {
+      if (!firstWhereArgument) {
+        hql.append("AND ");
+      }
+
+      if (filter.equals("companyName")) {
+        hql.append("we.").append(filter).append(" IN ").append("(").append(":")
+                .append(filter).append("s").append(") ");
+      } else if (filter.equals("courseName")) {
+        hql.append("co.").append(filter).append(" IN ").append("(").append(":")
+                .append(filter).append("s").append(") ");
+      } else {
+        hql.append("s.").append(filter).append(" IN ").append("(").append(":")
+                .append(filter).append("s").append(") ");
+      }
+
+      if (firstWhereArgument) {
+        firstWhereArgument = false;
+      }
+    }
+
+    session = factory.openSession();
+    org.hibernate.query.Query query = session.createQuery(hql.toString());
+
+    for (String filter : filterKeys) {
+      List<String> filterElements = filters.get(filter);
+      if (filter.equals("campus")) {
+        List<Campus> campuses = new ArrayList<>();
+        for (String campus : filterElements) {
+          campuses.add(Campus.valueOf(campus));
+        }
+        query.setParameterList(filter+"s", campuses);
+      } else if (filter.equals("gender")) {
+        List<Gender> genders = new ArrayList<>();
+        for (String gender : filterElements) {
+          genders.add(Gender.valueOf(gender));
+        }
+        query.setParameterList(filter+"s", genders);
+      } else {
+        query.setParameterList(filter+"s", filterElements);
+      }
+    }
+
     List<Students> list = query.list();
     session.close();
     return deleteDuplicate(list);
