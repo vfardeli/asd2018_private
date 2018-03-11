@@ -109,6 +109,13 @@ public class StudentsDao {
     return deleteDuplicate(list);
   }
 
+  /**
+   * Search for students by multiple properties. Each property have one or multiple values.
+   *
+   * @param filters The key of filter map is the property, like firstName.
+   *                The value of map is a list of detail values.
+   * @return a list of students filtered by specified map.
+   */
   public List<Students> getStudentFilteredStudents(Map<String, List<String>> filters) {
     StringBuilder hql = new StringBuilder("SELECT s FROM Students s ");
 
@@ -137,6 +144,14 @@ public class StudentsDao {
                 .append(filter).append("s").append(") ");
       } else if (filter.equals("courseName")) {
         hql.append("co.").append(filter).append(" IN ").append("(").append(":")
+                .append(filter).append("s").append(") ");
+      } else if (filter.equals("startTerm")){
+        String startTerm =  "CONCAT(s.entryTerm, s.entryYear) ";
+        hql.append(startTerm).append(" IN ").append("(").append(":")
+                .append(filter).append("s").append(") ");
+      }  else if (filter.equals("endTerm")) {
+        String endTerm = "CONCAT(s.expectedLastTerm, s.expectedLastYear) ";
+        hql.append(endTerm).append(" IN ").append("(").append(":")
                 .append(filter).append("s").append(") ");
       } else {
         hql.append("s.").append(filter).append(" IN ").append("(").append(":")
@@ -212,25 +227,12 @@ public class StudentsDao {
   public Students updateStudentRecord(Students student) {
     Transaction tx = null;
     String neuId = student.getNeuId();
+
     if (ifNuidExists(neuId)) {
       try {
         Session session = factory.openSession();
         tx = session.beginTransaction();
-        String address = student.getAddress();
-        String email = student.getEmail();
-        String phone = student.getPhoneNum();
-
-        String hql = "UPDATE Students set Address = :address, " +
-                "Email = :email, " +
-                "Phone = :phone " +
-                "WHERE NeuId = :neuId";
-        org.hibernate.query.Query query = session.createQuery(hql);
-        query.setParameter("address", address);
-        query.setParameter("email", email);
-        query.setParameter("phone", phone);
-        query.setParameter("neuId", neuId);
-        int result = query.executeUpdate();
-        System.out.println("Rows affected: " + result);
+        session.saveOrUpdate(student);
         tx.commit();
         return student;
       } catch (HibernateException e) {
@@ -239,8 +241,6 @@ public class StudentsDao {
       } finally {
         session.close();
       }
-    } else {
-      System.out.println("student id doesn't exists..");
     }
 
     return null;
@@ -253,29 +253,28 @@ public class StudentsDao {
    * @return true if delete succesfully. Otherwise, false.
    */
   public boolean deleteStudent(String neuId) {
-    Transaction tx = null;
-    try {
-      session = factory.openSession();
-      tx = session.beginTransaction();
-      org.hibernate.query.Query query = session.createQuery("DELETE FROM Students WHERE NeuId = :studentNuid ");
-      query.setParameter("studentNuid", neuId);
-      System.out.println("Deleting student for nuid = " + neuId);
-      query.executeUpdate();
-      tx.commit();
-      if (ifNuidExists(neuId)) {
-        return false;
-      } else {
-        return true;
-      }
-    } catch (HibernateException e) {
-      System.out.println("exceptionnnnnn");
-      if (tx != null) tx.rollback();
-      e.printStackTrace();
-    } finally {
-      session.close();
+    if (neuId == null || neuId.isEmpty()) {
+      return false;
     }
 
-    return true;
+    Students student = getStudentRecord(neuId);
+    if (student != null) {
+      session = factory.openSession();
+      Transaction tx = null;
+      try {
+        tx = session.beginTransaction();
+        session.delete(student);
+        tx.commit();
+      } catch (HibernateException e) {
+        if (tx != null) tx.rollback();
+        e.printStackTrace();
+        return false;
+      } finally {
+        session.close();
+      }
+      return true;
+    }
+    return false;
   }
 
   /**

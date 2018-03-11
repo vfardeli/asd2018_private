@@ -124,17 +124,17 @@ public class WorkExperiencesDao {
   /**
    * Update a work experience in the private DB.
    *
-   * @param workExperiences work experience object; not null.
+   * @param workExperience work experience object; not null.
    * @return true if the work experience is updated, false otherwise.
    */
-  public boolean updateWorkExperience(WorkExperiences workExperiences) {
-    if (getWorkExperienceById(workExperiences.getWorkExperienceId()) != null) {
+  public boolean updateWorkExperience(WorkExperiences workExperience) {
+    if (getWorkExperienceById(workExperience.getWorkExperienceId()) != null) {
       session = factory.openSession();
       Transaction tx = null;
       try {
         tx = session.beginTransaction();
         System.out.println("updating work experience in Work Experiences table...");
-        session.saveOrUpdate(workExperiences);
+        session.saveOrUpdate(workExperience);
         tx.commit();
       } catch (HibernateException e) {
         System.out.println("HibernateException: " + e);

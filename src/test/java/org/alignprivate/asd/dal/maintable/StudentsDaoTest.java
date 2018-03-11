@@ -202,12 +202,9 @@ public class StudentsDaoTest {
             Term.SPRING, 2017,
             EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null, true);
 
-//        Students newStudent = new Students("0000000","tomcat@gmail.com", "Tom", "",
-//                "Cat", Gender.M, "F1", "1111111111",
-//                "225 Terry Ave", "WA", "Seattle", "98109",
-//                EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS,null);
-
-    student = studentdao.updateStudentRecord(newStudent);
+    newStudent.setAddress("225 Terry Ave");
+    studentdao.updateStudentRecord(newStudent);
+    student = studentdao.getStudentRecord("0000000");
     Assert.assertTrue(student.getAddress().equals("225 Terry Ave"));
 
     studentdao.deleteStudent("0000000");
@@ -217,18 +214,18 @@ public class StudentsDaoTest {
     public void getStudentFilteredStudents() throws Exception {
       Students newStudent = new Students("0000000", "tomcat@gmail.com", "Tom", "",
               "Cat", Gender.M, "F1", "1111111111",
-              "401 Terry Ave", "WA", "Seattle", "98109", Term.FALL, 2015,
+              "401 Terry Ave", "WA", "Seattle", "98109", Term.FALL, 2014,
               Term.SPRING, 2017,
               EnrollmentStatus.FULL_TIME, Campus.BOSTON, DegreeCandidacy.MASTERS, null, true);
       Students newStudent2 = new Students("1111111", "jerrymouse@gmail.com", "Jerry", "",
               "Mouse", Gender.M, "F1", "1111111111",
-              "225 Terry Ave", "WA", "Seattle", "98109", Term.FALL, 2014,
-              Term.SPRING, 2016,
+              "225 Terry Ave", "WA", "Seattle", "98109", Term.FALL, 2015,
+              Term.FALL, 2016,
               EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null, true);
       Students newStudent3 = new Students("2222222", "tomcat3@gmail.com", "Tom", "",
               "Dog", Gender.M, "F1", "1111111111",
               "401 Terry Ave", "WA", "Seattle", "98109", Term.FALL, 2015,
-              Term.SPRING, 2017,
+              Term.FALL, 2017,
               EnrollmentStatus.FULL_TIME, Campus.SILICON_VALLEY, DegreeCandidacy.MASTERS, null, true);
       studentdao.addStudent(newStudent);
       studentdao.addStudent(newStudent2);
@@ -238,6 +235,17 @@ public class StudentsDaoTest {
       Assert.assertTrue(studentdao.getStudentFilteredStudents(new HashMap<>()).size() == 3);
 
       Map<String, List<String>> map = new HashMap<>();
+
+      // filter by start term
+      List<String> startTerms = new ArrayList<>();
+      startTerms.addAll(Arrays.asList(new String[] {"FALL2015"}));
+      List<String> endTerms = new ArrayList<>();
+      endTerms.addAll(Arrays.asList(new String[] {"FALL2017"}));
+      map.put("startTerm", startTerms);
+      map.put("endTerm", endTerms);
+      Assert.assertTrue(studentdao.getStudentFilteredStudents(map).size() == 1);
+      map.remove("startTerm");
+      map.remove("endTerm");
 
       // filter by campus
       List<String> campuses = new ArrayList<>();
