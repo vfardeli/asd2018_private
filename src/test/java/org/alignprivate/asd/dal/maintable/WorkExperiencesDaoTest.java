@@ -17,13 +17,11 @@ import static org.junit.Assert.*;
 public class WorkExperiencesDaoTest {
   private static WorkExperiencesDao workExperiencesDao;
   private static StudentsDao studentsDao;
-//  private static CompaniesDao companiesDao;
 
   @BeforeClass
   public static void init() {
     workExperiencesDao = new WorkExperiencesDao();
     studentsDao = new StudentsDao();
-//    companiesDao = new CompaniesDao();
   }
 
   @Before
@@ -55,8 +53,7 @@ public class WorkExperiencesDaoTest {
 
   @After
   public void deleteDatabasePlaceholder() {
-    workExperiencesDao.deleteWorkExperienceById(
-            workExperiencesDao.getWorkExperiencesByNeuId("001234567").get(0).getWorkExperienceId());
+    workExperiencesDao.deleteWorkExperienceByNeuId("001234567");
     studentsDao.deleteStudent("001234567");
     studentsDao.deleteStudent("111234567");
   }
@@ -141,11 +138,6 @@ public class WorkExperiencesDaoTest {
     assertTrue(temp.size() == 0);
     temp = workExperiencesDao.getTopTenEmployers(Campus.BOSTON, null);
     assertTrue(temp.size() == 0);
-
-    workExperiencesDao.deleteWorkExperienceById(
-            workExperiencesDao.getWorkExperiencesByNeuId("001234567").get(1).getWorkExperienceId());
-    workExperiencesDao.deleteWorkExperienceById(
-            workExperiencesDao.getWorkExperiencesByNeuId("111234567").get(0).getWorkExperienceId());
   }
 
   @Test
@@ -163,7 +155,7 @@ public class WorkExperiencesDaoTest {
     List<WorkExperiences> listOfWorkExperiences = workExperiencesDao.getWorkExperiencesByNeuId("001234567");
     assertTrue(listOfWorkExperiences.get(0).getCompanyName().equals("Amazon"));
 
-    assertTrue(workExperiencesDao.getWorkExperiencesByNeuId("00000000") == null);
+    assertTrue(workExperiencesDao.getWorkExperiencesByNeuId("00000000").size() == 0);
   }
 
   @Test

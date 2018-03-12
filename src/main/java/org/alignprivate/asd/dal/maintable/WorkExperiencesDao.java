@@ -34,18 +34,17 @@ public class WorkExperiencesDao {
    * This method searches the work experience from the private database.
    *
    * @param workExperienceId work experience Id in private database.
-   * @return Work Experience if found, null if not found.
+   * @return Work Experience if found.
    */
   public WorkExperiences getWorkExperienceById(int workExperienceId) {
     session = factory.openSession();
     org.hibernate.query.Query query = session.createQuery(
             "FROM WorkExperiences WHERE workExperienceId = :workExperienceId");
     query.setParameter("workExperienceId", workExperienceId);
-    List listOfWorkExperience = query.list();
-    if (listOfWorkExperience.isEmpty()) {
+    List<WorkExperiences> listOfWorkExperience = query.list();
+    if (listOfWorkExperience.size() == 0)
       return null;
-    }
-    WorkExperiences workExperiences = (WorkExperiences) listOfWorkExperience.get(0);
+    WorkExperiences workExperiences = listOfWorkExperience.get(0);
     session.close();
     return workExperiences;
   }
@@ -54,7 +53,7 @@ public class WorkExperiencesDao {
    * Find work experience records of a student in private DB.
    *
    * @param neuId the neu Id of a student; not null.
-   * @return List of Work Experiences if neu Id found, null if Neu Id not found.
+   * @return List of Work Experiences.
    */
   public List<WorkExperiences> getWorkExperiencesByNeuId(String neuId) {
     session = factory.openSession();
@@ -62,9 +61,6 @@ public class WorkExperiencesDao {
             "FROM WorkExperiences WHERE neuId = :neuId");
     query.setParameter("neuId", neuId);
     List<WorkExperiences> listOfWorkExperience = query.list();
-    if (listOfWorkExperience.isEmpty()) {
-      return null;
-    }
     session.close();
     return listOfWorkExperience;
   }
@@ -75,8 +71,9 @@ public class WorkExperiencesDao {
    * object inside the work experience object to be not null.
    *
    * @param workExperience the work experience object to be created; not null.
+   * @return newly created WorkExperience if success. Otherwise, return null;
    */
-  public void createWorkExperience(WorkExperiences workExperience) {
+  public WorkExperiences createWorkExperience(WorkExperiences workExperience) {
     session = factory.openSession();
     Transaction tx = null;
     try {
@@ -88,9 +85,12 @@ public class WorkExperiencesDao {
     } catch (HibernateException e) {
       System.out.println("HibernateException: " + e);
       if (tx != null) tx.rollback();
+      workExperience = null;
     } finally {
       session.close();
     }
+
+    return workExperience;
   }
 
   /**
@@ -100,6 +100,7 @@ public class WorkExperiencesDao {
    * @return true if work experience is deleted, false otherwise.
    */
   public boolean deleteWorkExperienceById(int workExperienceId) {
+    boolean deleted = false;
     WorkExperiences workExperiences = getWorkExperienceById(workExperienceId);
     if (workExperiences != null) {
       session = factory.openSession();
@@ -109,16 +110,16 @@ public class WorkExperiencesDao {
         System.out.println("Deleting work experience with id = " + workExperiences.getWorkExperienceId());
         session.delete(workExperiences);
         tx.commit();
+        deleted = true;
       } catch (HibernateException e) {
         if (tx != null) tx.rollback();
         e.printStackTrace();
-        return false;
       } finally {
         session.close();
       }
-      return true;
     }
-    return false;
+
+    return deleted;
   }
 
   public boolean deleteWorkExperienceByNeuId(String neuId) {
@@ -151,6 +152,8 @@ public class WorkExperiencesDao {
    * @return true if the work experience is updated, false otherwise.
    */
   public boolean updateWorkExperience(WorkExperiences workExperience) {
+    boolean updated = false;
+
     if (getWorkExperienceById(workExperience.getWorkExperienceId()) != null) {
       session = factory.openSession();
       Transaction tx = null;
@@ -159,16 +162,16 @@ public class WorkExperiencesDao {
         System.out.println("updating work experience in Work Experiences table...");
         session.saveOrUpdate(workExperience);
         tx.commit();
+        updated = true;
       } catch (HibernateException e) {
         System.out.println("HibernateException: " + e);
         if (tx != null) tx.rollback();
-        return false;
       } finally {
         session.close();
       }
-      return true;
     }
-    return false;
+
+    return updated;
   }
 
   public List<String> getTopTenEmployers(Campus campus, Integer year) {

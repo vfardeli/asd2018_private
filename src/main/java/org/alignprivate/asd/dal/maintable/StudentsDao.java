@@ -143,21 +143,21 @@ public class StudentsDao {
 
       if (filter.equals("companyName")) {
         hql.append("we.").append(filter).append(" IN ").append("(").append(":")
-                .append(filter).append("s").append(") ");
+                .append(filter).append(") ");
       } else if (filter.equals("courseName")) {
         hql.append("co.").append(filter).append(" IN ").append("(").append(":")
-                .append(filter).append("s").append(") ");
+                .append(filter).append(") ");
       } else if (filter.equals("startTerm")){
         String startTerm =  "CONCAT(s.entryTerm, s.entryYear) ";
         hql.append(startTerm).append(" IN ").append("(").append(":")
-                .append(filter).append("s").append(") ");
+                .append(filter).append(") ");
       }  else if (filter.equals("endTerm")) {
         String endTerm = "CONCAT(s.expectedLastTerm, s.expectedLastYear) ";
         hql.append(endTerm).append(" IN ").append("(").append(":")
-                .append(filter).append("s").append(") ");
+                .append(filter).append(") ");
       } else {
         hql.append("s.").append(filter).append(" IN ").append("(").append(":")
-                .append(filter).append("s").append(") ");
+                .append(filter).append(") ");
       }
 
       if (firstWhereArgument) {
@@ -175,15 +175,15 @@ public class StudentsDao {
         for (String campus : filterElements) {
           campuses.add(Campus.valueOf(campus));
         }
-        query.setParameterList(filter+"s", campuses);
+        query.setParameterList(filter, campuses);
       } else if (filter.equals("gender")) {
         List<Gender> genders = new ArrayList<>();
         for (String gender : filterElements) {
           genders.add(Gender.valueOf(gender));
         }
-        query.setParameterList(filter+"s", genders);
+        query.setParameterList(filter, genders);
       } else {
-        query.setParameterList(filter+"s", filterElements);
+        query.setParameterList(filter, filterElements);
       }
     }
 
