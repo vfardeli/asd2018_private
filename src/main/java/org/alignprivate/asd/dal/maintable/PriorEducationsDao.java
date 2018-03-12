@@ -1,5 +1,6 @@
 package org.alignprivate.asd.dal.maintable;
 
+import org.alignprivate.asd.enumeration.Campus;
 import org.alignprivate.asd.model.PriorEducations;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -60,7 +61,7 @@ public class PriorEducationsDao {
   public List<PriorEducations> getPriorEducationsByNeuId(String neuId) {
     session = factory.openSession();
     org.hibernate.query.Query query = session.createQuery(
-            "FROM PriorEducations WHERE NeuId = :neuId");
+            "FROM PriorEducations WHERE neuId = :neuId");
     query.setParameter("neuId", neuId);
     List<PriorEducations> listOfPriorEducation = query.list();
     if (listOfPriorEducation.isEmpty()) {
@@ -147,5 +148,27 @@ public class PriorEducationsDao {
       return true;
     }
     return false;
+  }
+
+  public List<String> getTopTenBachelors(Campus campus) {
+    StringBuilder hql = new StringBuilder("SELECT pe.majorName AS MajorName " +
+            "FROM Students s INNER JOIN PriorEducations pe " +
+            "ON s.neuId = pe.neuId " +
+            "WHERE pe.degreeCandidacy = 'BACHELORS' ");
+    if (campus != null) {
+      hql.append("AND s.campus = :campus ");
+    }
+    hql.append("GROUP BY MajorName ");
+    hql.append("ORDER BY Count(*) DESC ");
+    session = factory.openSession();
+    org.hibernate.query.Query query = session.createQuery(
+            hql.toString());
+    query.setMaxResults(10);
+    if (campus != null) {
+      query.setParameter("campus", campus);
+    }
+    List<String> listOfBachelorDegrees = query.list();
+    session.close();
+    return listOfBachelorDegrees;
   }
 }

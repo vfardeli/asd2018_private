@@ -28,7 +28,6 @@ public class StudentsDao {
     } catch (Throwable ex) {
       System.err.println("Failed to create sessionFactory object." + ex);
       throw new ExceptionInInitializerError(ex);
-
     }
   }
 
