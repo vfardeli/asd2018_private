@@ -35,8 +35,8 @@ public class StudentsDao {
   /**
    * This is the function to add a student into database.
    *
-   * @param student Student record to be inserted
-   * @return true if insert successfully. Otherwise throws exception.
+   * @param student student to be inserted
+   * @return inserted student if successful. Otherwise null.
    */
   public Students addStudent(Students student) {
     Transaction tx = null;
@@ -53,10 +53,12 @@ public class StudentsDao {
       } catch (HibernateException e) {
         System.out.println("HibernateException: " + e);
         if (tx != null) tx.rollback();
+        student = null;
       } finally {
         session.close();
       }
     }
+
     return student;
   }
 
@@ -219,14 +221,15 @@ public class StudentsDao {
   }
 
   /**
-   * Update a student record.
+   * Update a student record with most recent details.
    *
-   * @param student which contains the new information.
-   * @return Updated student object if successful. Otherwise, null.
+   * @param student which contains the new student details.
+   * @return true if successful. Otherwise, false.
    */
-  public Students updateStudentRecord(Students student) {
+  public boolean updateStudentRecord(Students student) {
     Transaction tx = null;
     String neuId = student.getNeuId();
+    boolean updated = false;
 
     if (ifNuidExists(neuId)) {
       try {
@@ -234,7 +237,7 @@ public class StudentsDao {
         tx = session.beginTransaction();
         session.saveOrUpdate(student);
         tx.commit();
-        return student;
+        updated = true;
       } catch (HibernateException e) {
         if (tx != null) tx.rollback();
         e.printStackTrace();
@@ -243,7 +246,7 @@ public class StudentsDao {
       }
     }
 
-    return null;
+    return updated;
   }
 
   /**
@@ -253,6 +256,8 @@ public class StudentsDao {
    * @return true if delete succesfully. Otherwise, false.
    */
   public boolean deleteStudent(String neuId) {
+    boolean deleted = false;
+
     if (neuId == null || neuId.isEmpty()) {
       return false;
     }
@@ -265,16 +270,16 @@ public class StudentsDao {
         tx = session.beginTransaction();
         session.delete(student);
         tx.commit();
+        deleted = true;
       } catch (HibernateException e) {
         if (tx != null) tx.rollback();
         e.printStackTrace();
-        return false;
       } finally {
         session.close();
       }
-      return true;
     }
-    return false;
+
+    return deleted;
   }
 
   /**
@@ -312,6 +317,8 @@ public class StudentsDao {
    * @return true if existed, false if not.
    */
   public boolean ifNuidExists(String neuId) {
+    boolean find = false;
+
     try {
       System.out.println("Checking if an entered neuId exists or not.......");
       session = factory.openSession();
@@ -319,7 +326,7 @@ public class StudentsDao {
       query.setParameter("studentNeuId", neuId);
       List list = query.list();
       if (list.size() == 1) {
-        return true;
+        find = true;
       }
     } catch (HibernateException e) {
       e.printStackTrace();
@@ -327,7 +334,7 @@ public class StudentsDao {
       session.close();
     }
 
-    return false;
+    return find;
   }
 
   /**

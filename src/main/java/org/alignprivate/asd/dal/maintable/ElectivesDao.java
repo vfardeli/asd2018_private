@@ -127,6 +127,29 @@ public class ElectivesDao {
     return true;
   }
 
+  public boolean deleteElectivesByNeuId(String neuId) {
+    Transaction tx = null;
+    boolean deleted = false;
+
+    try {
+      session = factory.openSession();
+      tx = session.beginTransaction();
+      org.hibernate.query.Query query = session.createQuery("DELETE FROM Electives " +
+              "WHERE neuId = :neuId ");
+      query.setParameter("neuId", neuId);
+      query.executeUpdate();
+      tx.commit();
+      deleted = true;
+    } catch (HibernateException e) {
+      if (tx!=null) tx.rollback();
+      e.printStackTrace();
+    } finally {
+      session.close();
+    }
+
+    return deleted;
+  }
+
   public List<String> getTopTenElectives(Campus campus, Integer year) {
     StringBuilder hql = new StringBuilder("SELECT e.courseId AS CourseId " +
             "FROM Students s INNER JOIN Electives e " +

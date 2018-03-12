@@ -123,9 +123,9 @@ public class StudentsDaoTest {
             Term.SPRING, 2017,
             EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null, true);
 
-    Students student = studentdao.addStudent(newStudent);
-    Assert.assertTrue(student.toString().equals(newStudent.toString()));
-    studentdao.deleteStudent("0000000");
+    studentdao.addStudent(newStudent);
+    Assert.assertTrue(studentdao.deleteStudent("0000000"));
+    Assert.assertTrue(!studentdao.deleteStudent("0000001"));
     Assert.assertTrue(!studentdao.ifNuidExists("0000000"));
   }
 
@@ -196,18 +196,13 @@ public class StudentsDaoTest {
     student = studentdao.getStudentRecord("0000000");
     Assert.assertTrue(student.getAddress().equals("401 Terry Ave"));
 
-    Students newStudent = new Students("0000000", "tomcat@gmail.com", "Tom", "",
-            "Cat", Gender.M, "F1", "1111111111",
-            "225 Terry Ave", "WA", "Seattle", "98109", Term.FALL, 2015,
-            Term.SPRING, 2017,
-            EnrollmentStatus.FULL_TIME, Campus.SEATTLE, DegreeCandidacy.MASTERS, null, true);
-
-    newStudent.setAddress("225 Terry Ave");
-    studentdao.updateStudentRecord(newStudent);
+    student.setAddress("225 Terry Ave");
+    Assert.assertTrue(studentdao.updateStudentRecord(student));
     student = studentdao.getStudentRecord("0000000");
     Assert.assertTrue(student.getAddress().equals("225 Terry Ave"));
 
     studentdao.deleteStudent("0000000");
+    Assert.assertTrue(!studentdao.updateStudentRecord(student));
   }
 
     @Test
@@ -255,15 +250,11 @@ public class StudentsDaoTest {
       map.remove("campus");
 
       // filter by work experience - company name
-      WorkExperiences newWorkExperience = new WorkExperiences();
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-      newWorkExperience.setStartDate(dateFormat.parse("2017-06-01"));
-      newWorkExperience.setEndDate(dateFormat.parse("2017-12-01"));
-      newWorkExperience.setCurrentJob(false);
-      newWorkExperience.setTitle("Title");
-      newWorkExperience.setDescription("Description");
-      newWorkExperience.setNeuId("1111111");
-      newWorkExperience.setCompanyName("Amazon");
+
+      WorkExperiences newWorkExperience = new WorkExperiences("1111111", "Amazon",
+              dateFormat.parse("2017-06-01"), dateFormat.parse("2017-12-01"),
+              false, "Title", "Description");
       workExperiencesDao.createWorkExperience(newWorkExperience);
 
       newWorkExperience.setNeuId("2222222");
@@ -301,14 +292,12 @@ public class StudentsDaoTest {
       map.put("courseName", courses);
       Assert.assertTrue(studentdao.getStudentFilteredStudents(map).size() == 1);
 
-      workExperiencesDao.deleteWorkExperienceById(
-              workExperiencesDao.getWorkExperiencesByNeuId("1111111").get(0).getWorkExperienceId());
-      workExperiencesDao.deleteWorkExperienceById(
-              workExperiencesDao.getWorkExperiencesByNeuId("2222222").get(0).getWorkExperienceId());
+      workExperiencesDao.deleteWorkExperienceByNeuId("1111111");
+      workExperiencesDao.deleteWorkExperienceByNeuId("2222222");
       coursesDao.deleteCourseById("5800");
       coursesDao.deleteCourseById("5100");
-      electivesDao.deleteElectiveRecord(electivesDao.getElectivesByNeuId("1111111").get(0).getElectiveId());
-      electivesDao.deleteElectiveRecord(electivesDao.getElectivesByNeuId("2222222").get(0).getElectiveId());
+      electivesDao.deleteElectivesByNeuId("1111111");
+      electivesDao.deleteElectivesByNeuId("2222222");
       studentdao.deleteStudent("2222222");
       studentdao.deleteStudent("1111111");
       studentdao.deleteStudent("0000000");
