@@ -14,15 +14,12 @@ public class PriorEducationsDao {
   private static SessionFactory factory;
   private static Session session;
 
-  private StudentsDao studentsDao;
-
   /**
    * Default constructor.
    * it will check the Hibernate.cfg.xml file and load it
    * next it goes to all table files in the hibernate file and loads them.
    */
   public PriorEducationsDao() {
-    studentsDao = new StudentsDao();
     try {
       factory = new Configuration().configure().buildSessionFactory();
     } catch (Throwable ex) {
@@ -77,8 +74,9 @@ public class PriorEducationsDao {
    * object inside the prior education object to be not null.
    *
    * @param priorEducation the prior education object to be created; not null.
+   * @return newly created priorEducation.
    */
-  public void createPriorEducation(PriorEducations priorEducation) {
+  public PriorEducations createPriorEducation(PriorEducations priorEducation) {
     session = factory.openSession();
     Transaction tx = null;
     try {
@@ -90,9 +88,12 @@ public class PriorEducationsDao {
     } catch (HibernateException e) {
       System.out.println("HibernateException: " + e);
       if (tx != null) tx.rollback();
+      priorEducation = null;
     } finally {
       session.close();
     }
+
+    return priorEducation;
   }
 
   /**
@@ -102,6 +103,8 @@ public class PriorEducationsDao {
    * @return true if prior education is deleted, false otherwise.
    */
   public boolean deletePriorEducationById(int priorEducationId) {
+    boolean deleted = false;
+
     PriorEducations priorEducation = getPriorEducationById(priorEducationId);
     if (priorEducation != null) {
       session = factory.openSession();
@@ -111,16 +114,16 @@ public class PriorEducationsDao {
         System.out.println("Deleting prior education with id = " + priorEducation.getPriorEducationId());
         session.delete(priorEducation);
         tx.commit();
+        deleted = true;
       } catch (HibernateException e) {
         if (tx != null) tx.rollback();
         e.printStackTrace();
-        return false;
       } finally {
         session.close();
       }
-      return true;
     }
-    return false;
+
+    return deleted;
   }
 
   /**
@@ -130,6 +133,8 @@ public class PriorEducationsDao {
    * @return true if the prior education is updated, false otherwise.
    */
   public boolean updatePriorEducation(PriorEducations priorEducation) {
+    boolean updated = false;
+
     if (getPriorEducationById(priorEducation.getPriorEducationId()) != null) {
       session = factory.openSession();
       Transaction tx = null;
@@ -138,16 +143,15 @@ public class PriorEducationsDao {
         System.out.println("updating prior education in Prior Educations table...");
         session.saveOrUpdate(priorEducation);
         tx.commit();
+        updated = true;
       } catch (HibernateException e) {
         System.out.println("HibernateException: " + e);
         if (tx != null) tx.rollback();
-        return false;
       } finally {
         session.close();
       }
-      return true;
     }
-    return false;
+    return updated;
   }
 
   public List<String> getTopTenBachelors(Campus campus) {
