@@ -4,6 +4,8 @@ CREATE SCHEMA IF NOT EXISTS AlignPrivate;
 USE AlignPrivate;
 
 -- DROP TABLE IF EXISTS Privacies;
+DROP TABLE IF EXISTS StudentLogins;
+DROP TABLE IF EXISTS AdminLogins;
 DROP TABLE IF EXISTS PriorEducations;
 DROP TABLE IF EXISTS WorkExperiences;
 -- DROP TABLE IF EXISTS EntryTerms;
@@ -47,6 +49,17 @@ CREATE TABLE Students (
 		PRIMARY KEY (NeuId),
 	CONSTRAINT uq_Students_Email
 		UNIQUE (Email)
+);
+
+CREATE TABLE StudentLogins(
+	Email VARCHAR(255) NOT NULL,
+    StudentPassword VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_StudentLogins_Email
+		PRIMARY KEY (Email),
+	CONSTRAINT fk_StudentLogins_Email
+		FOREIGN KEY (Email)
+        REFERENCES Students(Email)
+        ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- CREATE TABLE Institutions (
@@ -232,6 +245,17 @@ CREATE TABLE Administrators (
 		PRIMARY KEY (AdministratorNeuId),
 	CONSTRAINT uq_Administrators_AdministratorEmail
 		UNIQUE (Email)
+);
+
+CREATE TABLE AdminLogins(
+	Email VARCHAR(255) NOT NULL,
+    AdminPassword VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_AdminLogins_Email
+		PRIMARY KEY (Email),
+	CONSTRAINT fk_AdminLogins_Email
+		FOREIGN KEY (Email)
+        REFERENCES Administrators(Email)
+        ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE AdministratorNotes (

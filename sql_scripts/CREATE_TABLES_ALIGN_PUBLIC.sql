@@ -3,10 +3,19 @@
 CREATE SCHEMA IF NOT EXISTS AlignPublic;
 USE AlignPublic;
 
+DROP TABLE IF EXISTS GenderRatio;
 DROP TABLE IF EXISTS SingleValueAggregatedData;
 DROP TABLE IF EXISTS TopTenBachelorsDegree;
 DROP TABLE IF EXISTS TopFiveEmployers;
 DROP TABLE IF EXISTS TopFiveElectives;
+
+CREATE TABLE GenderRatio (
+	EntryYear INT,
+    Male INT NOT NULL,
+    Female INT NOT NULL,
+    CONSTRAINT pk_GenderRatio_EntryYear
+		PRIMARY KEY (EntryYear)
+);
 
 CREATE TABLE SingleValueAggregatedData (
 	DataKey VARCHAR(255),
